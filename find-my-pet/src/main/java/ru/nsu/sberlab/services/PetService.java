@@ -14,8 +14,8 @@ public class PetService {
         petRepository.save(pet);
     }
 
-    public Pet getPetByChip(Long chip) {
-        if (chip != null) petRepository.findByChip(chip);
+    public Pet getPetByChip(Long chipId) {
+        if (chipId != null) petRepository.findByChip(chipId);
         return null;
     }
 

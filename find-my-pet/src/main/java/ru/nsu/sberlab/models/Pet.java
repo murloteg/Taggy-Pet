@@ -19,7 +19,7 @@ public class Pet {
     private Long id;
 
     @Column(name = "chip")
-    private Long chip;
+    private Long chipId;
 
     @Column(name = "type")
     private String type;
