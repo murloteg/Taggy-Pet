@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 
 @Entity
 @Table(name = "pets")
@@ -19,7 +18,7 @@ public class Pet {
     private Long id;
 
     @Column(name = "chip")
-    private Long chipId;
+    private String chipId;
 
     @Column(name = "type")
     private String type;
