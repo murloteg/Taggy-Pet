@@ -4,5 +4,5 @@ import ru.nsu.sberlab.models.Pet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
-    public Pet findByChip(Long chip);
+    Pet findByChip(Long chip);
 }
