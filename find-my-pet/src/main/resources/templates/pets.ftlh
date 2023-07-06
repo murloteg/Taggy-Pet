@@ -5,6 +5,8 @@
 </head>
 <body>
 <h1>FIND MY PET</h1>
+<h1> <a href="/login">Войти</a></h1>
+<a href="/registration">Зарегистрироваться</a>
 <h4>Все питомцы в базе данных</h4>
 
 <form action="/pet/find" method="get">

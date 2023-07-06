@@ -1,11 +1,12 @@
 package ru.nsu.sberlab.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "pets")
