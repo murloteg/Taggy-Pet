@@ -1,14 +1,11 @@
 package ru.nsu.sberlab.controllers;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.models.Pet;
 import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,7 +13,7 @@ public class PetController {
     private final PetService petService;
 
     @GetMapping("/")
-    public String dogs(@RequestParam(name = "chipId", required = false) String chipId, Model model) {
+    public String pets(@RequestParam(name = "chipId", required = false) String chipId, Model model) {
         model.addAttribute("pets", petService.getPets(chipId));
         return "pets";
     }
@@ -36,8 +33,9 @@ public class PetController {
     @GetMapping("/pet/find")
     public String findPet(@RequestParam(name = "chipId") String chipId, Model model) {
         Pet pet = petService.getPetByChipId(chipId);
-        if (pet != null) return petInfo(pet.getId(), model);
-
+        if (pet != null) {
+            return petInfo(pet.getId(), model);
+        }
         model.addAttribute("chipId", chipId);
         return "pet-not-found";
     }

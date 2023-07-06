@@ -1,4 +1,4 @@
-package ru.nsu.sberlab.application;
+package ru.nsu.sberlab;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
