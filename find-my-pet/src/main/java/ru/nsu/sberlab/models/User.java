@@ -8,9 +8,7 @@ import ru.nsu.sberlab.models.enums.Role;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -37,10 +35,16 @@ public class User implements UserDetails {
     @Column(name = "password", length = 1000)
     private String password;
 
+    @Column(name = "hasElevatedPrivileges")
+    private boolean hasElevatedPrivileges;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns =  @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", joinColumns =  @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Pet> pets = new ArrayList<>();
 
     private LocalDateTime dateOfCreated;
 
@@ -48,8 +52,6 @@ public class User implements UserDetails {
     private void init() {
         dateOfCreated = LocalDateTime.now();
     }
-
-    //security
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

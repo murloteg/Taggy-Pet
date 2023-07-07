@@ -15,8 +15,11 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public boolean createUser (User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) return false;
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            return false;
+        }
         user.setActive(true);
+        user.setHasElevatedPrivileges(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         userRepository.save(user);
