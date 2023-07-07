@@ -29,12 +29,11 @@ public class UserController {
             model.addAttribute("errorMessage", "Пользователь с email: " + user.getEmail() + " уже существует");
             return "registration";
         }
-        System.out.println("GOOD!!!!");
         return "redirect:/login";
     }
 
-    @GetMapping("/hello")
-    public String securityUrl() {
-        return "hello";
+    @GetMapping("/personal-cabinet")
+    public String personalCabinet() {
+        return "personal-cabinet";
     }
 }
