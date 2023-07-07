@@ -8,9 +8,7 @@ import ru.nsu.sberlab.models.enums.Role;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Entity
@@ -41,6 +39,10 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns =  @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Pet> pets = new ArrayList<>();
+
 
     private LocalDateTime dateOfCreated;
 

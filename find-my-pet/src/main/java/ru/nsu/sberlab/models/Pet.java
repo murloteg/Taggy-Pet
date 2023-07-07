@@ -36,4 +36,8 @@ public class Pet {
 
     @Column(name = "dateOfBirth")
     private String dateOfBirth;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
 }

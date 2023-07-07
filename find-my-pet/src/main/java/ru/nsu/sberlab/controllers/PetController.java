@@ -10,20 +10,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
 
     @GetMapping("/")
-    public String dogs(@RequestParam(name = "chipId", required = false) String chipId, Model model) {
+    public String pets(@RequestParam(name = "chipId", required = false) String chipId, Principal principal, Model model) {
         model.addAttribute("pets", petService.getPets(chipId));
+        model.addAttribute("user", petService.getUserByPrincipal(principal));
         return "pets";
     }
 
     @PostMapping("/pet/create")
-    public String addPet(Pet pet){
-        petService.saveProduct(pet);
+    public String addPet(Pet pet, Principal principal){
+        petService.savePet(principal, pet);
         return "redirect:/";
     }
 
