@@ -1,4 +1,4 @@
-package ru.nsu.sberlab.models;
+package ru.nsu.sberlab.models.entities;
 
 
 import lombok.Data;
@@ -26,17 +26,14 @@ public class User implements UserDetails {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "userName")
-    private String name;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "password", length = 1000)
+    @Column(name = "password", length = 128)
     private String password;
-
-    @Column(name = "hasElevatedPrivileges")
-    private boolean hasElevatedPrivileges;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns =  @JoinColumn(name = "user_id"))

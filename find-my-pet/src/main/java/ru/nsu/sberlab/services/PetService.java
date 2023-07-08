@@ -1,7 +1,11 @@
 package ru.nsu.sberlab.services;
 
-import ru.nsu.sberlab.models.Pet;
-import ru.nsu.sberlab.models.User;
+import ru.nsu.sberlab.models.dto.PetDto;
+import ru.nsu.sberlab.models.dto.UserDto;
+import ru.nsu.sberlab.models.entities.Pet;
+import ru.nsu.sberlab.models.entities.User;
+import ru.nsu.sberlab.models.mappers.PetDtoMapper;
+import ru.nsu.sberlab.models.mappers.UserDtoMapper;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,43 +20,48 @@ import java.util.List;
 public class PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
+    private final PetDtoMapper petDtoMapper;
+    private final UserDtoMapper userDtoMapper;
 
-    public List<Pet> getPets() {
-        return petRepository.findAll();
-    }
-
-    public List<Pet> getPetsByPrincipal(Principal principal) {
-        List<Pet> pets = getPets();
-        List<Pet> availablePetsForUser = new ArrayList<>();
-        for (Pet pet : pets) {
-            if (pet.getUser().getEmail().equals(getUserByPrincipal(principal).getEmail())) {
-                availablePetsForUser.add(pet);
-            }
-        }
+    public List<PetDto> getPetsByPrincipal(Principal principal) {
+        List<PetDto> pets = getPets();
+        List<PetDto> availablePetsForUser = new ArrayList<>();
+//        User currentUser = getUserByPrincipal(principal);
+        // FIXME: use role "Privileged Access" instead flag
+        // FIXME: use join operations instead foreach cycle
+        availablePetsForUser = pets;
         return availablePetsForUser;
     }
 
-    public void savePet(Principal principal, Pet pet) {
-        pet.setUser(getUserByPrincipal(principal));
+    public void createPet(Principal principal, Pet pet) {
+        UserDto userDto = getUserByPrincipal(principal);
+        pet.setUser(userDtoMapper.mapDtoToUser(userDto, new User()));
         petRepository.save(pet);
     }
 
-    public User getUserByPrincipal(Principal principal) {
+    public UserDto getUserByPrincipal(Principal principal) {
         if (principal == null) {
-            return new User();
+            return null;
         }
-        return userRepository.findByEmail(principal.getName());
+        return userRepository.findByEmail(principal.getName())
+                .map(userDtoMapper)
+                .orElse(null);
     }
 
-    public Pet getPetByChipId(String chipId) {
-        return petRepository.findByChipId(chipId);
+    public PetDto getPetByChipId(String chipId) {
+        return petRepository.findByChipId(chipId)
+                .map(petDtoMapper)
+                .orElse(null);
     }
 
-    public Pet getPetById(Long id) {
-        return petRepository.findById(id).orElse(null);
-    }
-
-    public void deletePet(Long id) {
+    public void deletePet(Long id) { // TODO: add this feature
         petRepository.deleteById(id);
+    }
+
+    private List<PetDto> getPets() {
+        return petRepository.findAll()
+                .stream()
+                .map(petDtoMapper)
+                .toList();
     }
 }

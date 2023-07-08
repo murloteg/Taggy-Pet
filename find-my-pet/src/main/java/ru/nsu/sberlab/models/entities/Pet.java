@@ -1,12 +1,10 @@
-package ru.nsu.sberlab.models;
-
+package ru.nsu.sberlab.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "pets")
@@ -33,9 +31,6 @@ public class Pet {
 
     @Column(name = "pet_name")
     private String name;
-
-    @Column(name = "dateOfBirth")
-    private String dateOfBirth;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn

@@ -1,9 +1,9 @@
 package ru.nsu.sberlab.controllers;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.nsu.sberlab.models.Pet;
+import ru.nsu.sberlab.models.dto.PetDto;
+import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,6 @@ public class PetController {
 
     @GetMapping("/")
     public String pets(Principal principal, Model model) {
-        model.addAttribute("pets", petService.getPets());
         model.addAttribute("user", petService.getUserByPrincipal(principal));
         return "main-page";
     }
@@ -30,18 +29,12 @@ public class PetController {
     }
 
     @PostMapping("/pet/create")
-    public String addPet(Pet pet, Principal principal){
-        petService.savePet(principal, pet);
+    public String createPet(Pet pet, Principal principal){
+        petService.createPet(principal, pet);
         return "redirect:/";
     }
 
-    @GetMapping("/pet/{id}")
-    public String petInfo(@PathVariable Long id, Model model) {
-        model.addAttribute("pet", petService.getPetById(id));
-        return "pet-info";
-    }
-
-    @GetMapping("/pet/pets-list")
+    @GetMapping("/pet/list")
     public String allPetsList(Principal principal, Model model) {
         model.addAttribute("pets", petService.getPetsByPrincipal(principal));
         model.addAttribute("user", petService.getUserByPrincipal(principal));
@@ -49,12 +42,18 @@ public class PetController {
     }
 
     @GetMapping("/pet/find")
-    public String findPet(@RequestParam(name = "chipId") String chipId, Model model) {
-        Pet pet = petService.getPetByChipId(chipId);
+    public String findPet(@RequestParam(name = "chipId", required = false) String chipId, Model model) {
+        PetDto pet = petService.getPetByChipId(chipId);
         if (pet != null) {
-            return petInfo(pet.getId(), model);
+            model.addAttribute("pet", pet);
+            return "pet-info";
         }
         model.addAttribute("chipId", chipId);
         return "pet-not-found";
+    }
+
+    @GetMapping("/pet")
+    public String returnToMainPage() {
+        return "main-page";
     }
 }

@@ -4,7 +4,12 @@
     <title>Chipped Pets Helper</title>
 </head>
 <body>
-    <h2>Список моих питомцев</h2>
+    <#if user??> <#-- FIXME: getRoles().contains("ROLE_PRIVILEGED_ACCESS")-->
+        <h2>Список всех питомцев в базе данных</h2>
+    <#else>
+        <h2>Список моих питомцев</h2>
+    </#if>
+    <hr>
     <#list pets as pet>
         <div>
             <b>Чип:</b> ${pet.chipId}<br>
@@ -12,10 +17,9 @@
             <b>Порода:</b> ${pet.breed}<br>
             <b>Пол:</b> ${pet.sex}<br>
             <b>Кличка:</b> ${pet.name}<br>
-            <b>Дата рождения:</b> ${pet.dateOfBirth}<br><br>
-            <hr>
-            <h3>Информация о хозяине</h3>
-            <b>Имя:</b> ${pet.user.name}<br>
+            <br>
+            <h3>Информация о хозяине питомца "${pet.name}"</h3>
+            <b>Имя:</b> ${pet.user.username}<br>
             <b>email:</b> ${pet.user.email}<br>
             <b>Телефон:</b> ${pet.user.phoneNumber}<br>
             <hr>
