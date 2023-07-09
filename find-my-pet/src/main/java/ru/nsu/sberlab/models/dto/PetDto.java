@@ -12,5 +12,5 @@ public class PetDto {
     private final String breed;
     private final String sex;
     private final String name;
-    private final UserDto user;
+    private final UserInfoDto user;
 }

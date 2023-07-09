@@ -1,30 +1,24 @@
 package ru.nsu.sberlab.models.mappers;
 
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.models.dto.UserDto;
+import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 
 import java.util.function.Function;
 
 @Service
-public class UserDtoMapper implements Function<User, UserDto> {
+public class UserDtoMapper implements Function<User, UserRegistrationDto> {
     @Override
-    public UserDto apply(User user) {
-        return new UserDto(
-                user.getId(),
+    public UserRegistrationDto apply(User user) {
+        return new UserRegistrationDto(
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getUsername(),
-                user.getRoles()
+                user.getPassword()
         );
     }
 
-    public User mapDtoToUser(UserDto userDto, User user) {
-        user.setId(userDto.getId());
-        user.setEmail(userDto.getEmail());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setUsername(userDto.getUsername());
-        user.setRoles(userDto.getRoles());
-        return user;
+    public User mapDtoToUser(UserRegistrationDto userDto) {
+        return new User(userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAlias(), userDto.getPassword());
     }
 }

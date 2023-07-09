@@ -1,7 +1,7 @@
 package ru.nsu.sberlab.models.entities;
 
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.models.enums.Role;
@@ -10,10 +10,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String phoneNumber;
 
     @Column(name = "username")
-    private String username;
+    private String alias;
 
     @Column(name = "active")
     private boolean active;
@@ -43,7 +43,15 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Pet> pets = new ArrayList<>();
 
+    @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
+
+    public User(String email, String phoneNumber, String username, String password) {
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.alias = username;
+        this.password = password;
+    }
 
     @PrePersist
     private void init() {

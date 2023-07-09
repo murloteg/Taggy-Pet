@@ -1,15 +1,15 @@
 package ru.nsu.sberlab.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.nsu.sberlab.models.dto.UserDto;
+import ru.nsu.sberlab.exceptions.FailedUserCreationException;
+import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.services.UserService;
-
-import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,16 +27,16 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String createUser(User user) {
+    public String createUser(UserRegistrationDto user) {
         if (!userService.createUser(user)) {
-            return "failed-registration";
+            throw new FailedUserCreationException();
         }
         return "redirect:/login";
     }
 
     @GetMapping("/personal-cabinet")
-    public String personalCabinet(Principal principal, Model model) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+    public String personalCabinet(@AuthenticationPrincipal User principal, Model model) {
+        model.addAttribute("user", principal);
         return "personal-cabinet";
     }
 
@@ -46,10 +46,9 @@ public class UserController {
     }
 
     @PostMapping("/user/delete")
-    public String deleteAccount(Principal principal, Model model) {
-        UserDto userDto = userService.getUserByPrincipal(principal);
-        model.addAttribute("user", userDto);
-        userService.deleteUser(userDto.getId());
+    public String deleteAccount(@AuthenticationPrincipal User principal, Model model) {
+        model.addAttribute("user", principal);
+        userService.deleteUser(principal.getId());
         return "user-successful-removal";
     }
 

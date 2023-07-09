@@ -1,10 +1,15 @@
 package ru.nsu.sberlab.controllers;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 
-@Controller
-@RequiredArgsConstructor
+@ControllerAdvice
 public class ErrorController {
-    // TODO: add error handler.
+    @ExceptionHandler(value = {FailedUserCreationException.class})
+    @GetMapping
+    public String handleFailedCreationException() {
+        return "failed-registration";
+    }
 }

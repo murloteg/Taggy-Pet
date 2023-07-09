@@ -9,7 +9,12 @@
         Чип: <input type="text" name="chipId"/> <br><br>
         Вид животного: <input type="text" name="type"/> <br><br>
         Порода: <input type="text" name="breed"/> <br><br>
-        Пол: <input type="text" name="sex"/> <br><br>
+        Пол: <input required list="options" id=sex name="sex">
+        <datalist id="options" type="text">
+            <option selected value="Самец">Самец</option>
+            <option value="Самка">Самка</option>
+        </datalist>
+        <br><br>
         Кличка: <input type="text" name="name"/> <br><br>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить питомца"/> <br><br>
