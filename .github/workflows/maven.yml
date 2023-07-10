@@ -16,7 +16,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu 22.04.2
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Run command on remote server
