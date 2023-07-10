@@ -16,7 +16,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: 5.15.0-76-generic
+    runs-on: ubuntu 22.04.2
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Run command on remote server
@@ -28,5 +28,4 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
             cd ${{ secrets.SSH_PROJECT_FOLDER }};
-            git checkout main;
             git pull;
