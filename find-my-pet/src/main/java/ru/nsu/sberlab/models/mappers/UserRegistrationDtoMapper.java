@@ -7,7 +7,7 @@ import ru.nsu.sberlab.models.entities.User;
 import java.util.function.Function;
 
 @Service
-public class UserDtoMapper implements Function<User, UserRegistrationDto> {
+public class UserRegistrationDtoMapper implements Function<User, UserRegistrationDto> {
     @Override
     public UserRegistrationDto apply(User user) {
         return new UserRegistrationDto(

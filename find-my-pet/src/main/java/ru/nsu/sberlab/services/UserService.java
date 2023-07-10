@@ -11,7 +11,7 @@ import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
-import ru.nsu.sberlab.models.mappers.UserDtoMapper;
+import ru.nsu.sberlab.models.mappers.UserRegistrationDtoMapper;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.util.Optional;
@@ -21,11 +21,11 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserDtoMapper userDtoMapper;
+    private final UserRegistrationDtoMapper userRegistrationDtoMapper;
 
     @Transactional
     public void createUser (UserRegistrationDto userDto) {
-        User user = userDtoMapper.mapRegistrationDtoToUser(userDto);
+        User user = userRegistrationDtoMapper.mapRegistrationDtoToUser(userDto);
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
             throw new FailedUserCreationException();
