@@ -26,6 +26,6 @@ jobs:
           port: ${{secrets.SSH_PORT}}
           user: ${{secrets.SSH_USER}}
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          command: |
-            cd ${{ secrets.SSH_PROJECT_FOLDER }};
+          script: |
+            cd ${{secrets.SSH_PROJECT_FOLDER}};
             git pull;
