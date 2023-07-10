@@ -23,9 +23,9 @@ jobs:
         uses: D3rHase/ssh-command-action@v0.2.2
         with:
           host: ${{secrets.SSH_HOST}}
-          port: ${{secrets.SSH_PORT}}
-          user: ${{secrets.SSH_USER}}
-          private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          script: |
-            cd ${{secrets.SSH_PROJECT_FOLDER}};
+          port: ${{variables.SSH_PORT}}
+          user: ${{variables.SSH_USER}}
+          private_key: ${{variables.SSH_PRIVATE_KEY}}
+          command: |
+            cd ${{variables.SSH_PROJECT_FOLDER}};
             git pull;
