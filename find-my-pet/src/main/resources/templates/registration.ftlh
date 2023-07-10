@@ -1,21 +1,18 @@
 <!doctype html>
+
 <head>
-    <title>FIND MY PET</title>
+    <title>Chipped Pets Helper</title>
 </head>
 <body>
-<h1>FIND MY PET</h1>
-<h4>Регистрация</h4>
-<form action="/registration" method="post">
-    Имя пользователя: <input type="text" name="name"> <br><br>
-    Email: <input type="email" name="email"> <br><br>
-    Номер телефона: <input type="text" name="phoneNumber"> <br><br>
-    Пароль: <input type="password" name="password"> <br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Зарегистрироваться">
-</form>
-
-<#if errorMessage??>
-    <h2 style="color: red">${errorMessage}</h2>
-</#if>
+    <h1>Chipped Pets Helper</h1>
+    <h4>Регистрация</h4>
+    <form action="/registration" method="post">
+        Псевдоним: <input type="text" name="alias"> <br><br>
+        Имя пользователя: <input type="text" name="firstName"> <br><br>
+        Email: <input type="email" name="email"> <br><br>
+        Номер телефона: <input type="text" name="phoneNumber"> <br><br>
+        Пароль: <input type="password" name="password"> <br><br>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Зарегистрироваться">
+    </form>
 </body>
-</html>

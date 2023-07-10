@@ -1,26 +1,29 @@
-package ru.nsu.sberlab.configurations;
+package ru.nsu.sberlab.configurations.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.nsu.sberlab.services.CustomUserDetailsService;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter { // FIXME: rewrite (with spring boot 3)
     private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/", "/pet/**", "/registration")
+                .authorizeRequests()
+                .antMatchers("/pet/add-new-pet", "/pet/create", "/pet/list")
+                .authenticated()
+                .antMatchers("/pet/privileged-list")
+                .hasAnyRole("ADMIN", "PRIVILEGED_ACCESS")
+                .antMatchers("/", "/pet/**", "/registration")
                 .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -33,11 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(8);
+                .passwordEncoder(new PasswordEncoderConfiguration().passwordEncoder());
     }
 }

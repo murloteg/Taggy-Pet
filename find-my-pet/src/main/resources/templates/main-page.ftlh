@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Chipped Pets Helper</h1>
-    <#if user.email??>
+    <#if user??>
         <h2><a href="/personal-cabinet">В личный кабинет</a></h2>
     <#else>
         <nav>
@@ -20,8 +20,8 @@
 
     <h4>Все питомцы в базе данных</h4>
     <form action="/pet/find" method="get">
-        Чип: <input type="text" name="chipId"/> <br><br>
-        <input type="submit" value="Найти питомца по чипу"/> <br><br>
+        Чип: <input type="text" name="chipId"> <br><br>
+        <input type="submit" value="Найти питомца по чипу"> <br><br>
     </form>
     <hr>
 </body>

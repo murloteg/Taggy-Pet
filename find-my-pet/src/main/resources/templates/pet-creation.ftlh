@@ -9,9 +9,13 @@
         Чип: <input type="text" name="chipId"/> <br><br>
         Вид животного: <input type="text" name="type"/> <br><br>
         Порода: <input type="text" name="breed"/> <br><br>
-        Пол: <input type="text" name="sex"/> <br><br>
+        Пол: <br>
+        <input type="radio" id="female" name="sex" value="FEMALE">
+        <label for="female">Самка</label><br>
+        <input type="radio" id="male" name="sex" value="MALE" checked="checked">
+        <label for="male">Самец</label><br>
+        <br>
         Кличка: <input type="text" name="name"/> <br><br>
-        Дата рождения: <input type="text" name="dateOfBirth"/> <br><br>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить питомца"/> <br><br>
     </form>

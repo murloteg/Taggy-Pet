@@ -1,7 +1,7 @@
-package ru.nsu.sberlab.models;
-
+package ru.nsu.sberlab.models.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.models.enums.Role;
@@ -10,10 +10,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,27 +26,36 @@ public class User implements UserDetails {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "userName")
-    private String name;
+    @Column(name = "username")
+    private String alias;
+
+    @Column(name = "firstName")
+    private String firstName;
 
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "password", length = 1000)
+    @Column(name = "password", length = 128)
     private String password;
-
-    @Column(name = "hasElevatedPrivileges")
-    private boolean hasElevatedPrivileges;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns =  @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Pet> pets = new ArrayList<>();
 
+    @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
+
+    public User(String email, String phoneNumber, String alias, String firstName, String password) {
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.alias = alias;
+        this.firstName = firstName;
+        this.password = password;
+    }
 
     @PrePersist
     private void init() {
