@@ -1,6 +1,5 @@
 package ru.nsu.sberlab.services;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.models.dto.PetDto;

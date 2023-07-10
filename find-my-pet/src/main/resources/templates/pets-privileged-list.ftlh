@@ -3,8 +3,8 @@
 <head>
     <title>Chipped Pets Helper</title>
 </head>
-<body>
-    <h2>Список моих питомцев</h2>
+    <body>
+    <h2>Список всех питомцев в базе данных</h2>
     <hr>
     <#list pets as pet>
         <div>

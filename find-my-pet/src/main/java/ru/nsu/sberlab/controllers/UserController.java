@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
+import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.services.UserService;
 
 @Controller
@@ -37,6 +38,7 @@ public class UserController {
             @AuthenticationPrincipal User principal
     ) {
         model.addAttribute("user", principal);
+        model.addAttribute("hasPrivilegedAccess", principal.getAuthorities().contains(Role.ROLE_PRIVILEGED_ACCESS));
         return "personal-cabinet";
     }
 
@@ -46,13 +48,9 @@ public class UserController {
     }
 
     @PostMapping("/user/delete") // TODO: use DeleteMapping after migration on Thymeleaf
-    public String deleteAccount(
-            Model model,
-            @AuthenticationPrincipal User principal
-    ) {
-        model.addAttribute("user", principal);
+    public String deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getId());
-        return "user-successful-removal";
+        return "redirect:/login?logout";
     }
 
     @GetMapping("/user")

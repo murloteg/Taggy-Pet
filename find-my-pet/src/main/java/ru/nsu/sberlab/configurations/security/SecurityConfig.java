@@ -18,6 +18,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // FIXME: rew
                 .authorizeRequests()
                 .antMatchers("/pet/add-new-pet", "/pet/create", "/pet/list")
                 .authenticated()
+                .antMatchers("/pet/privileged-list")
+                .hasAnyRole("ADMIN", "PRIVILEGED_ACCESS")
                 .antMatchers("/", "/pet/**", "/registration")
                 .permitAll()
                 .anyRequest()
