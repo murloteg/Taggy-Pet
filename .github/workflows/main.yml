@@ -1,0 +1,23 @@
+name: Deploy project to server
+
+on:
+  push:
+    branches: [ "test-cicd" ]
+  pull_request:
+    branches: [ "test-cicd" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/test-cicd'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run command on remote server
+        run: |
+            ssh ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}} -p ${{secrets.SSH_PORT}}
+            ${{secrets.SSH_PASSWORD}}
+            mkdir test-cicd-dir
+      
+        
+        
+        
