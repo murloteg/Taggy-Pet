@@ -1,11 +1,10 @@
-package ru.nsu.sberlab.configurations;
+package ru.nsu.sberlab.configurations.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.nsu.sberlab.configurations.security.PasswordEncoderConfiguration;
 import ru.nsu.sberlab.services.CustomUserDetailsService;
 
 @EnableWebSecurity
@@ -16,9 +15,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // FIXME: rew
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/", "/pet/**", "/registration")
+                .authorizeRequests()
+                .antMatchers("/pet/add-new-pet", "/pet/create", "/pet/list")
+                .authenticated()
+                .antMatchers("/", "/pet/**", "/registration")
                 .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

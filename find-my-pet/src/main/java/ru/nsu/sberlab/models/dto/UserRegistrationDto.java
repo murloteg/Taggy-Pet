@@ -9,5 +9,6 @@ public class UserRegistrationDto {
     private final String email;
     private final String phoneNumber;
     private final String alias;
+    private final String firstName;
     private final String password;
 }

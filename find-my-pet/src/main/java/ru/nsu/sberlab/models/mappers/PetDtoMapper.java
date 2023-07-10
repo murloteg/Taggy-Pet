@@ -6,7 +6,6 @@ import ru.nsu.sberlab.models.dto.PetDto;
 import ru.nsu.sberlab.models.dto.UserInfoDto;
 import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.models.entities.User;
-import ru.nsu.sberlab.models.enums.Sex;
 
 import java.util.function.Function;
 
@@ -21,13 +20,13 @@ public class PetDtoMapper implements Function<Pet, PetDto> {
                 pet.getChipId(),
                 pet.getType(),
                 pet.getBreed(),
-                pet.getSex().toString(),
+                pet.getSex(),
                 pet.getName(),
-                new UserInfoDto(user.getEmail(), user.getPhoneNumber(), user.getAlias())
+                new UserInfoDto(user.getEmail(), user.getPhoneNumber(), user.getFirstName())
         );
     }
 
     public Pet mapDtoToPet(PetDto petDto) {
-        return new Pet(petDto.getId(), petDto.getChipId(), petDto.getType(), petDto.getBreed(), Sex.convertStringToSex(petDto.getSex()), petDto.getName());
+        return new Pet(petDto.getId(), petDto.getChipId(), petDto.getType(), petDto.getBreed(), petDto.getSex(), petDto.getName());
     }
 }

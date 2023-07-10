@@ -29,6 +29,9 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String alias;
 
+    @Column(name = "firstName")
+    private String firstName;
+
     @Column(name = "active")
     private boolean active;
 
@@ -46,10 +49,11 @@ public class User implements UserDetails {
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
 
-    public User(String email, String phoneNumber, String username, String password) {
+    public User(String email, String phoneNumber, String alias, String firstName, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.alias = username;
+        this.alias = alias;
+        this.firstName = firstName;
         this.password = password;
     }
 

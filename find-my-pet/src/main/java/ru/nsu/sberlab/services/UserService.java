@@ -1,6 +1,5 @@
 package ru.nsu.sberlab.services;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
@@ -24,17 +24,16 @@ public class UserService implements UserDetailsService {
     private final UserDtoMapper userDtoMapper;
 
     @Transactional
-    public boolean createUser (UserRegistrationDto userDto) {
-        User user = userDtoMapper.mapDtoToUser(userDto);
+    public void createUser (UserRegistrationDto userDto) {
+        User user = userDtoMapper.mapRegistrationDtoToUser(userDto);
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
-            return false;
+            throw new FailedUserCreationException();
         }
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         userRepository.save(user);
-        return true;
     }
 
     public void deleteUser(Long id) {

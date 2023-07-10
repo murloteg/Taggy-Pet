@@ -19,7 +19,7 @@
             <b>Кличка:</b> ${pet.name}<br>
             <br>
             <h3>Информация о хозяине питомца "${pet.name}"</h3>
-            <b>Имя:</b> ${pet.user.alias}<br>
+            <b>Имя:</b> ${pet.user.firstName}<br>
             <b>email:</b> ${pet.user.email}<br>
             <b>Телефон:</b> ${pet.user.phoneNumber}<br>
             <hr>

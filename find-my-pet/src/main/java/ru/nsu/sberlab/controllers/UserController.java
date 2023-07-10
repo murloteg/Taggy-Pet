@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.services.UserService;
@@ -28,14 +27,15 @@ public class UserController {
 
     @PostMapping("/registration")
     public String createUser(UserRegistrationDto user) {
-        if (!userService.createUser(user)) {
-            throw new FailedUserCreationException();
-        }
+        userService.createUser(user);
         return "redirect:/login";
     }
 
     @GetMapping("/personal-cabinet")
-    public String personalCabinet(@AuthenticationPrincipal User principal, Model model) {
+    public String personalCabinet(
+            Model model,
+            @AuthenticationPrincipal User principal
+    ) {
         model.addAttribute("user", principal);
         return "personal-cabinet";
     }
@@ -45,8 +45,11 @@ public class UserController {
         return "user-delete-account";
     }
 
-    @PostMapping("/user/delete")
-    public String deleteAccount(@AuthenticationPrincipal User principal, Model model) {
+    @PostMapping("/user/delete") // TODO: use DeleteMapping after migration on Thymeleaf
+    public String deleteAccount(
+            Model model,
+            @AuthenticationPrincipal User principal
+    ) {
         model.addAttribute("user", principal);
         userService.deleteUser(principal.getId());
         return "user-successful-removal";

@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.services;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.models.dto.PetDto;
 import ru.nsu.sberlab.models.entities.Pet;
@@ -18,16 +19,16 @@ public class PetService {
     private final PetRepository petRepository;
     private final PetDtoMapper petDtoMapper;
 
-    public List<PetDto> petsList(PageRequest pageRequest) {
-        return petRepository.findAll(pageRequest)
+    public List<PetDto> petsList(Pageable pageable) {
+        return petRepository.findAll(pageable)
                 .getContent()
                 .stream()
                 .map(petDtoMapper)
                 .toList();
     }
 
-    public List<PetDto> petsListByUserId(User principal) {
-        return petRepository.findAllByUserId(principal.getId())
+    public List<PetDto> petsListByUserId(Long userId) {
+        return petRepository.findAllByUserId(userId)
                 .stream()
                 .map(petDtoMapper)
                 .toList();

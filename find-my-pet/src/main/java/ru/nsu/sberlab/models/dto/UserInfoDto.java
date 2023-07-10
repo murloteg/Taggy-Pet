@@ -8,5 +8,5 @@ import lombok.Data;
 public class UserInfoDto {
     private final String email;
     private final String phoneNumber;
-    private final String alias;
+    private final String firstName;
 }

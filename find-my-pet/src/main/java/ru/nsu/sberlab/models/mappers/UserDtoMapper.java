@@ -14,11 +14,12 @@ public class UserDtoMapper implements Function<User, UserRegistrationDto> {
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getUsername(),
+                user.getFirstName(),
                 user.getPassword()
         );
     }
 
-    public User mapDtoToUser(UserRegistrationDto userDto) {
-        return new User(userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAlias(), userDto.getPassword());
+    public User mapRegistrationDtoToUser(UserRegistrationDto userDto) {
+        return new User(userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAlias(), userDto.getFirstName(), userDto.getPassword());
     }
 }

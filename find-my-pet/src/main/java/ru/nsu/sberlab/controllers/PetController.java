@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.controllers;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,10 @@ public class PetController {
     private final PetService petService;
 
     @GetMapping("/")
-    public String mainPage(@AuthenticationPrincipal User principal, Model model) {
+    public String mainPage(
+            Model model,
+            @AuthenticationPrincipal User principal
+    ) {
         model.addAttribute("user", principal);
         return "main-page";
     }
@@ -30,26 +34,35 @@ public class PetController {
     }
 
     @PostMapping("/pet/create")
-    public String createPet(PetDto pet, @AuthenticationPrincipal User principal){
+    public String createPet(
+            PetDto pet,
+            @AuthenticationPrincipal User principal
+    ) {
         petService.createPet(principal, pet);
         return "redirect:/";
     }
 
     @GetMapping("/pet/list")
-    public String petsList(@AuthenticationPrincipal User principal, Model model,
-                           @RequestParam(required = false, defaultValue = "0") int page,
-                           @RequestParam(required = false, defaultValue = "10") int size) {
+    public String petsList(
+            Model model,
+            @AuthenticationPrincipal User principal,
+            @PageableDefault Pageable pageable
+    ) {
         if (principal.getRoles().contains(Role.ROLE_PRIVILEGED_ACCESS)) {
-            model.addAttribute("pets", petService.petsList(PageRequest.of(page, size)));
+            model.addAttribute("pets", petService.petsList(pageable));
         } else {
-            model.addAttribute("pets", petService.petsListByUserId(principal));
+            Long userId = principal.getId();
+            model.addAttribute("pets", petService.petsListByUserId(userId));
         }
         model.addAttribute("user", principal);
         return "pets-list";
     }
 
     @GetMapping("/pet/find")
-    public String findPet(@RequestParam(name = "chipId", required = false) String chipId, Model model) {
+    public String findPet(
+            Model model,
+            @RequestParam(name = "chipId", required = false) String chipId
+    ) {
         PetDto pet = petService.getPetByChipId(chipId);
         if (pet != null) {
             model.addAttribute("pet", pet);

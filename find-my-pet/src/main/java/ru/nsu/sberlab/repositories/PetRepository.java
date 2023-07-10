@@ -1,7 +1,7 @@
 package ru.nsu.sberlab.repositories;
 
-import ru.nsu.sberlab.models.entities.Pet;
 import org.springframework.data.jpa.repository.JpaRepository;
+import ru.nsu.sberlab.models.entities.Pet;
 
 import java.util.List;
 import java.util.Optional;
