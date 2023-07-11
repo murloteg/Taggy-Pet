@@ -11,21 +11,27 @@ import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
-import ru.nsu.sberlab.models.mappers.UserRegistrationDtoMapper;
 import ru.nsu.sberlab.repositories.UserRepository;
 
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRegistrationDtoMapper userRegistrationDtoMapper;
+    private final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.getDefault());
 
     @Transactional
     public void createUser (UserRegistrationDto userDto) {
-        User user = userRegistrationDtoMapper.mapRegistrationDtoToUser(userDto);
+        User user = new User(
+                userDto.getEmail(),
+                userDto.getPhoneNumber(),
+                userDto.getFirstName(),
+                userDto.getPassword()
+        );
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
             throw new FailedUserCreationException();
@@ -36,15 +42,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
-        User user = userRepository.getById(id);
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(bundle.getString("api.chipped-pets-helper.server.error.user-not-found")));
         user.setActive(false);
         user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId());
         userRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(bundle.getString("api.chipped-pets-helper.server.error.user-not-found")));
     }
 }

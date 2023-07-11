@@ -12,4 +12,9 @@ public class ErrorController {
     public String handleFailedCreationException() {
         return "failed-registration";
     }
+
+//    @ExceptionHandler(value = Exception.class) TODO: complete this later
+//    public String handleException() {
+//        return "error-page";
+//    }
 }
