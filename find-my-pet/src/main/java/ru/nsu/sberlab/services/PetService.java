@@ -53,7 +53,7 @@ public class PetService {
                 .orElse(null);
     }
 
-    public void deletePet(Long id) { // TODO: add this feature later, think about delete by chipId
-        petRepository.deleteById(id);
+    public void deletePet(String chipId) { // TODO: add this feature later
+        petRepository.deleteByChipId(chipId);
     }
 }

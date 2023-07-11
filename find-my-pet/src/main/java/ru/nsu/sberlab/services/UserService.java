@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,14 +16,13 @@ import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.getDefault());
+    private final PropertyResolverUtils propertyResolverUtils;
 
     @Transactional
     public void createUser (UserRegistrationDto userDto) {
@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(bundle.getString("api.chipped-pets-helper.server.error.user-not-found")));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(propertyResolverUtils.resolve("api.server.error.user-not-found", Locale.getDefault())));
         user.setActive(false);
         user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId());
         userRepository.save(user);
@@ -51,6 +51,6 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(bundle.getString("api.chipped-pets-helper.server.error.user-not-found")));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(propertyResolverUtils.resolve("api.server.error.user-not-found", Locale.getDefault())));
     }
 }
