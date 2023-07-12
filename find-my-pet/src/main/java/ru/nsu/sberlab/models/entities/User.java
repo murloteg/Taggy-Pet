@@ -1,12 +1,12 @@
 package ru.nsu.sberlab.models.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.models.enums.Role;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 

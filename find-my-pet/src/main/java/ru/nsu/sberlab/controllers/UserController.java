@@ -38,7 +38,9 @@ public class UserController {
             @AuthenticationPrincipal User principal
     ) {
         model.addAttribute("user", principal);
-        model.addAttribute("hasPrivilegedAccess", principal.getAuthorities().contains(Role.ROLE_PRIVILEGED_ACCESS));
+        model.addAttribute("hasPrivilegedAccess", principal
+                .getAuthorities()
+                .contains(Role.ROLE_PRIVILEGED_ACCESS));
         return "personal-cabinet";
     }
 

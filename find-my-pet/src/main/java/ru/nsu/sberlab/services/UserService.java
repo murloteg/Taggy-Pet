@@ -22,7 +22,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PropertyResolverUtils propertyResolverUtils;
+    private final PropertyResolverUtils propertyResolver;
 
     @Transactional
     public void createUser (UserRegistrationDto userDto) {
@@ -43,14 +43,20 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(propertyResolverUtils.resolve("api.server.error.user-not-found", Locale.getDefault())));
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
         user.setActive(false);
-        user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId());
+        user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId()); // FIXME: create separated table for deleted users
         userRepository.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(propertyResolverUtils.resolve("api.server.error.user-not-found", Locale.getDefault())));
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+    }
+    
+    private String message(String property) {
+        return propertyResolver.resolve(property, Locale.getDefault());
     }
 }
