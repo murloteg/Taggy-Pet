@@ -1,0 +1,119 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #462446;
+}
+
+.nav {
+    margin-top: 38px;
+    margin-bottom: 100px;
+}
+
+.row {
+    align-items: center;
+}
+
+.logo {
+    height: 54px;
+}
+
+.logo-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.reg {
+    font-size: 16px;
+    color: white;
+    position: relative;
+}
+
+.reg:hover {
+    color: white;
+}
+
+.log-in {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: white;
+    color: #462446;
+    border-radius: 35px;
+    padding: 1em 1.5em;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.log-in:hover {
+    text-decoration: none;
+    color: #462446;
+}
+
+.personal-cab {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    position: relative;
+}
+
+.personal-cab:hover {
+    color: #FF742B;
+}
+
+h1 {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.msg {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 50%;
+}
+
+.search {
+    align-items: center;
+}
+
+.search-text {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    float: left;
+    margin-right: 17px;
+}
+
+input[type="text"] {
+    font-size: 20px;
+    opacity: 80%;
+    padding: 15px;
+    border-radius: 31px;
+    border-style: none;
+    outline: none;
+}
+
+input[type="submit"] {
+    font-weight: bold;
+    border-radius: 64px;
+    padding: 15px 30px;
+    font-size: 20px;
+    border-style: none;
+    outline: none;
+    background-color: #FF742B;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[type="submit"]:hover {
+    background-color: #FF742B;
+    box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+.dog-picture {
+    height: 460px;
+}

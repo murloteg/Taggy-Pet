@@ -14,7 +14,9 @@ public class SecurityConfiguration {
             "/registration",
             "/pet/find",
             "/pet",
-            "/user"
+            "/user",
+            "/img/**",
+            "/css/**"
     };
     private static final String LOGIN_URL = "/login";
     private static final String DEFAULT_SUCCESS_URL = "/";

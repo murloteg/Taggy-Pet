@@ -68,7 +68,7 @@ public class PetController {
             @RequestParam(name = "chipId", required = false) String chipId
     ) {
         model.addAttribute("pet", petService.getPetByChipId(chipId));
-        return "pet-info";
+        return "pet-info-depr";
     }
 
     @GetMapping("/pet")
