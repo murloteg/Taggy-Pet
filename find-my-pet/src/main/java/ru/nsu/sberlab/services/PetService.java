@@ -2,10 +2,11 @@ package ru.nsu.sberlab.services;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nsu.sberlab.models.dto.PetDto;
+import ru.nsu.sberlab.models.dto.PetCreationDto;
+import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.models.entities.User;
-import ru.nsu.sberlab.models.mappers.PetDtoMapper;
+import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,37 +17,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PetService {
     private final PetRepository petRepository;
-    private final PetDtoMapper petDtoMapper;
+    private final PetInfoDtoMapper petInfoDtoMapper;
 
-    public List<PetDto> petsList(Pageable pageable) {
+    public List<PetInfoDto> petsList(Pageable pageable) {
         return petRepository.findAll(pageable)
                 .getContent()
                 .stream()
-                .map(petDtoMapper)
+                .map(petInfoDtoMapper)
                 .toList();
     }
 
-    public List<PetDto> petsListByUserId(Long userId) {
+    public List<PetInfoDto> petsListByUserId(Long userId) {
         return petRepository.findAllByUserId(userId)
                 .stream()
-                .map(petDtoMapper)
+                .map(petInfoDtoMapper)
                 .toList();
     }
 
     @Transactional
-    public void createPet(User principal, PetDto petDto) {
-        Pet pet = petDtoMapper.mapDtoToPet(petDto);
+    public void createPet(User principal, PetCreationDto petCreationDto) {
+        Pet pet = new Pet(
+                petCreationDto.getChipId(),
+                petCreationDto.getType(),
+                petCreationDto.getBreed(),
+                petCreationDto.getSex(),
+                petCreationDto.getName()
+        );
         pet.setUser(principal);
         petRepository.save(pet);
     }
 
-    public PetDto getPetByChipId(String chipId) {
+    public PetInfoDto getPetByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
-                .map(petDtoMapper)
+                .map(petInfoDtoMapper)
                 .orElse(null);
     }
 
-    public void deletePet(Long id) { // TODO: add this feature later
-        petRepository.deleteById(id);
+    public void deletePet(String chipId) { // TODO: add this feature later
+        petRepository.deleteByChipId(chipId);
     }
 }

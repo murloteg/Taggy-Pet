@@ -5,7 +5,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.nsu.sberlab.models.dto.PetDto;
+import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class PetController {
 
     @PostMapping("/pet/create")
     public String createPet(
-            PetDto pet,
+            PetCreationDto pet,
             @AuthenticationPrincipal User principal
     ) {
         petService.createPet(principal, pet);

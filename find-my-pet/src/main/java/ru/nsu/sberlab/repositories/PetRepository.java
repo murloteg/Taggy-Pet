@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
     Optional<Pet> findByChipId(String chipId);
+    void deleteByChipId(String chipId);
     List<Pet> findAllByUserId(Long id);
 }

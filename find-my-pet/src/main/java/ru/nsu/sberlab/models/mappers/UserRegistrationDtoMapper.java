@@ -13,13 +13,8 @@ public class UserRegistrationDtoMapper implements Function<User, UserRegistratio
         return new UserRegistrationDto(
                 user.getEmail(),
                 user.getPhoneNumber(),
-                user.getUsername(),
                 user.getFirstName(),
                 user.getPassword()
         );
-    }
-
-    public User mapRegistrationDtoToUser(UserRegistrationDto userDto) {
-        return new User(userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAlias(), userDto.getFirstName(), userDto.getPassword());
     }
 }
