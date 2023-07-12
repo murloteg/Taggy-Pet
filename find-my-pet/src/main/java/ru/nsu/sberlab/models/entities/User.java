@@ -1,12 +1,12 @@
 package ru.nsu.sberlab.models.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.models.enums.Role;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,9 +26,6 @@ public class User implements UserDetails {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "username")
-    private String alias;
-
     @Column(name = "firstName")
     private String firstName;
 
@@ -39,7 +36,7 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns =  @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
@@ -49,10 +46,9 @@ public class User implements UserDetails {
     @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
 
-    public User(String email, String phoneNumber, String alias, String firstName, String password) {
+    public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.alias = alias;
         this.firstName = firstName;
         this.password = password;
     }

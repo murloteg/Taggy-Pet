@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,9 +12,9 @@ import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
-import ru.nsu.sberlab.models.mappers.UserRegistrationDtoMapper;
 import ru.nsu.sberlab.repositories.UserRepository;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -21,11 +22,16 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRegistrationDtoMapper userRegistrationDtoMapper;
+    private final PropertyResolverUtils propertyResolver;
 
     @Transactional
     public void createUser (UserRegistrationDto userDto) {
-        User user = userRegistrationDtoMapper.mapRegistrationDtoToUser(userDto);
+        User user = new User(
+                userDto.getEmail(),
+                userDto.getPhoneNumber(),
+                userDto.getFirstName(),
+                userDto.getPassword()
+        );
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
             throw new FailedUserCreationException();
@@ -36,15 +42,23 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
-        User user = userRepository.getById(id);
+    public void deleteUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
         user.setActive(false);
-        user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId());
+        user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId()); // FIXME: create separated table for deleted users
         userRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+    }
+    
+    private String message(String property) {
+        return propertyResolver.resolve(property, Locale.getDefault());
     }
 }

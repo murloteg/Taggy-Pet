@@ -7,7 +7,6 @@
     <h1>Chipped Pets Helper</h1>
     <h4>Регистрация</h4>
     <form action="/registration" method="post">
-        Псевдоним: <input type="text" name="alias"> <br><br>
         Имя пользователя: <input type="text" name="firstName"> <br><br>
         Email: <input type="email" name="email"> <br><br>
         Номер телефона: <input type="text" name="phoneNumber"> <br><br>

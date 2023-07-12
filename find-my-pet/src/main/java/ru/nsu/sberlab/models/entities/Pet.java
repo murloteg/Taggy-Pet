@@ -1,10 +1,9 @@
 package ru.nsu.sberlab.models.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.nsu.sberlab.models.enums.Sex;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "pets")
@@ -35,8 +34,7 @@ public class Pet {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Pet(Long id, String chipId, String type, String breed, Sex sex, String name) {
-        this.id = id;
+    public Pet(String chipId, String type, String breed, Sex sex, String name) {
         this.chipId = chipId;
         this.type = type;
         this.breed = breed;

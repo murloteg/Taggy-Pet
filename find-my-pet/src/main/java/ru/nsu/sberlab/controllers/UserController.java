@@ -38,7 +38,9 @@ public class UserController {
             @AuthenticationPrincipal User principal
     ) {
         model.addAttribute("user", principal);
-        model.addAttribute("hasPrivilegedAccess", principal.getAuthorities().contains(Role.ROLE_PRIVILEGED_ACCESS));
+        model.addAttribute("hasPrivilegedAccess", principal
+                .getAuthorities()
+                .contains(Role.ROLE_PRIVILEGED_ACCESS));
         return "personal-cabinet";
     }
 
@@ -49,7 +51,7 @@ public class UserController {
 
     @PostMapping("/user/delete") // TODO: use DeleteMapping after migration on Thymeleaf
     public String deleteAccount(@AuthenticationPrincipal User principal) {
-        userService.deleteUser(principal.getId());
+        userService.deleteUser(principal.getEmail());
         return "redirect:/login?logout";
     }
 
