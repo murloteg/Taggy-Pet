@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PetController {
     private final PetService petService;
 
-    @GetMapping()
+    @GetMapping("/")
     public String mainPage(
             Model model,
             @AuthenticationPrincipal User principal
