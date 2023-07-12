@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+
+<head>
+    <title>Chipped Pets Helper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main-page.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav">
+            <div class="container">
+                    <div th:if="${user != null}">
+                        <div class="row" id="navbar">
+                            <div class="col-xl-4">
+                                <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
+                            </div>
+                            <div class="offset-xl-6 col-xl-2">
+                                <a href="/personal-cabinet" class="personal-cab">В личный кабинет</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:unless="${user != null}">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
+                            </div>
+                            <div class="offset-xl-4 col-xl-2">
+                                <a href="/registration" class="reg">Зарегистрироваться</a>
+                            </div>
+                            <div class="col-xl-2">
+                                <a href="/login" class="log-in">Войти</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="greeting">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="msg">
+                            <h1>Поможем</h1>
+                            <h1>потерянному</h1>
+                            <h1>питомцу</h1>
+                            <h1>вернуться</h1>
+                            <h1>домой</h1>
+                        </div>
+                        <div class="search-label">
+                            <h2 class="search-text">Нашли питомца с чипом?</h2>
+                            <div class="search">
+                                <form th:method="get" th:action="@{/pet/find}">
+                                    <div class="search-input">
+                                        <input type="text" th:name="chipId" placeholder="Введите номер чипа" class=""> <br><br>
+                                    </div>
+                                    <div class="search-btn">
+                                        <input type="submit" value="Найти"> <br><br>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="img-dog">
+                            <img th:src="@{/img/dog-picture.png}" alt="Dog picture" class="dog-picture">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

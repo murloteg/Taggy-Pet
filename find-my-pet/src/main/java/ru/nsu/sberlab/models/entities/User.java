@@ -26,9 +26,6 @@ public class User implements UserDetails {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "username")
-    private String alias;
-
     @Column(name = "firstName")
     private String firstName;
 
@@ -52,7 +49,6 @@ public class User implements UserDetails {
     public User(String email, String phoneNumber, String alias, String firstName, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.alias = alias;
         this.firstName = firstName;
         this.password = password;
     }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Здесь вы можете добавить нового питомца. Для этого заполните форму:</h2>
+    <form th:method="post" th:action="@{/pet/create}" >
+        Чип: <input type="text" th:name="chipId"/> <br><br>
+        Вид животного: <input type="text" th:name="type"/> <br><br>
+        Порода: <input type="text" th:name="breed"/> <br><br>
+        <label>Пол</label>
+        <input type="radio" id="female" th:name="sex" value="FEMALE">Самка
+        <input type="radio" id="male" th:name="sex" value="MALE" checked="checked">Самец
+        <br><br>
+        Кличка: <input type="text" name="name"/> <br><br>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Добавить питомца"/> <br><br>
+    </form>
+
+</body>
+</html>
