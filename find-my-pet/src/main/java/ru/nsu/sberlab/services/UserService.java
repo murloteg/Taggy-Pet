@@ -44,7 +44,8 @@ public class UserService implements UserDetailsService {
 
     public void deleteUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
         user.setActive(false);
         user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId()); // FIXME: create separated table for deleted users
         userRepository.save(user);
@@ -53,7 +54,8 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
     }
     
     private String message(String property) {
