@@ -50,14 +50,14 @@ public class UserService implements UserDetailsService {
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
         DeletedUser deletedUser = new DeletedUser(
-                user.getId(),
+                user.getUserId(),
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getFirstName(),
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
-        userRepository.deleteById(user.getId());
+        userRepository.deleteById(user.getUserId());
     }
 
     @Override

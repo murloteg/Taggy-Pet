@@ -46,8 +46,7 @@ public class PetController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("pets", petService.petsListByUserId(principal.getId()));
-        model.addAttribute("user", principal);
+        model.addAttribute("pets", petService.petsListByUserId(principal.getUserId()));
         return "pets-list";
     }
 
@@ -58,7 +57,6 @@ public class PetController {
             @PageableDefault Pageable pageable
     ) {
         model.addAttribute("pets", petService.petsList(pageable));
-        model.addAttribute("user", principal);
         return "pets-privileged-list";
     }
 

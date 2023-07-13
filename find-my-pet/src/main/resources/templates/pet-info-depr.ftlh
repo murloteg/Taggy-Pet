@@ -14,9 +14,11 @@
         <b>Кличка:</b> ${pet.name}<br>
         <hr>
         <h3>Информация о хозяине</h3>
-        <b>Имя:</b> ${pet.user.firstName}<br>
-        <b>email:</b> ${pet.user.email}<br>
-        <b>Телефон:</b> ${pet.user.phoneNumber}<br>
+        <#list pet.users as user>
+            <b>Имя:</b> ${user.getFirstName()}<br>
+            <b>email:</b> ${user.getEmail()}<br>
+            <b>Телефон:</b> ${user.getPhoneNumber()}<br>
+        </#list>
     <#else>
         <h4>К сожалению, в нашей базе нет питомца с указанным чипом</h4>
     </#if>

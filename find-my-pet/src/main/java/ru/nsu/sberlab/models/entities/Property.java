@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,5 +22,5 @@ public class Property {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id")
-    private List<Feature> features;
+    private List<Feature> features = new ArrayList<>();
 }

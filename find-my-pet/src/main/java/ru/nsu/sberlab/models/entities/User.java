@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.models.enums.Role;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -20,7 +18,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private Long userId;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -37,19 +35,19 @@ public class User implements UserDetails {
     @Column(name = "password", length = 128)
     private String password;
 
+    @Column(name = "date_of_creation")
+    private LocalDateTime dateOfCreated;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")}
     )
     @Enumerated(value = EnumType.STRING)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Pet> pets;
-
-    @Column(name = "date_of_creation")
-    private LocalDateTime dateOfCreated;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+    private List<Pet> pets = new ArrayList<>();
 
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;

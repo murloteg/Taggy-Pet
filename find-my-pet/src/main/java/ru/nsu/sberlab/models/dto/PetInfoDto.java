@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.nsu.sberlab.models.enums.Sex;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class PetInfoDto {
@@ -12,5 +14,5 @@ public class PetInfoDto {
     private final String breed;
     private final Sex sex;
     private final String name;
-    private final UserInfoDto user;
+    private final List<UserInfoDto> users;
 }

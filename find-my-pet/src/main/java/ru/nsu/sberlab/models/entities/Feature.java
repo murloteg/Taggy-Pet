@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class Feature {
             joinColumns = {@JoinColumn(name = "pet_id")},
             inverseJoinColumns = {@JoinColumn(name = "feature_id")}
     )
-    private List<Pet> pets;
+    private List<Pet> pets = new ArrayList<>();
 
     @Column(name = "date")
     private LocalDateTime dateTime;
