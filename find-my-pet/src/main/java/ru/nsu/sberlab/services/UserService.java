@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
+import ru.nsu.sberlab.models.entities.DeletedUser;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
+import ru.nsu.sberlab.repositories.DeletedUserRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.util.Locale;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final DeletedUserRepository deletedUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final PropertyResolverUtils propertyResolver;
 
@@ -46,13 +49,20 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
-        user.setActive(false);
-        user.setEmail(user.getEmail() + " DELETED WITH ID: " + user.getId()); // FIXME: create separated table for deleted users
-        userRepository.save(user);
+        DeletedUser deletedUser = new DeletedUser(
+                user.getId(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getFirstName(),
+                user.getDateOfCreated()
+        );
+        deletedUserRepository.save(deletedUser);
+        user.setActive(false); // FIXME ?
+        userRepository.deleteById(user.getId());
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );

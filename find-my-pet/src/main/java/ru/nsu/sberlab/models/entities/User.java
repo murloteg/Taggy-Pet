@@ -17,16 +17,16 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "user_id")
+    private Integer id;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "active")
@@ -43,7 +43,7 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Pet> pets = new ArrayList<>();
 
-    @Column(name = "date_of_created")
+    @Column(name = "date_of_creation")
     private LocalDateTime dateOfCreated;
 
     public User(String email, String phoneNumber, String firstName, String password) {
