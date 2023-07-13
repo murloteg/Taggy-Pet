@@ -18,17 +18,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    steps:
-        - name: connect and pull
-          run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{secrets.SSH_PORT}} "cd ${{ secrets.SSH_PROJECT_FOLDER }} && git pull && exit"
-        
-#       - name: Run command on remote server
-#         uses: D3rHase/ssh-command-action@v0.2.2
-#         with:
-#           host: ${{secrets.SSH_HOST}}
-#           port: ${{secrets.SSH_PORT}}
-#           user: ${{secrets.SSH_USER}}
-#           private_key: ${{secrets.SSH_PRIVATE_KEY}}
-#           command: |
-#             cd ${{secrets.SSH_PROJECT_FOLDER}};
-#             git pull;
+    steps:  
+      - name: Connect and Run command on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          port: ${{secrets.SSH_PORT}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd ${{secrets.SSH_PROJECT_FOLDER}};
+            git pull;
