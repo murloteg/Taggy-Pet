@@ -27,7 +27,7 @@ public class PetService {
                 .toList();
     }
 
-    public List<PetInfoDto> petsListByUserId(Integer userId) {
+    public List<PetInfoDto> petsListByUserId(Long userId) {
         return petRepository.findAllByUserId(userId)
                 .stream()
                 .map(petInfoDtoMapper)

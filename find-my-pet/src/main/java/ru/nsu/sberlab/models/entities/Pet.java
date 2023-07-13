@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.nsu.sberlab.models.enums.Sex;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pet_id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "chip_id")
     private String chipId;
@@ -32,11 +33,8 @@ public class Pet {
     @Column(name = "pet_name")
     private String name;
 
-    @Column(name = "has_features")
-    private boolean hasFeatures;
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pets")
-    private List<Feature> features;
+    private List<Feature> features = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

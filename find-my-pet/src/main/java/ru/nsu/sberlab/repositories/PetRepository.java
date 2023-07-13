@@ -6,8 +6,8 @@ import ru.nsu.sberlab.models.entities.Pet;
 import java.util.List;
 import java.util.Optional;
 
-public interface PetRepository extends JpaRepository<Pet, Integer> {
+public interface PetRepository extends JpaRepository<Pet, Long> {
     Optional<Pet> findByChipId(String chipId);
     void deleteByChipId(String chipId);
-    List<Pet> findAllByUserId(Integer id);
+    List<Pet> findAllByUserId(Long id);
 }

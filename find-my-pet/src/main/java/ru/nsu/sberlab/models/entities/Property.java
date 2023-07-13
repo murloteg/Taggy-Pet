@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,11 +15,12 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "property_id")
-    private Integer propertyId;
+    private Long propertyId;
 
     @Column(name = "property_value")
     private String propertyValue;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "properties")
-    private List<Feature> features;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "property_id")
+    private List<Feature> features = new ArrayList<>();
 }

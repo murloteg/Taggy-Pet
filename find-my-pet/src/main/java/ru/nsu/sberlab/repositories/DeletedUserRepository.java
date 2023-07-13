@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.nsu.sberlab.models.entities.DeletedUser;
 
 @Repository
-public interface DeletedUserRepository extends JpaRepository<DeletedUser, Integer> {
+public interface DeletedUserRepository extends JpaRepository<DeletedUser, Long> {
 }

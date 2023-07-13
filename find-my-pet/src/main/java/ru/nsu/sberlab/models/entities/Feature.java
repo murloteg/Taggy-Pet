@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feature_id")
-    private Integer featureId;
+    private Long featureId;
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(
@@ -23,7 +24,7 @@ public class Feature {
             joinColumns = {@JoinColumn(name = "pet_id")},
             inverseJoinColumns = {@JoinColumn(name = "feature_id")}
     )
-    private List<Pet> pets;
+    private List<Pet> pets = new ArrayList<>();
 
     @Column(name = "date")
     private LocalDateTime dateTime;
@@ -31,11 +32,7 @@ public class Feature {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "features_properties",
-            joinColumns = {@JoinColumn(name = "property_id")},
-            inverseJoinColumns = {@JoinColumn(name = "feature_id")}
-    )
-    private List<Property> properties;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

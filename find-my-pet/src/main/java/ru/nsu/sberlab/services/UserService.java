@@ -57,7 +57,6 @@ public class UserService implements UserDetailsService {
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
-        user.setActive(false); // FIXME ?
         userRepository.deleteById(user.getId());
     }
 

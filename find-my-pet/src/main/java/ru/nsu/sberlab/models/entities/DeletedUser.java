@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class DeletedUser {
     @Id
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -30,7 +30,7 @@ public class DeletedUser {
     @Column(name = "date_of_deletion")
     private LocalDateTime dateOfDeletion;
 
-    public DeletedUser(Integer userId, String email, String phoneNumber, String firstName, LocalDateTime dateOfCreation) {
+    public DeletedUser(Long userId, String email, String phoneNumber, String firstName, LocalDateTime dateOfCreation) {
         this.userId = userId;
         this.email = email;
         this.phoneNumber = phoneNumber;
