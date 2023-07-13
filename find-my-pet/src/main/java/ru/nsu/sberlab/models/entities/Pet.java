@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.nsu.sberlab.models.enums.Sex;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +33,7 @@ public class Pet {
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pets")
-    private List<Feature> features = new ArrayList<>();
+    private List<Feature> features;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
