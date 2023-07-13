@@ -46,6 +46,8 @@ body {
 .log-in:hover {
     text-decoration: none;
     color: #462446;
+    background-color: white;
+    box-shadow: 1px 1px 30px 6px rgba(255, 255, 255, 100);
 }
 
 .personal-cab {
