@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Авторизация</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="authorization_page">
+        <div class="nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4">
+                        <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="offer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 mx-auto authorization_window">
+                        <div class="title elem_in_window">
+                            <h1>Авторизация</h1>
+                        </div>
+                        <div class="form">
+                            <form th:method="post" th:action="@{/login}">
+                                <input type="email" th:name="username" placeholder="Email" class="elem_in_window input"><br><br>
+                                <input type="password" th:name="password" placeholder="Пароль" class="elem_in_window input"><br><br>
+                                <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                                <input type="submit" value="Войти" class="elem_in_window">
+                            </form>
+                        </div>
+                        <div class="elem_in_window">
+                            <a href="/registration" class="reg-btn">Регистрация</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
