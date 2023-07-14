@@ -2,17 +2,12 @@ package ru.nsu.sberlab.services;
 
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
-import ru.nsu.sberlab.models.entities.Pet;
-import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +16,6 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class PetService {
     private final PetRepository petRepository;
-    private final UserRepository userRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PropertyResolverUtils propertyResolverUtils;
 
@@ -33,34 +27,13 @@ public class PetService {
                 .toList();
     }
 
-    public List<PetInfoDto> petsListByUserId(Long userId) {
-        return userRepository.findUserByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")))
-                .getPets()
-                .stream()
-                .map(petInfoDtoMapper)
-                .toList();
-    }
-
-    @Transactional
-    public void createPet(User principal, PetCreationDto petCreationDto) {
-        Pet pet = new Pet(
-                petCreationDto.getChipId(),
-                petCreationDto.getType(),
-                petCreationDto.getBreed(),
-                petCreationDto.getSex(),
-                petCreationDto.getName()
-        );
-        pet.setUsers(List.of(principal));
-        petRepository.save(pet);
-    }
-
     public PetInfoDto getPetByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(petInfoDtoMapper)
                 .orElse(null);
     }
 
+    @Transactional
     public void deletePet(String chipId) { // TODO: add this feature later
         petRepository.deleteByChipId(chipId);
     }

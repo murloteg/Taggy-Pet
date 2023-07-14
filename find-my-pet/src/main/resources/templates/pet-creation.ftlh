@@ -5,7 +5,7 @@
 
 <body>
     <h2>Здесь вы можете добавить нового питомца. Для этого заполните форму:</h2>
-    <form action="/pet/create" method="post">
+    <form action="/user/create-pet" method="post">
         Чип: <input type="text" name="chipId"/> <br><br>
         Вид животного: <input type="text" name="type"/> <br><br>
         Порода: <input type="text" name="breed"/> <br><br>

@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.services.UserService;
 
+// @RequestMapping("/user/") TODO: add this annotation in next pull request
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -40,8 +42,27 @@ public class UserController {
         model.addAttribute("user", principal);
         model.addAttribute("hasPrivilegedAccess", principal
                 .getAuthorities()
-                .contains(Role.ROLE_PRIVILEGED_ACCESS));
+                .contains(Role.ROLE_PRIVILEGED_ACCESS)
+        );
         return "personal-cabinet";
+    }
+
+    @PostMapping("/user/create-pet")
+    public String createPet(
+            PetCreationDto pet,
+            @AuthenticationPrincipal User principal
+    ) {
+        userService.createPet(principal, pet);
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/pets-list")
+    public String petsList(
+            Model model,
+            @AuthenticationPrincipal User principal
+    ) {
+        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
+        return "pets-list";
     }
 
     @GetMapping("/user-delete-account")

@@ -46,8 +46,13 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
-    private List<Pet> pets = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_pets",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "pet_id")}
+    )
+    private Set<Pet> pets = new HashSet<>();
 
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;

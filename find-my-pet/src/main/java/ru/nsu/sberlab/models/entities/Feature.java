@@ -18,21 +18,20 @@ public class Feature {
     @Column(name = "feature_id")
     private Long featureId;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "pets_features",
-            joinColumns = {@JoinColumn(name = "pet_id")},
-            inverseJoinColumns = {@JoinColumn(name = "feature_id")}
-    )
-    private List<Pet> pets = new ArrayList<>();
-
     @Column(name = "date")
     private LocalDateTime dateTime;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "features")
+    private List<Pet> pets = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "property_id")
+    private Property property;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

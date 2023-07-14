@@ -18,7 +18,7 @@ public class Pet {
     @Column(name = "pet_id")
     private Long petId;
 
-    @Column(name = "chip_id")
+    @Column(name = "chip_id", unique = true)
     private String chipId;
 
     @Column(name = "type")
@@ -33,15 +33,15 @@ public class Pet {
     @Column(name = "pet_name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pets")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "pets_features",
+            joinColumns = {@JoinColumn(name = "pet_id")},
+            inverseJoinColumns = {@JoinColumn(name = "feature_id")}
+    )
     private List<Feature> features = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "users_pets",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "pet_id")}
-    )
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets")
     private List<User> users = new ArrayList<>();
 
     public Pet(String chipId, String type, String breed, Sex sex, String name) {
