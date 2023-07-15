@@ -69,7 +69,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void createPet(User principal, PetCreationDto petCreationDto) {
-        principal.getPets().add(
+        User user = userRepository.findUserByUserId(principal.getUserId()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        user.getPets().add(
                 new Pet(
                         petCreationDto.getChipId(),
                         petCreationDto.getType(),
@@ -78,10 +81,14 @@ public class UserService implements UserDetailsService {
                         petCreationDto.getName()
                 )
         );
-        userRepository.save(principal);
+        userRepository.save(user);
     }
 
     public List<PetInfoDto> petsListByUserId(Long userId) {
+//        return userRepository.findAllPetsByUserId(userId) FIXME: converting error in this method
+//                .stream()
+//                .map(petInfoDtoMapper)
+//                .toList();
         return userRepository.findUserByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")))
                 .getPets()

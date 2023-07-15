@@ -52,7 +52,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "pet_id")}
     )
-    private Set<Pet> pets = new HashSet<>();
+    private List<Pet> pets = new ArrayList<>();
 
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;
