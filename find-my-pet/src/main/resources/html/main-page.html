@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
-
 <head>
     <title>Chipped Pets Helper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,10 +17,10 @@
                     <div th:if="${user != null}">
                         <div class="row" id="navbar">
                             <div class="col-xl-4">
-                                <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
+                                <a href="/"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo"></a>
                             </div>
                             <div class="offset-xl-6 col-xl-2">
-                                <a href="/personal-cabinet" class="personal-cab">В личный кабинет</a>
+                                <a href="/user/personal-cabinet" class="personal-cab">В личный кабинет</a>
                             </div>
                         </div>
                     </div>
@@ -31,10 +30,10 @@
                                 <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
                             </div>
                             <div class="offset-xl-4 col-xl-2">
-                                <a href="/registration" class="reg">Зарегистрироваться</a>
+                                <a href="/user/registration" class="reg">Зарегистрироваться</a>
                             </div>
                             <div class="col-xl-2">
-                                <a href="/login" class="log-in">Войти</a>
+                                <a href="/user/login" class="log-in">Войти</a>
                             </div>
                         </div>
                     </div>
@@ -71,7 +70,6 @@
                             <img th:src="@{/img/dog-picture.png}" alt="Dog picture" class="dog-picture">
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

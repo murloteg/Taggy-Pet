@@ -17,11 +17,6 @@ body {
     height: 54px;
 }
 
-.logo-text {
-    font-size: 16px;
-    font-weight: bold;
-}
-
 .reg {
     font-size: 16px;
     color: white;
@@ -46,6 +41,8 @@ body {
 .log-in:hover {
     text-decoration: none;
     color: #462446;
+    background-color: white;
+    box-shadow: 1px 1px 30px 6px rgba(255, 255, 255, 100);
 }
 
 .personal-cab {

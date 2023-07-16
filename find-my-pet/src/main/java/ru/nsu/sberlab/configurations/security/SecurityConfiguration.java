@@ -11,14 +11,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     private static final String[] ENDPOINTS_WHITELIST = {
             "/",
-            "/registration",
+            "/user/registration",
             "/pet/find",
-            "/pet",
-            "/user",
             "/img/**",
             "/css/**"
     };
-    private static final String LOGIN_URL = "/login";
+    private static final String LOGIN_PAGE = "/user/login";
+    private static final String LOGIN_PROCESSING_URL = "/login";
     private static final String DEFAULT_SUCCESS_URL = "/";
 
     @Bean
@@ -34,8 +33,8 @@ public class SecurityConfiguration {
                         .anyRequest()
                         .authenticated())
                 .formLogin(form -> form
-                        .loginPage(LOGIN_URL)
-                        .loginProcessingUrl(LOGIN_URL)
+                        .loginPage(LOGIN_PAGE)
+                        .loginProcessingUrl(LOGIN_PROCESSING_URL)
                         .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
                         .permitAll())
                 .logout(logout -> logout

@@ -4,38 +4,40 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.services.UserService;
 
-// @RequestMapping("/user/") TODO: add this annotation in next pull request
+@RequestMapping("/user/")
 @Controller
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("login")
+    public String loginPage() {
         return "login";
     }
 
-    @GetMapping("/registration")
-    public String registration() {
+    @GetMapping("registration")
+    public String registrationPage() {
         return "registration";
     }
 
-    @PostMapping("/registration")
+    @PostMapping("registration")
     public String createUser(UserRegistrationDto user) {
         userService.createUser(user);
         return "redirect:/login";
     }
 
-    @GetMapping("/personal-cabinet")
-    public String personalCabinet(
+    @GetMapping("personal-cabinet")
+    public String personalCabinetPage(
             Model model,
             @AuthenticationPrincipal User principal
     ) {
@@ -47,7 +49,7 @@ public class UserController {
         return "personal-cabinet";
     }
 
-    @PostMapping("/user/create-pet")
+    @PostMapping("create-pet")
     public String createPet(
             PetCreationDto pet,
             @AuthenticationPrincipal User principal
@@ -56,8 +58,8 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/user/pets-list")
-    public String petsList(
+    @GetMapping("pets-list")
+    public String petsListPage(
             Model model,
             @AuthenticationPrincipal User principal
     ) {
@@ -65,19 +67,14 @@ public class UserController {
         return "pets-list";
     }
 
-    @GetMapping("/user-delete-account")
+    @GetMapping("delete-account")
     public String accountDeletionPage() {
-        return "user-delete-account";
+        return "delete-account";
     }
 
-    @PostMapping("/user/delete") // TODO: use DeleteMapping after migration on Thymeleaf
+    @DeleteMapping("delete")
     public String deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getEmail());
-        return "redirect:/login?logout";
-    }
-
-    @GetMapping("/user")
-    public String returnToMainPage() {
         return "main-page";
     }
 }

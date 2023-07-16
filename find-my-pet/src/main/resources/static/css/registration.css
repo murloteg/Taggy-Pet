@@ -1,0 +1,79 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #462446;
+}
+
+.nav {
+    margin-top: 38px;
+    margin-bottom: 100px;
+}
+
+.row {
+    align-items: center;
+}
+
+.logo {
+    height: 54px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.registration_window {
+    border-radius: 43px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 35px;
+}
+
+.elem_in_window {
+    margin: auto;
+}
+
+.title {
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+
+.form {
+    display: flex;
+    justify-content: center;
+}
+
+.input {
+    padding: 10px 30px;
+    border-style: solid;
+    font-size: 15px;
+    font-weight: 600;
+    color: black;
+    border-width: 3px;
+    border-color: #FF742B;
+    border-radius: 20px;
+    outline: none;
+}
+
+input[type="submit"] {
+    display: block;
+    font-weight: bold;
+    border-radius: 64px;
+    padding: 10px 35px;
+    font-size: 17px;
+    border-style: none;
+    outline: none;
+    background-color: #FF742B;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[type="submit"]:hover {
+    background-color: #FF742B;
+    box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
