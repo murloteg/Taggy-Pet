@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.nsu.sberlab.models.enums.Sex;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "pets")
 @Data
@@ -12,10 +15,10 @@ import ru.nsu.sberlab.models.enums.Sex;
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "pet_id")
+    private Long petId;
 
-    @Column(name = "chip")
+    @Column(name = "chip_id", unique = true)
     private String chipId;
 
     @Column(name = "type")
@@ -30,9 +33,21 @@ public class Pet {
     @Column(name = "pet_name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "pets_features",
+            joinColumns = {@JoinColumn(name = "pet_id")},
+            inverseJoinColumns = {@JoinColumn(name = "feature_id")}
+    )
+    private List<Feature> features = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets")
+    private List<User> users = new ArrayList<>();
 
     public Pet(String chipId, String type, String breed, Sex sex, String name) {
         this.chipId = chipId;

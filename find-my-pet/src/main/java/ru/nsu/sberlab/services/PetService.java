@@ -2,10 +2,7 @@ package ru.nsu.sberlab.services;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
-import ru.nsu.sberlab.models.entities.Pet;
-import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,32 +24,13 @@ public class PetService {
                 .toList();
     }
 
-    public List<PetInfoDto> petsListByUserId(Long userId) {
-        return petRepository.findAllByUserId(userId)
-                .stream()
-                .map(petInfoDtoMapper)
-                .toList();
-    }
-
-    @Transactional
-    public void createPet(User principal, PetCreationDto petCreationDto) {
-        Pet pet = new Pet(
-                petCreationDto.getChipId(),
-                petCreationDto.getType(),
-                petCreationDto.getBreed(),
-                petCreationDto.getSex(),
-                petCreationDto.getName()
-        );
-        pet.setUser(principal);
-        petRepository.save(pet);
-    }
-
     public PetInfoDto getPetByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(petInfoDtoMapper)
                 .orElse(null);
     }
 
+    @Transactional
     public void deletePet(String chipId) { // TODO: add this feature later
         petRepository.deleteByChipId(chipId);
     }

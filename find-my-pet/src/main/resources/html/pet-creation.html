@@ -8,11 +8,11 @@
 <body>
     <h5>Здесь вы можете добавить нового питомца.</h5>
     <h5>Для этого заполните форму:</h5>
-    <form th:method="post" th:action="@{/pet/create}" >
+    <form th:method="post" th:action="@{/user/create-pet}" >
         Чип: <input type="text" th:name="chipId"/> <br><br>
         Вид животного: <input type="text" th:name="type"/> <br><br>
         Порода: <input type="text" th:name="breed"/> <br><br>
-        <label>Пол</label>
+        <label>Пол</label><br>
         <input type="radio" id="female" th:name="sex" value="FEMALE">Самка
         <input type="radio" id="male" th:name="sex" value="MALE" checked="checked">Самец
         <br><br>
