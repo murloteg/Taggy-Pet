@@ -1,0 +1,140 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nav {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.row {
+    align-items: center;
+}
+
+.logo {
+    height: 54px;
+}
+
+.personal-cabinet-label {
+    font-weight: 500;
+    font-size: 20px;
+    opacity: 40%;
+    margin-top: 15px;
+    margin-left: 8px;
+}
+
+.logout-btn {
+    display: block;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 5px 25px;
+    font-size: 17px;
+    border-style: solid;
+    outline: none;
+    background-color: white;
+    color: #462446;
+    border-color: #462446;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #462446;
+    color: white;
+}
+
+.delete-link {
+}
+
+.delete-link:hover {
+    text-decoration: blink;
+}
+
+.delete-label {
+    font-size: 17px;
+    font-weight: bold;
+    color: #462446;
+    opacity: 50%;
+}
+
+.delete-label:hover {
+    opacity: 100%;
+    color: #462446;
+}
+
+h3 {
+    font-weight: bold;
+}
+
+.user-data {
+    margin-top: 20px;
+}
+
+table {
+    padding: 30px 80px 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.15);
+    border-spacing: 13px 6px;
+    border-collapse: separate;
+
+    border-spacing: 13px 6px;
+    border-collapse: separate;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 20px;
+    opacity: 50%;
+    text-align: right;
+}
+
+.data {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.pers-cab-img {
+    height: 350px;
+}
+
+.pets-list-header {
+    margin-bottom: 30px;
+}
+
+ul {
+    margin: 0px;
+    padding: 4px;
+}
+
+.list-label {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+li {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+}
+
+.pet-list-btn {
+    font-size: 25px;
+    font-weight: 600;
+    background-color: #FF742B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    text-decoration: none;
+    align-items: center;
+}
+
+.pet-list-btn:hover {
+    text-decoration: none;
+    color: white;
+    background-color: #FF742B;
+    box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+.add-label {
+    font-size: 18px;
+}
