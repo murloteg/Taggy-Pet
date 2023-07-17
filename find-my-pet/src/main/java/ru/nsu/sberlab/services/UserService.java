@@ -85,7 +85,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<PetInfoDto> petsListByUserId(Long userId) {
-//        return userRepository.findAllPetsByUserId(userId) FIXME: converting error in this method
+//        return userRepository.findAllPetsByUserId(userId) // FIXME: converting error in this method
 //                .stream()
 //                .map(petInfoDtoMapper)
 //                .toList();

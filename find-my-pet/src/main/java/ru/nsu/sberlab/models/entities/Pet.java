@@ -33,7 +33,7 @@ public class Pet {
     @Column(name = "pet_name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "pets_features",
             joinColumns = {@JoinColumn(name = "pet_id")},

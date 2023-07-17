@@ -9,7 +9,6 @@ import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ErrorController {
-
     @ExceptionHandler(value = {FailedUserCreationException.class})
     @GetMapping
     public String handleFailedCreationException() {
@@ -19,6 +18,6 @@ public class ErrorController {
     @ExceptionHandler(value = Exception.class)
     @GetMapping
     public String handleException() {
-        return "error-page";
+        return "error-message";
     }
 }
