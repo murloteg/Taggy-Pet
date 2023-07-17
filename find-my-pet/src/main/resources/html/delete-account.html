@@ -7,8 +7,9 @@
 </head>
 <body>
     <h5>Вы действительно хотите удалить аккаунт?</h5>
-    <form th:method="delete" th:action="@{/user/delete}">
-      <h3><input type="submit" value="Удалить"></h3>
+    <form name="confirm" th:method="delete" th:action="@{/user/delete}">
+        <button onclick="document.logout.submit()">Удалить мой аккаунт</button>
     </form>
+    <form name="logout" th:method="post" th:action="@{/logout}"></form>
 </body>
 </html>

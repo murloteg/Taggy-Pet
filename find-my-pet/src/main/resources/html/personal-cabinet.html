@@ -10,11 +10,11 @@
     <h4>Пользователь: <span th:text="${user.email}">email пользователя</span></h4>
     <ul>
         <li><a href="/pet/add-new-pet"><h3>Добавить питомца</h3></a></li>
-        <li><a href="/pet/list"><h3>Посмотреть моих питомцев</h3></a></li>
+        <li><a href="/user/pets-list"><h3>Посмотреть моих питомцев</h3></a></li>
         <div th:if="${hasPrivilegedAccess}">
             <li><a href="/pet/privileged-list"><h3>Посмотреть всех питомцев в базе данных</h3></a></li>
         </div>
-        <li><a href="/user-delete-account"><h3>Удалить мой аккаунт</h3></a></li>
+        <li><a href="/user/delete-account"><h3>Удалить мой аккаунт</h3></a></li>
     </ul>
     <hr>
     <h3>Выйти из аккаунта</h3>

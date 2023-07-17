@@ -17,16 +17,16 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "active")
@@ -35,16 +35,29 @@ public class User implements UserDetails {
     @Column(name = "password", length = 128)
     private String password;
 
+    @Column(name = "date_of_creation")
+    private LocalDateTime dateOfCreated;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id")}
+    )
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @ManyToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_pets",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "pet_id")}
+    )
     private List<Pet> pets = new ArrayList<>();
-
-    @Column(name = "date_of_created")
-    private LocalDateTime dateOfCreated;
 
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;
