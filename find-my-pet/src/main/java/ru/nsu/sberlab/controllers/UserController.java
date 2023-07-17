@@ -43,7 +43,8 @@ public class UserController {
     ) {
         model.addAttribute("user", principal);
         model.addAttribute(
-                "hasPrivilegedAccess", principal
+                "hasPrivilegedAccess",
+                principal
                         .getAuthorities()
                         .contains(Role.ROLE_PRIVILEGED_ACCESS)
         );
