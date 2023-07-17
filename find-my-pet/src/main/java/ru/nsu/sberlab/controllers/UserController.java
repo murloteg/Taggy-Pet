@@ -42,9 +42,10 @@ public class UserController {
             @AuthenticationPrincipal User principal
     ) {
         model.addAttribute("user", principal);
-        model.addAttribute("hasPrivilegedAccess", principal
-                .getAuthorities()
-                .contains(Role.ROLE_PRIVILEGED_ACCESS)
+        model.addAttribute(
+                "hasPrivilegedAccess", principal
+                        .getAuthorities()
+                        .contains(Role.ROLE_PRIVILEGED_ACCESS)
         );
         return "personal-cabinet";
     }
@@ -74,7 +75,7 @@ public class UserController {
 
     @DeleteMapping("delete")
     public String deleteAccount(@AuthenticationPrincipal User principal) {
-        userService.deleteUser(principal.getEmail());
+        userService.deleteUser(principal.getUserId());
         return "main-page";
     }
 }

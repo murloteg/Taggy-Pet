@@ -52,8 +52,8 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void deleteUser(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(
+    public void deleteUser(Long userId) {
+        User user = userRepository.findUserByUserId(userId).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
         DeletedUser deletedUser = new DeletedUser(
