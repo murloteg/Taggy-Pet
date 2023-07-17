@@ -85,12 +85,9 @@ public class UserService implements UserDetailsService {
     }
 
     public List<PetInfoDto> petsListByUserId(Long userId) {
-//        return userRepository.findAllPetsByUserId(userId) // FIXME: converting error in this method
-//                .stream()
-//                .map(petInfoDtoMapper)
-//                .toList();
-        return userRepository.findUserByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")))
+        return userRepository.findUserByUserId(userId).orElseThrow(
+                        () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+                )
                 .getPets()
                 .stream()
                 .map(petInfoDtoMapper)

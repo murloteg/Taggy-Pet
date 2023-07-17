@@ -20,6 +20,6 @@ public class Property {
     @Column(name = "property_value")
     private String propertyValue;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "property")
+    @OneToMany(mappedBy = "property")
     private List<Feature> features = new ArrayList<>();
 }

@@ -46,7 +46,12 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_pets",
             joinColumns = {@JoinColumn(name = "user_id")},
