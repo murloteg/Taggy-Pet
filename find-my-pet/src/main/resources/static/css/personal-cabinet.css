@@ -138,3 +138,7 @@ li {
 .add-label {
     font-size: 18px;
 }
+
+.pet-card {
+    max-width: none;
+}

@@ -1,0 +1,7 @@
+.checked .toggle {
+    display: none;
+}
+
+.checked input[type=checkbox]:checked ~ .toggle {
+    display: block;
+}
