@@ -2,18 +2,13 @@ package ru.nsu.sberlab.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.utils.PropertyResolverUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
-import ru.nsu.sberlab.exceptions.PropertyTypeNotFoundException;
-import ru.nsu.sberlab.models.dto.FeatureCreationDto;
-import ru.nsu.sberlab.models.dto.PetCreationDto;
-import ru.nsu.sberlab.models.dto.PetInfoDto;
-import ru.nsu.sberlab.models.dto.UserRegistrationDto;
+import ru.nsu.sberlab.models.dto.*;
 import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
@@ -100,8 +95,17 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
+    public void updateUserInfo(UserInfoDto userInfoDto) {
+        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        user.setPhoneNumber(userInfoDto.getPhoneNumber());
+        user.setFirstName(userInfoDto.getFirstName());
+        userRepository.save(user);
+    }
+
     @Override
-    public UserDetails loadUserByUsername(String email) {
+    public User loadUserByUsername(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
@@ -109,25 +113,20 @@ public class UserService implements UserDetailsService {
 
     private List<Feature> createFeaturesFromPetCreationDto(User principal, List<FeatureCreationDto> featureCreationDtoList) {
         List<Feature> features = new ArrayList<>();
-        for (int i = 0; i < propertiesRepository.findAll().size(); ++i) {
+        List<PropertyType> properties = propertiesRepository.findAll();
+        for (int i = 0; i < properties.size(); ++i) {
             if (featureCreationDtoList.get(i).getDescription().isEmpty()) {
                 continue;
             }
             Feature feature = new Feature(
                     featureCreationDtoList.get(i).getDescription(),
-                    resolvePropertyType(i),
+                    properties.get(i),
                     principal
             );
             featuresRepository.save(feature);
             features.add(feature);
         }
         return features;
-    }
-
-    private PropertyType resolvePropertyType(int ordinal) {
-        return propertiesRepository.findById((long) ordinal).orElseThrow(
-                () -> new PropertyTypeNotFoundException(message("api.server.error.property-not-found"))
-        );
     }
 
     private String message(String property) {

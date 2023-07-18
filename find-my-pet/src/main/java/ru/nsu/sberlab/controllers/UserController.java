@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.models.dto.PetCreationDto;
+import ru.nsu.sberlab.models.dto.UserInfoDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
@@ -41,7 +39,7 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", principal);
+        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
         model.addAttribute(
                 "hasPrivilegedAccess",
                 principal
@@ -55,7 +53,6 @@ public class UserController {
     @PostMapping("create-pet")
     public String createPet(
             PetCreationDto pet,
-            Model model,
             @AuthenticationPrincipal User principal
     ) {
         userService.createPet(principal, pet);
@@ -76,9 +73,24 @@ public class UserController {
         return "delete-account";
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("delete-account")
     public String deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getUserId());
         return "main-page";
+    }
+
+    @GetMapping("edit-profile")
+    public String editProfilePage(
+            Model model,
+            @AuthenticationPrincipal User principal
+    ) {
+        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
+        return "edit-profile";
+    }
+
+    @PutMapping("edit-profile")
+    public String editProfile(UserInfoDto editedUser) {
+        userService.updateUserInfo(editedUser);
+        return "redirect:/user/personal-cabinet";
     }
 }
