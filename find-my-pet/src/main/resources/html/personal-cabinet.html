@@ -81,17 +81,14 @@
         <div class="pets-list">
             <div class="container">
                 <div class="row">
-<!--                       TODO: тут сразу должен быть список питомцев-->
-<!--                       <a href="/user/pets-list"><h4>Список моих питомцев</h4></a>-->
-                    <div th:each="pet : ${pets}">
-                        <div class="col-xl-4 pet-card">
-                            <b>Чип:</b> <p style="display: inline" th:text="${pet.chipId}">chipID</p><br>
-                            <b>Вид животного:</b> <p style="display: inline" th:text="${pet.type}">type</p><br>
-                            <b>Порода:</b> <p style="display: inline" th:text="${pet.breed}">breed</p><br>
-                            <b>Пол:</b> <p style="display: inline" th:text="${pet.sex}">sex</p><br>
-                            <b>Кличка:</b> <p style="display: inline" th:text="${pet.name}">chipID</p><br>
-                            <br><br>
-                        </div>
+                    <div class="col-xl-4" th:each="pet : ${pets}">
+                        <a href="#" class="pet-info-link">
+                            <div class="wrapper pet-card">
+                                <div class="pet-name">
+                                    <h5 th:text="${pet.name}">pet.name</h5>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -99,21 +96,3 @@
     </header>
 </body>
 </html>
-
-
-<!--<h3>Личный кабинет</h3>-->
-<!--<h4>Пользователь: <span th:text="${user.email}">email пользователя</span></h4>-->
-<!--<ul>-->
-<!--    <li><a href="/pet/add-new-pet"><h3>Добавить питомца</h3></a></li>-->
-<!--    <li><a href="/user/pets-list"><h3>Посмотреть моих питомцев</h3></a></li>-->
-<!--    <div th:if="${hasPrivilegedAccess}">-->
-<!--        <li><a href="/pet/privileged-list"><h3>Посмотреть всех питомцев в базе данных</h3></a></li>-->
-<!--    </div>-->
-<!--    <li><a href="/user/delete-account"><h3>Удалить мой аккаунт</h3></a></li>-->
-<!--</ul>-->
-<!--<hr>-->
-<!--<h3>Выйти из аккаунта</h3>-->
-<!--<form th:method="post" th:action="@{/logout}">-->
-<!--    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">-->
-<!--    <input type="submit" value="Выход">-->
-<!--</form>-->
