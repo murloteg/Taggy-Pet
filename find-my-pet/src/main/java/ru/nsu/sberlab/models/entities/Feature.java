@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Feature {
     private Long featureId;
 
     @Column(name = "date")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
     @Column(name = "description")
     private String description;
@@ -43,6 +43,6 @@ public class Feature {
 
     @PrePersist
     private void initialization() {
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = LocalDate.now();
     }
 }

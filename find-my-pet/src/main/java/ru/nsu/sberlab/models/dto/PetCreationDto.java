@@ -14,5 +14,5 @@ public class PetCreationDto {
     private final String breed;
     private final Sex sex;
     private final String name;
-    private final List<String> features;
+    private final List<FeatureCreationDto> features;
 }

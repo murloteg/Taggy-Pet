@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.exceptions.PropertyTypeNotFoundException;
+import ru.nsu.sberlab.models.dto.FeatureCreationDto;
 import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
@@ -77,15 +78,16 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findUserByUserId(principal.getUserId()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
-        Pet pet = new Pet(
-                petCreationDto.getChipId(),
-                petCreationDto.getType(),
-                petCreationDto.getBreed(),
-                petCreationDto.getSex(),
-                petCreationDto.getName()
+        user.getPets().add(
+                new Pet(
+                        petCreationDto.getChipId(),
+                        petCreationDto.getType(),
+                        petCreationDto.getBreed(),
+                        petCreationDto.getSex(),
+                        petCreationDto.getName(),
+                        createFeaturesFromPetCreationDto(principal, petCreationDto.getFeatures())
+                )
         );
-        user.getPets().add(pet);
-        pet.setFeatures(createFeaturesFromPetCreationDto(principal, petCreationDto.getFeatures()));
         userRepository.save(user);
     }
 
@@ -106,14 +108,14 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    private List<Feature> createFeaturesFromPetCreationDto(User principal, List<String> featuresAsStrings) {
+    private List<Feature> createFeaturesFromPetCreationDto(User principal, List<FeatureCreationDto> featureCreationDtoList) {
         List<Feature> features = new ArrayList<>();
         for (int i = 0; i < Property.values().length; ++i) {
-            if (featuresAsStrings.get(i).isEmpty()) {
+            if (featureCreationDtoList.get(i).getDescription().isEmpty()) {
                 continue;
             }
             Feature feature = new Feature(
-                    featuresAsStrings.get(i),
+                    featureCreationDtoList.get(i).getDescription(),
                     resolvePropertyType(i),
                     principal
             );
