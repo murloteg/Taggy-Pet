@@ -15,7 +15,6 @@ import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.*;
-import ru.nsu.sberlab.models.enums.Property;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
@@ -110,7 +109,7 @@ public class UserService implements UserDetailsService {
 
     private List<Feature> createFeaturesFromPetCreationDto(User principal, List<FeatureCreationDto> featureCreationDtoList) {
         List<Feature> features = new ArrayList<>();
-        for (int i = 0; i < Property.values().length; ++i) {
+        for (int i = 0; i < propertiesRepository.findAll().size(); ++i) {
             if (featureCreationDtoList.get(i).getDescription().isEmpty()) {
                 continue;
             }
