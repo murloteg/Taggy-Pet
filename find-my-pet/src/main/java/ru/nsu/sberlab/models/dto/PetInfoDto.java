@@ -15,4 +15,5 @@ public class PetInfoDto {
     private final Sex sex;
     private final String name;
     private final List<UserInfoDto> users;
+    private final List<FeatureDto> features;
 }

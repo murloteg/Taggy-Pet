@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "properties")
 @Data
 @NoArgsConstructor
-public class Property {
+public class PropertyType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "property_id")
