@@ -48,16 +48,18 @@ public class UserController {
                         .getAuthorities()
                         .contains(Role.ROLE_PRIVILEGED_ACCESS)
         );
+        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
         return "personal-cabinet";
     }
 
     @PostMapping("create-pet")
     public String createPet(
             PetCreationDto pet,
+            Model model,
             @AuthenticationPrincipal User principal
     ) {
         userService.createPet(principal, pet);
-        return "redirect:/";
+        return "redirect:/user/personal-cabinet";
     }
 
     @GetMapping("pets-list")

@@ -81,9 +81,17 @@
         <div class="pets-list">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-4">
-<!--                        TODO: тут сразу должен быть список питомцев-->
-                        <a href="/user/pets-list"><h4>Список моих питомцев</h4></a>
+<!--                       TODO: тут сразу должен быть список питомцев-->
+<!--                       <a href="/user/pets-list"><h4>Список моих питомцев</h4></a>-->
+                    <div th:each="pet : ${pets}">
+                        <div class="col-xl-4 pet-card">
+                            <b>Чип:</b> <p style="display: inline" th:text="${pet.chipId}">chipID</p><br>
+                            <b>Вид животного:</b> <p style="display: inline" th:text="${pet.type}">type</p><br>
+                            <b>Порода:</b> <p style="display: inline" th:text="${pet.breed}">breed</p><br>
+                            <b>Пол:</b> <p style="display: inline" th:text="${pet.sex}">sex</p><br>
+                            <b>Кличка:</b> <p style="display: inline" th:text="${pet.name}">chipID</p><br>
+                            <br><br>
+                        </div>
                     </div>
                 </div>
             </div>
