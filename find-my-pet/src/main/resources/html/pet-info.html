@@ -22,9 +22,21 @@
             <b>Телефон:</b> <p style="display: inline" th:text="${user.phoneNumber}">user.phoneNumber</p><br>
             <br>
         </div>
+        <hr>
+        <div th:if="${not #lists.isEmpty(pet.features)}">
+        <h4>Информация об особенностях питомца</h4>
+            <div th:each="feature : ${pet.features}">
+                <b>Тип особенности:</b> <p th:text="${feature.propertyType.propertyValue}">feature.propertyType.propertyValue</p>
+                <b>Комментарий по особенности:</b> <p th:text="${feature.description}">feature.description</p>
+                <hr>
+            </div>
+        </div>
+        <div th:unless="${not #lists.isEmpty(pet.features)}">
+            <h4>Особенностей ухода нет</h4>
+        </div>
     </div>
     <div th:unless="${pet != null}">
-      <h4>К сожалению, в нашей базе нет питомца с указанным чипом</h4>
+        <h4>К сожалению, в нашей базе нет питомца с указанным чипом</h4>
     </div>
 </body>
 </html>

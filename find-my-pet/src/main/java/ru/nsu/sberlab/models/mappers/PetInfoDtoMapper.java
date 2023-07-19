@@ -11,6 +11,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
     private final UserInfoMapper userInfoMapper;
+    private final FeatureDtoMapper featureDtoMapper;
 
     @Override
     public PetInfoDto apply(Pet pet) {
@@ -23,6 +24,10 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
                 pet.getUsers()
                         .stream()
                         .map(userInfoMapper)
+                        .toList(),
+                pet.getFeatures()
+                        .stream()
+                        .map(featureDtoMapper)
                         .toList()
         );
     }

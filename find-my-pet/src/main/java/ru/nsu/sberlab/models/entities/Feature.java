@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +19,30 @@ public class Feature {
     private Long featureId;
 
     @Column(name = "date")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "features")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "features")
     private List<Pet> pets = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id")
-    private Property property;
+    private PropertyType property;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Feature(String description, PropertyType propertyType, User user) {
+        this.description = description;
+        this.property = propertyType;
+        this.user = user;
+    }
+
+    @PrePersist
+    private void initialization() {
+        this.dateTime = LocalDate.now();
+    }
 }

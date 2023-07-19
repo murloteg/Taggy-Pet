@@ -49,11 +49,12 @@ public class Pet {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets")
     private List<User> users = new ArrayList<>();
 
-    public Pet(String chipId, String type, String breed, Sex sex, String name) {
+    public Pet(String chipId, String type, String breed, Sex sex, String name, List<Feature> features) {
         this.chipId = chipId;
         this.type = type;
         this.breed = breed;
         this.sex = sex;
         this.name = name;
+        this.features = features;
     }
 }

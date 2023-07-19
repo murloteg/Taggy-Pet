@@ -14,7 +14,8 @@ public class SecurityConfiguration {
             "/user/registration",
             "/pet/find",
             "/img/**",
-            "/css/**"
+            "/css/**",
+            "/static/**"
     };
     private static final String LOGIN_PAGE = "/user/login";
     private static final String LOGIN_PROCESSING_URL = "/login";
@@ -23,8 +24,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors()
-                .disable()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(ENDPOINTS_WHITELIST)
                         .permitAll()
@@ -35,7 +34,7 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage(LOGIN_PAGE)
                         .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL)
+                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL, true)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutSuccessUrl(DEFAULT_SUCCESS_URL));
