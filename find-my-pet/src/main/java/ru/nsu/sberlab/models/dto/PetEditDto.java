@@ -8,11 +8,11 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class PetCreationDto {
+public class PetEditDto {
     private final String chipId;
+    private final String name;
     private final String type;
     private final String breed;
     private final Sex sex;
-    private final String name;
     private final List<FeatureCreationDto> features;
 }

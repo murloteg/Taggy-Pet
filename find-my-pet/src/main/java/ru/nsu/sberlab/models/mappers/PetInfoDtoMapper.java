@@ -11,23 +11,23 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
     private final UserInfoMapper userInfoMapper;
-    private final FeatureDtoMapper featureDtoMapper;
+    private final FeatureInfoDtoMapper featureInfoDtoMapper;
 
     @Override
     public PetInfoDto apply(Pet pet) {
         return new PetInfoDto(
                 pet.getChipId(),
+                pet.getName(),
                 pet.getType(),
                 pet.getBreed(),
                 pet.getSex(),
-                pet.getName(),
                 pet.getUsers()
                         .stream()
                         .map(userInfoMapper)
                         .toList(),
                 pet.getFeatures()
                         .stream()
-                        .map(featureDtoMapper)
+                        .map(featureInfoDtoMapper)
                         .toList()
         );
     }

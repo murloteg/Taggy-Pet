@@ -41,6 +41,11 @@ public class Feature {
         this.user = user;
     }
 
+    public Feature(String description, PropertyType property) {
+        this.description = description;
+        this.property = property;
+    }
+
     @PrePersist
     private void initialization() {
         this.dateTime = LocalDate.now();
