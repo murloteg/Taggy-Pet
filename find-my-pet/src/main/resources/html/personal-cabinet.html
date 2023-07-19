@@ -82,7 +82,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4" th:each="pet : ${pets}">
-                        <a href="#" class="pet-info-link">
+                        <a th:href="@{/pet/{id}(id = ${pet.petId})}" class="pet-info-link">
                             <div class="wrapper pet-card">
                                 <div class="pet-name">
                                     <h5 th:text="${pet.name}">pet.name</h5>
