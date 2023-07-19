@@ -1,0 +1,112 @@
+body {
+    font-family: Montserrat, sans-serif;
+}
+
+.nav {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.row {
+    align-items: center;
+}
+
+.logo {
+    height: 54px;
+}
+
+.find-pet-label {
+    font-weight: 500;
+    font-size: 20px;
+    opacity: 0.4;
+    margin-top: 15px;
+    margin-left: 8px;
+}
+
+.pet-data-window {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    border-collapse: separate;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3%;
+    border-radius: 40px;
+    border-spacing: 13px 6px;
+}
+
+.elem_in_window {
+    margin: auto;
+}
+
+.title {
+    margin-bottom: 2%;
+}
+
+h1 {
+    font-size: 2.4em;
+    font-weight: bold;
+    color: black;
+}
+
+.data-container {
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+}
+
+.wrapper {
+    margin-right: 2em;
+    max-width: none;
+    width: 249px;
+    height: 166px;
+    border-radius: 20px;
+}
+
+.pet-card {
+    position: relative;
+    background:linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,1)), url(../img/dog-example.jpg);
+    background-size: cover;
+}
+
+.pet-name {
+    position: absolute;
+    bottom: 0px;
+    margin-left: 5%;
+    color: white;
+}
+
+h4 {
+    color: rgb(255, 116, 43);
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 1em 0.1em;
+}
+
+.title-table {
+    font-weight: 500;
+    font-size: 20px;
+    opacity: 0.5;
+}
+
+.data-table {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.features {
+    margin-top: 2em;
+}
+
+h2 {
+    font-weight: bold;
+    font-size: 1.6em;
+}
+
+.features-orange {
+    color: rgb(255, 116, 43);
+}
