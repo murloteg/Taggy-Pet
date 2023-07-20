@@ -26,7 +26,6 @@ body {
 .pet-data-window {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
     border-collapse: separate;
-    background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,7 +81,7 @@ h4 {
     font-weight: bold;
 }
 
-table {
+table.pet {
     border-collapse: separate;
     border-spacing: 1em 0.1em;
 }
@@ -102,6 +101,10 @@ table {
     margin-top: 2em;
 }
 
+.features-header {
+    margin-bottom: 1%;
+}
+
 h2 {
     font-weight: bold;
     font-size: 1.6em;
@@ -109,4 +112,46 @@ h2 {
 
 .features-orange {
     color: rgb(255, 116, 43);
+}
+
+.contacts {
+    margin-top: 2em;
+}
+
+.user-card {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 40px;
+    border-collapse: separate;
+    border-radius: 20px;
+    border-spacing: 13px 6px;
+    padding: 1em;
+}
+
+table.user {
+    border-collapse: separate;
+    border-spacing: 1em 0.1em;
+}
+
+.tg-btn {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #29B6F6;
+    color: white;
+    border-radius: 20px;
+    padding: 0.8em 1.2em 0.8em 0.4em;
+    text-decoration: none;
+}
+
+.tg-btn:hover {
+    text-decoration: none;
+    color: white;
+    box-shadow: 1px 1px 15px 6px rgb(41, 181, 244);
+}
+
+h3 {
+    font-weight: 600;
+    color: #FF742B;
+}
+
+.feature-description {
+    font-weight: 500;
 }

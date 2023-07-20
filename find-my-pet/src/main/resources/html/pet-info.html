@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="pet-data">
-                                <table>
+                                <table class="pet">
                                     <tr>
                                         <td class="title-table">Вид</td>
                                         <td class="data-table" th:text="${pet.type}">Собака</td>
@@ -49,7 +49,7 @@
                                     </tr>
                                     <tr>
                                         <td class="title-table">Пол</td>
-                                        <td class="data-table" th:text="${pet.sex}">Самка</td>
+                                        <td class="data-table" th:text="${pet.sex}">Самец</td>
                                     </tr>
                                     <tr>
                                         <td class="title-table">Чип</td>
@@ -62,11 +62,55 @@
                 </div>
             </div>
         </div>
-        <div class="features">
+        <div class="features" th:if="${not #lists.isEmpty(pet.features)}">
             <div class="container">
                 <div class="row features-header">
                     <div class="col-xl-6">
                         <h2>У этого питомца есть <span class="features-orange">особенности</span></h2>
+                    </div>
+                </div>
+                <div class="row features-list">
+                    <div class="col-xl-4" th:each="feature : ${pet.features}">
+                        <h3 th:text="${feature.propertyType.propertyValue}">Тип особенности</h3>
+                        <p class="feature-description" th:text="${feature.description}">Описание особенности</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contacts">
+            <div class="container">
+                <div class="row contacts-header">
+                    <div class="col-xl-6">
+                        <h2>Свяжитесь с хозяевами</h2>
+                    </div>
+                </div>
+                <div class="row contacts-cards">
+                    <div th:each="user : ${pet.users}">
+                        <div class="user-card">
+                            <table class="user">
+                                <tr>
+                                    <td class="title-table">Имя</td>
+                                    <td class="data-table" th:text="${user.firstName}">Сергей</td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Телефон</td>
+                                    <td class="data-table" th:text="${user.phoneNumber}">+7 913 472-93-04</td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Email</td>
+                                    <td class="data-table" th:text="${user.email}">sergay@gmail.com</td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Телеграм</td>
+                                    <td class="data-table">
+<!--                                        TODO: ссылка на тг должна браться таймлифом из юзера-->
+                                        <a href="https://telegram.me/makar_mikhalev" class="tg-btn">
+                                            <img th:src="@{/img/tg.svg}" alt="Telegram">Написать
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
