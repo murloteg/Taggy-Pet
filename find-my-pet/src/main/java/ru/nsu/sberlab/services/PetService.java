@@ -8,7 +8,6 @@ import ru.nsu.sberlab.models.dto.PetEditDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
-import ru.nsu.sberlab.models.entities.PropertyType;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
@@ -16,7 +15,9 @@ import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nsu.sberlab.repositories.PropertiesRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +25,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class PetService {
     private final PetRepository petRepository;
+    private final PropertiesRepository propertiesRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
@@ -49,7 +51,7 @@ public class PetService {
                 .orElse(null);
     }
 
-    public void updatePetInfo(User principal, PetEditDto petEditDto) {
+    public void updatePetInfo(User principal, PetEditDto petEditDto) { // TODO: this method doesn't delete features from table
         Pet pet = petRepository.findByChipId(petEditDto.getChipId()).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
@@ -57,7 +59,32 @@ public class PetService {
         pet.setBreed(petEditDto.getBreed());
         pet.setSex(petEditDto.getSex());
         pet.setName(petEditDto.getName());
-        pet.setFeatures(featuresConverter.convertFeaturesFromPetCreationDto(principal, petEditDto.getFeatures()));
+        int propertiesNumber = propertiesRepository.findAll().size();
+        boolean[] oldFeaturesFlags = new boolean[propertiesNumber];
+        List<Feature> oldFeatures = pet.getFeatures();
+        for (Feature oldFeature : oldFeatures) {
+            oldFeaturesFlags[oldFeature.getProperty().getPropertyId().intValue()] = true;
+        }
+        boolean[] newFeaturesFlags = new boolean[propertiesNumber];
+        List<Feature> newFeatures = featuresConverter.convertFeaturesFromPetCreationDto(principal, petEditDto.getFeatures());
+        for (Feature newFeature : newFeatures) {
+            newFeaturesFlags[newFeature.getProperty().getPropertyId().intValue()] = true;
+        }
+
+        int oldFeaturesIndex = 0;
+        for (int i = 0; i < propertiesNumber; ++i) {
+            if (oldFeaturesFlags[i] && newFeaturesFlags[i]) {
+                oldFeatures.get(oldFeaturesIndex).setDescription(newFeatures.get(oldFeaturesIndex).getDescription());
+                oldFeatures.get(oldFeaturesIndex).setDateTime(LocalDate.now());
+                ++oldFeaturesIndex;
+            } else if (oldFeaturesFlags[i] && !newFeaturesFlags[i]) {
+                oldFeatures.remove(oldFeaturesIndex);
+                oldFeaturesIndex = Math.max(oldFeaturesIndex - 1, 0);
+            } else if (!oldFeaturesFlags[i] && newFeaturesFlags[i]) {
+                oldFeatures.add(oldFeaturesIndex, newFeatures.get(oldFeaturesIndex));
+                ++oldFeaturesIndex;
+            }
+        }
         petRepository.save(pet);
     }
 

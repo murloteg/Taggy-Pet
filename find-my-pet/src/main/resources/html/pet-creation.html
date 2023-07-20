@@ -23,10 +23,12 @@
         <div class="checked">
             <input type="checkbox" id="features_checkbox" name="features_checkbox"> <label for="features_checkbox">У питомца есть особенности</label>
             <div class="toggle">
-                Аллергии: <input type="text" th:name="features"/><br><br>
-                Особенности кормления: <input type="text" th:name="features"/><br><br>
-                Необходимые лекарства: <input type="text" th:name="features"><br><br>
-                Другое <input type="text" th:name="features"><br><br>
+                <ul>
+                    <li th:each="property : ${properties}">
+                        <div th:text="${property.propertyValue}"></div>
+                        <input type="text" th:name="features" placeholder="Описание особенности"/><br><br>
+                    </li>
+                </ul>
             </div>
         </div>
         <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">

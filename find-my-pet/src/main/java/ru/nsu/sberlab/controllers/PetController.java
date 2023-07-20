@@ -10,15 +10,18 @@ import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import ru.nsu.sberlab.services.PropertyService;
 
 @Controller
 @RequestMapping("/pet/")
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
+    private final PropertyService propertyService;
 
     @GetMapping("add-new-pet")
-    public String petCreationPage() {
+    public String petCreationPage(Model model) {
+        model.addAttribute("properties", propertyService.properties());
         return "pet-creation";
     }
 
@@ -27,17 +30,18 @@ public class PetController {
             @PathVariable("id") String chipId,
             Model model
     ) {
+        model.addAttribute("properties", propertyService.properties());
         model.addAttribute("pet", petService.getPetEditByChipId(chipId));
         return "edit-pet"; // TODO: make another page for this feature
     }
 
-    @PutMapping("edit") // FIXME
+    @PutMapping("edit")
     public String editPet(
             PetEditDto petEditDto,
             @AuthenticationPrincipal User principal
     ) {
         petService.updatePetInfo(principal, petEditDto);
-        return "pesonal-cabinet";
+        return "redirect:/user/personal-cabinet";
     }
 
     @GetMapping("privileged-list")
