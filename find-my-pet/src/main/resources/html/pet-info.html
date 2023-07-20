@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="row features-list">
-                        <div class="col-xl-4" th:each="feature : ${pet.features}">
+                        <div class="col-xl-3" th:each="feature : ${pet.features}">
                             <h3 th:text="${feature.propertyType.propertyValue}">Тип особенности</h3>
                             <p class="feature-description" th:text="${feature.description}">Описание особенности</p>
                         </div>
