@@ -7,144 +7,116 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/pet-info.css">
 </head>
-<body  th:styleappend="${pet != null} ? 'background-color: white;' : 'background-color: #462446;'">
-    <div class="find-success" th:if="${pet != null}">
-        <header class="header">
-            <div class="nav">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <a href="/"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
-                        </div>
-                        <div class="col-xl-3">
-                            <h6 class="find-pet-label">Поиск питомца</h6>
-                        </div>
-                    </div>
+<body>
+<header class="header">
+    <div class="nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3">
+                    <a href="/"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
                 </div>
-            </div>
-            <div class="offer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-8 mx-auto pet-data-window">
-                            <div class="title elem_in_window">
-                                <h1>Ура, питомец найден!</h1>
-                            </div>
-                            <div class="data-container elem_in_window">
-                                <div class="wrapper pet-card">
-                                    <div class="pet-name">
-                                        <h4 th:text="${pet.name}">Вобла</h4>
-                                    </div>
-                                </div>
-                                <div class="pet-data">
-                                    <table class="pet">
-                                        <tr>
-                                            <td class="title-table">Вид</td>
-                                            <td class="data-table" th:text="${pet.type}">Собака</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title-table">Порода</td>
-                                            <td class="data-table" th:text="${pet.breed}">Йорк</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title-table">Пол</td>
-                                            <td class="data-table" th:text="${pet.sex}">Самец</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title-table">Чип</td>
-                                            <td class="data-table" th:text="${pet.chipId}">123456789012345</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="features" th:if="${not #lists.isEmpty(pet.features)}">
-                <div class="container">
-                    <div class="row features-header">
-                        <div class="col-xl-6">
-                            <h2>У этого питомца есть <span class="features-orange">особенности</span></h2>
-                        </div>
-                    </div>
-                    <div class="row features-list">
-                        <div class="col-xl-3" th:each="feature : ${pet.features}">
-                            <h3 th:text="${feature.propertyType.propertyValue}">Тип особенности</h3>
-                            <p class="feature-description" th:text="${feature.description}">Описание особенности</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="contacts">
-                <div class="container">
-                    <div class="row contacts-header">
-                        <div class="col-xl-6">
-                            <h2>Свяжитесь с хозяевами</h2>
-                        </div>
-                    </div>
-                    <div class="row contacts-cards">
-                        <div th:each="user : ${pet.users}">
-                            <div class="user-card">
-                                <table class="user">
-                                    <tr>
-                                        <td class="title-table">Имя</td>
-                                        <td class="data-table" th:text="${user.firstName}">Сергей</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="title-table">Телефон</td>
-                                        <td class="data-table" th:text="${user.phoneNumber}">+7 913 472-93-04</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="title-table">Email</td>
-                                        <td class="data-table" th:text="${user.email}">sergay@gmail.com</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="title-table">Телеграм</td>
-                                        <td class="data-table">
-                                            <!--                                        TODO: ссылка на тг должна браться таймлифом из юзера-->
-                                            <a href="https://telegram.me/makar_mikhalev" class="tg-btn">
-                                                <img th:src="@{/img/tg.svg}" alt="Telegram">Написать
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </div>
-    <div class="find-fail" th:unless="${pet != null}">
-        <div class="nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3">
-                        <a href="/"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo"></a>
-                    </div>
-                    <div class="col-xl-3">
-                        <h6 class="find-pet-label">Поиск питомца</h6>
-                    </div>
+                <div class="col-xl-3">
+                    <h6 class="find-pet-label">Поиск питомца</h6>
                 </div>
             </div>
         </div>
-        <div class="offer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-10">
-                        <h1>К сожалению, питомца с чипом <span th:text="${chipId}">123456789012345</span> нет в нашей базе :(</h1>
+    </div>
+    <div class="offer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 mx-auto pet-data-window">
+                    <div class="title elem_in_window">
+                        <h1>Ура, питомец найден!</h1>
                     </div>
-                </div>
-                <div class="row return">
-                    <div class="col-xl-2">
-                        <a th:href="@{/}" class="return-btn">Вернуться</a>
+                    <div class="data-container elem_in_window">
+                        <div class="wrapper pet-card">
+                            <div class="pet-name">
+                                <h4 th:text="${pet.name}">Вобла</h4>
+                            </div>
+                        </div>
+                        <div class="pet-data">
+                            <table class="pet">
+                                <tr>
+                                    <td class="title-table">Вид</td>
+                                    <td class="data-table" th:text="${pet.type}">[Здесь отобразится вид питомца]</td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Порода</td>
+                                    <td class="data-table" th:text="${pet.breed}">[Здесь отобразится порода питомца]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Пол</td>
+                                    <td class="data-table" th:text="${pet.sex}">[Здесь отобразится пол питомца]</td>
+                                </tr>
+                                <tr>
+                                    <td class="title-table">Чип</td>
+                                    <td class="data-table" th:text="${pet.chipId}">[Здесь отобразится чип питомца]</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="features" th:if="${not #lists.isEmpty(pet.features)}">
+        <div class="container">
+            <div class="row features-header">
+                <div class="col-xl-6">
+                    <h2>У этого питомца есть <span class="features-orange">особенности</span></h2>
+                </div>
+            </div>
+            <div class="row features-list">
+                <div class="col-xl-3" th:each="feature : ${pet.features}">
+                    <h3 th:text="${feature.propertyType.propertyValue}">Тип особенности</h3>
+                    <p class="feature-description" th:text="${feature.description}">Описание особенности</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contacts">
+        <div class="container">
+            <div class="row contacts-header">
+                <div class="col-xl-6">
+                    <h2>Свяжитесь с хозяевами</h2>
+                </div>
+            </div>
+            <div class="row contacts-cards">
+                <div th:each="user : ${pet.users}">
+                    <div class="user-card">
+                        <table class="user">
+                            <tr>
+                                <td class="title-table">Имя</td>
+                                <td class="data-table" th:text="${user.firstName}">[Здесь отобразится имя хозяина]</td>
+                            </tr>
+                            <tr>
+                                <td class="title-table">Телефон</td>
+                                <td class="data-table" th:text="${user.phoneNumber}">+7 913 472-93-04</td>
+                            </tr>
+                            <tr>
+                                <td class="title-table">Email</td>
+                                <td class="data-table" th:text="${user.email}">sergay@gmail.com</td>
+                            </tr>
+                            <tr>
+                                <td class="title-table">Телеграм</td>
+                                <td class="data-table">
+                                    <!--                                        TODO: ссылка на тг должна браться таймлифом из юзера-->
+                                    <a href="https://telegram.me/makar_mikhalev" class="tg-btn">
+                                        <img th:src="@{/img/tg.svg}" alt="Telegram">Написать
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 </body>
 </html>

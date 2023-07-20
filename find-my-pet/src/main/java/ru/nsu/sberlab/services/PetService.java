@@ -2,6 +2,7 @@ package ru.nsu.sberlab.services;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.repositories.PetRepository;
@@ -27,7 +28,7 @@ public class PetService {
     public PetInfoDto getPetByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(petInfoDtoMapper)
-                .orElse(null);
+                .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
     @Transactional

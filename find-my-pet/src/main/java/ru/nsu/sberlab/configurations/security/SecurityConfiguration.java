@@ -15,7 +15,7 @@ public class SecurityConfiguration {
             "/pet/find",
             "/img/**",
             "/css/**",
-            "/static/**"
+            "/js/**"
     };
     private static final String LOGIN_PAGE = "/user/login";
     private static final String LOGIN_PROCESSING_URL = "/login";
