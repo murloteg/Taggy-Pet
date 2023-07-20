@@ -170,6 +170,10 @@ h3 {
     height: 100%;
 }
 
+.find-fail .row {
+    display: flex;
+}
+
 .find-fail .find-pet-label {
     color: white;
     font-weight: 500;
