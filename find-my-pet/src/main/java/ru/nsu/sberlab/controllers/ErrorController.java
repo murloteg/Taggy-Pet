@@ -36,6 +36,4 @@ public class ErrorController {
     public String handleException() {
         return "error-message";
     }
-
-
 }
