@@ -16,6 +16,10 @@ body {
     height: 54px;
 }
 
+.change-bootstrap-padding {
+    padding-left: 0px;
+}
+
 .pet-search-label {
     color: white;
     font-weight: 500;

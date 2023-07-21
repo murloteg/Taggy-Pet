@@ -23,6 +23,10 @@ body {
     margin-left: 8px;
 }
 
+.change-bootstrap-padding {
+    padding-left: 0px;
+}
+
 .logout-btn {
     display: block;
     font-weight: 600;

@@ -16,6 +16,10 @@ body {
     height: 54px;
 }
 
+.change-bootstrap-padding {
+    padding-left: 0px;
+}
+
 .find-pet-label {
     font-weight: 500;
     font-size: 20px;
