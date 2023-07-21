@@ -16,7 +16,7 @@
             <div class="container">
                     <div th:if="${user != null}">
                         <div class="row" id="navbar">
-                            <div class="col-xl-4">
+                            <div class="col-3 col-md-3 col-xl-3">
                                 <a href="/"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo"></a>
                             </div>
                             <div class="offset-xl-6 col-xl-2">
@@ -26,13 +26,13 @@
                     </div>
                     <div th:unless="${user != null}">
                         <div class="row">
-                            <div class="col-xl-4">
+                            <div class="col-3 col-md-3 col-xl-3">
                                 <img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo">
                             </div>
-                            <div class="offset-xl-4 col-xl-2">
-                                <a href="/user/registration" class="reg">Зарегистрироваться</a>
+                            <div class="offset-md-3 col-md-2 offset-lg-4 col-lg-2 offset-xl-5 col-xl-2 display-none-small display-none-mobile">
+                                <a href="/user/registration" class="reg-link">Зарегистрироваться</a>
                             </div>
-                            <div class="col-xl-2">
+                            <div class="col text-right">
                                 <a href="/user/login" class="log-in">Войти</a>
                             </div>
                         </div>
@@ -43,13 +43,16 @@
         <div class="greeting">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-8">
-                        <div class="msg">
+                    <div class="col-sm-6 col-md-6 col-xl-8">
+                        <div class="msg display-none-mobile">
                             <h1>Поможем</h1>
                             <h1>потерянному</h1>
                             <h1>питомцу</h1>
                             <h1>вернуться</h1>
                             <h1>домой</h1>
+                        </div>
+                        <div class="msg-mobile display-none-mobile">
+                            <h1>Поможем потерянному питомцу вернуться домой</h1>
                         </div>
                         <div class="search-label">
                             <h2 class="search-text">Нашли питомца с чипом?</h2>
@@ -65,7 +68,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4">
+                    <div class="col-sm-4 col-md-6 text-right col-xl-4 display-none-mobile">
                         <div class="img-dog">
                             <img th:src="@{/img/dog-picture.png}" alt="Dog picture" class="dog-picture">
                         </div>

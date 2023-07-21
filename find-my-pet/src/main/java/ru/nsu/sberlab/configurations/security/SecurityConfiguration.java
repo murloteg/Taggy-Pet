@@ -13,13 +13,14 @@ public class SecurityConfiguration {
             "/",
             "/user/registration",
             "/pet/find",
-            "/static/**",
             "/css/**",
-            "/img/**"
+            "/img/**",
+            "/js/**"
     };
     private static final String LOGIN_PAGE = "/user/login";
     private static final String LOGIN_PROCESSING_URL = "/login";
-    private static final String DEFAULT_SUCCESS_URL = "/";
+    private static final String DEFAULT_LOGIN_SUCCESS_URL = "/user/personal-cabinet";
+    private static final String DEFAULT_LOGOUT_SUCCESS_URL = "/";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -34,10 +35,10 @@ public class SecurityConfiguration {
                 .formLogin(form -> form
                         .loginPage(LOGIN_PAGE)
                         .loginProcessingUrl(LOGIN_PROCESSING_URL)
-                        .defaultSuccessUrl(DEFAULT_SUCCESS_URL, true)
+                        .defaultSuccessUrl(DEFAULT_LOGIN_SUCCESS_URL, true)
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl(DEFAULT_SUCCESS_URL));
+                        .logoutSuccessUrl(DEFAULT_LOGOUT_SUCCESS_URL));
         return httpSecurity.build();
     }
 }

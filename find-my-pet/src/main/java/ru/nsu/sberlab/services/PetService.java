@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
+import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
@@ -42,7 +43,7 @@ public class PetService {
     public PetInfoDto getPetInfoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(petInfoDtoMapper)
-                .orElse(null);
+                .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
     public PetEditDto getPetEditDtoByChipId(String chipId) {

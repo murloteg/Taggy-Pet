@@ -1,9 +1,9 @@
 package ru.nsu.sberlab.exceptions;
 
-public class FailedUserCreationException extends RuntimeException {
+public class FailedPetSearchException extends RuntimeException {
     private final String message;
 
-    public FailedUserCreationException(String message) {
+    public FailedPetSearchException(String message) {
         this.message = message;
     }
 
