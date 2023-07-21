@@ -24,10 +24,10 @@ public class ErrorController {
     @ExceptionHandler(value = {FailedUserCreationException.class})
     @GetMapping
     public String handleFailedCreationException(
-//            Model model,
-//            FailedUserCreationException exception
+            Model model,
+            FailedUserCreationException exception
     ) {
-//        model.addAttribute("exception", exception.getMessage());
+        model.addAttribute("exception", exception.getMessage());
         return "failed-registration";
     }
 
