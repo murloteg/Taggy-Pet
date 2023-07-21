@@ -3,7 +3,6 @@ package ru.nsu.sberlab.models.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.nsu.sberlab.models.enums.Sex;
-
 import java.util.List;
 
 @Getter
