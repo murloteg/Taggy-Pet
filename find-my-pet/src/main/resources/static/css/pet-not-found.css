@@ -1,0 +1,70 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #462446;
+}
+
+.nav {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.row {
+    align-items: center;
+}
+
+.logo {
+    height: 54px;
+}
+
+.change-bootstrap-padding {
+    padding-left: 0px;
+}
+
+.pet-search-label {
+    color: white;
+    font-weight: 500;
+    font-size: 20px;
+    opacity: 40%;
+    margin-top: 15px;
+    margin-left: 8px;
+}
+
+.offer {
+    margin-top: 15%;
+}
+
+h1 {
+    line-height: 120%;
+    color: white;
+    font-weight: bold;
+    font-size: 250%;
+}
+
+span {
+    color: #FF742B;
+}
+
+.return {
+    margin-top: 3%
+}
+
+.return-btn {
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-size: 17px;
+    border-style: solid;
+    outline: none;
+    background-color: #462446;
+    color: #ff742b;
+    border-color: #ff742b;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.return-btn:hover {
+    text-decoration: none;
+    color: white;
+    background-color: #FF742B;
+    box-shadow: 1px 1px 15px 6px rgb(255, 116, 43);
+}

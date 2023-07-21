@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
         );
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
-            throw new FailedUserCreationException();
+            throw new FailedUserCreationException(user.getEmail());
         }
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
