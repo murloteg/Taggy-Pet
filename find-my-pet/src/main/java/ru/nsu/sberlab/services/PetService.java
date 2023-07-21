@@ -45,9 +45,9 @@ public class PetService {
                 .orElse(null);
     }
 
-    public PetEditDto getPetEditByChipId(String chipId) {
+    public PetEditDto getPetEditDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
-                .map(petEditDtoMapper)
+                .map(pet -> petEditDtoMapper.apply(pet, propertiesRepository.findAll()))
                 .orElse(null);
     }
 

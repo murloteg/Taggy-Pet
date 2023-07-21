@@ -31,7 +31,7 @@ public class PetController {
             Model model
     ) {
         model.addAttribute("properties", propertyService.properties());
-        model.addAttribute("pet", petService.getPetEditByChipId(chipId));
+        model.addAttribute("pet", petService.getPetEditDtoByChipId(chipId));
         return "edit-pet"; // TODO: make another page for this feature
     }
 
