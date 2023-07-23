@@ -52,10 +52,13 @@ h1 {
     margin-bottom: 20px;
 }
 
-
 .form {
     display: flex;
     justify-content: center;
+}
+
+form {
+    text-align: center;
 }
 
 .input {
@@ -87,4 +90,14 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #FF742B;
     box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+@media screen and (max-width: 575px){
+    input {
+        width: 90%;
+    }
+
+    input[type="submit"] {
+        font-size: 12px;
+    }
 }
