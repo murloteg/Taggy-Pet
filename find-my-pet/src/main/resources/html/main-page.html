@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head>
-    <title>Chipped Pets Helper</title>
+    <title>Taggy Pet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,11 +16,14 @@
             <div class="container">
                     <div th:if="${user != null}">
                         <div class="row" id="navbar">
-                            <div class="col-3 col-md-3 col-xl-3">
+                            <div class="col-9 col-md-3 col-xl-3">
                                 <a href="/"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo"></a>
                             </div>
-                            <div class="offset-xl-6 col-xl-2">
-                                <a href="/user/personal-cabinet" class="personal-cab">В личный кабинет</a>
+                            <div class="col text-right display-none-mobile">
+                                <a href="/user/personal-cabinet" class="personal-cab">Личный кабинет</a>
+                            </div>
+                            <div class="col pers-cab-icon-container">
+                                <a href="/user/personal-cabinet"><img th:src="@{/img/pers-cab.svg}" alt="Личный кабинет" class="pers-cab-icon"></a>
                             </div>
                         </div>
                     </div>
