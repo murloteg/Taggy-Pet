@@ -83,16 +83,18 @@ h3 {
     font-weight: bold;
 }
 
-.inline {
-    margin-right: 0.5em;
-    display: inline;
-}
-
-.inline.edit-label {
-    font-weight: 600;
+.edit-label {
+    font-size: 20px;
     opacity: 40%;
     color: black;
-    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.edit-label:hover {
+    color: black;
+    opacity: 100%;
+    text-decoration: none;
 }
 
 .edit-icon {
@@ -278,6 +280,16 @@ h5 {
     .picture-container {
         display: none;
     }
+
+    .user-data {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    table {
+        padding: 30px;
+    }
 }
 
 @media screen and (max-width: 767.5px) {
@@ -304,6 +316,15 @@ h5 {
         height: 35px;
         padding-bottom: 1%;
     }
+
+    .title, .data {
+        font-size: 18px;
+    }
+
+    li.list-label {
+        font-size: 23px;
+    }
+
 }
 
 @media screen and (max-width: 520px) {
@@ -312,13 +333,18 @@ h5 {
     }
 }
 
-@media screen and (max-width: 300px) {
-    li.list-label {
-        font-size: 23px;
+@media screen and (max-width: 400px) {
+    table {
+        padding: 25px 1px;
     }
 
+    .title, .data {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 300px) {
     .header-user-data img {
         height: 30px;
     }
-
 }
