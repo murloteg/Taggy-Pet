@@ -10,6 +10,6 @@ import java.util.function.Function;
 public class FeatureCreationDtoMapper implements Function<Feature, FeatureCreationDto> {
     @Override
     public FeatureCreationDto apply(Feature feature) {
-        return new FeatureCreationDto(feature.getDescription());
+        return new FeatureCreationDto(feature.getDescription(), feature.getProperty().getPropertyId());
     }
 }

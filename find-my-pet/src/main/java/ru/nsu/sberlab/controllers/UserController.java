@@ -5,7 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.nsu.sberlab.models.dto.PetCreationDto;
+import ru.nsu.sberlab.models.dto.PetInitializationDto;
 import ru.nsu.sberlab.models.dto.UserInfoDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
@@ -52,10 +52,11 @@ public class UserController {
 
     @PostMapping("create-pet")
     public String createPet(
-            PetCreationDto pet,
+            PetInitializationDto pet,
             @AuthenticationPrincipal User principal
     ) {
-        userService.createPet(principal, pet);
+
+        userService.createPet(pet, principal);
         return "redirect:/user/personal-cabinet";
     }
 

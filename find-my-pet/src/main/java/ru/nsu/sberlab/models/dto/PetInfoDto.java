@@ -1,12 +1,12 @@
 package ru.nsu.sberlab.models.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import ru.nsu.sberlab.models.enums.Sex;
 
 import java.util.List;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class PetInfoDto {
     private final String chipId;

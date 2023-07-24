@@ -65,18 +65,18 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void createPet(User principal, PetCreationDto petCreationDto) {
+    public void createPet(PetInitializationDto petInitializationDto, User principal) {
         User user = userRepository.findUserByUserId(principal.getUserId()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
         user.getPets().add(
                 new Pet(
-                        petCreationDto.getChipId(),
-                        petCreationDto.getType(),
-                        petCreationDto.getBreed(),
-                        petCreationDto.getSex(),
-                        petCreationDto.getName(),
-                        featuresConverter.convertFeaturesFromPetCreationDto(principal, petCreationDto.getFeatures())
+                        petInitializationDto.getChipId(),
+                        petInitializationDto.getType(),
+                        petInitializationDto.getBreed(),
+                        petInitializationDto.getSex(),
+                        petInitializationDto.getName(),
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
                 )
         );
         userRepository.save(user);

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Pet;
 
+import java.util.Comparator;
 import java.util.function.Function;
 
 @Service
@@ -28,6 +29,7 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
                 pet.getFeatures()
                         .stream()
                         .map(featureInfoDtoMapper)
+                        .sorted(Comparator.naturalOrder())
                         .toList()
         );
     }

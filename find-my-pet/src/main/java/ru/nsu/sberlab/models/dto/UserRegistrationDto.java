@@ -1,9 +1,9 @@
 package ru.nsu.sberlab.models.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class UserRegistrationDto {
     private final String email;

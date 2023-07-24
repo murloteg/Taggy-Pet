@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.nsu.sberlab.models.dto.PetEditDto;
+import ru.nsu.sberlab.models.dto.PetInitializationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +31,16 @@ public class PetController {
             Model model
     ) {
         model.addAttribute("properties", propertyService.properties());
-        model.addAttribute("pet", petService.getPetEditDtoByChipId(chipId));
+        model.addAttribute("pet", petService.getPetInitializationDtoByChipId(chipId));
         return "edit-pet"; // TODO: make another page for this feature
     }
 
     @PutMapping("edit")
     public String editPet(
-            PetEditDto petEditDto,
+            PetInitializationDto petInitializationDto,
             @AuthenticationPrincipal User principal
     ) {
-        petService.updatePetInfo(principal, petEditDto);
+        petService.updatePetInfo(petInitializationDto, principal);
         return "redirect:/user/personal-cabinet";
     }
 

@@ -1,11 +1,16 @@
 package ru.nsu.sberlab.models.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
-public class FeatureInfoDto {
+public class FeatureInfoDto implements Comparable<FeatureInfoDto> {
     private String description;
     private PropertyTypeDto propertyType;
+
+    @Override
+    public int compareTo(FeatureInfoDto other) {
+        return Long.compare(this.getPropertyType().getPropertyId(), other.getPropertyType().getPropertyId());
+    }
 }

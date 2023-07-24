@@ -4,7 +4,7 @@ import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
-import ru.nsu.sberlab.models.dto.PetEditDto;
+import ru.nsu.sberlab.models.dto.PetInitializationDto;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Feature;
@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.repositories.PropertiesRepository;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,46 +45,40 @@ public class PetService {
                 .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
-    public PetEditDto getPetEditDtoByChipId(String chipId) {
+    public PetInitializationDto getPetInitializationDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, propertiesRepository.findAll()))
                 .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
     }
 
-    public void updatePetInfo(User principal, PetEditDto petEditDto) { // TODO: this method doesn't delete features from table
-        Pet pet = petRepository.findByChipId(petEditDto.getChipId()).orElseThrow(
+    @Transactional
+    public void updatePetInfo(PetInitializationDto petInitializationDto, User principal) { // TODO: this method doesn't delete features from table
+        Pet pet = petRepository.findByChipId(petInitializationDto.getChipId()).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
-        pet.setType(petEditDto.getType());
-        pet.setBreed(petEditDto.getBreed());
-        pet.setSex(petEditDto.getSex());
-        pet.setName(petEditDto.getName());
-        int propertiesNumber = propertiesRepository.findAll().size();
-        boolean[] oldFeaturesFlags = new boolean[propertiesNumber];
-        List<Feature> oldFeatures = pet.getFeatures();
-        for (Feature oldFeature : oldFeatures) {
-            oldFeaturesFlags[oldFeature.getProperty().getPropertyId().intValue()] = true;
-        }
-        boolean[] newFeaturesFlags = new boolean[propertiesNumber];
-        List<Feature> newFeatures = featuresConverter.convertFeaturesFromPetCreationDto(principal, petEditDto.getFeatures());
-        for (Feature newFeature : newFeatures) {
-            newFeaturesFlags[newFeature.getProperty().getPropertyId().intValue()] = true;
-        }
+        pet.setType(petInitializationDto.getType());
+        pet.setBreed(petInitializationDto.getBreed());
+        pet.setSex(petInitializationDto.getSex());
+        pet.setName(petInitializationDto.getName());
 
-        int oldFeaturesIndex = 0;
-        for (int i = 0; i < propertiesNumber; ++i) {
-            if (oldFeaturesFlags[i] && newFeaturesFlags[i]) {
-                oldFeatures.get(oldFeaturesIndex).setDescription(newFeatures.get(oldFeaturesIndex).getDescription());
-                oldFeatures.get(oldFeaturesIndex).setDateTime(LocalDate.now());
-                ++oldFeaturesIndex;
-            } else if (oldFeaturesFlags[i] && !newFeaturesFlags[i]) {
-                oldFeatures.remove(oldFeaturesIndex);
-                oldFeaturesIndex = Math.max(oldFeaturesIndex - 1, 0);
-            } else if (!oldFeaturesFlags[i] && newFeaturesFlags[i]) {
-                oldFeatures.add(oldFeaturesIndex, newFeatures.get(oldFeaturesIndex));
-                ++oldFeaturesIndex;
-            }
+        Map<Long, Feature> featureMap = new HashMap<>();
+        List<Feature> oldFeatures = pet.getFeatures();
+        for (Feature feature : oldFeatures) {
+            featureMap.put(feature.getProperty().getPropertyId(), feature);
         }
+        List<Feature> newFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal);
+        List<Feature> mergedFeatures = new ArrayList<>();
+        for (Feature feature : newFeatures) {
+            Long key = feature.getProperty().getPropertyId();
+            if (featureMap.containsKey(key)) {
+                Feature value = featureMap.get(key);
+                feature.setFeatureId(value.getFeatureId());
+                feature.setPets(value.getPets());
+                feature.setDateTime(LocalDate.now());
+            }
+            mergedFeatures.add(feature);
+        }
+        pet.setFeatures(mergedFeatures);
         petRepository.save(pet);
     }
 
