@@ -51,10 +51,13 @@
         <div class="offer">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-lg-6 col-xl-6">
                         <div class="header-user-data">
-                            <h3 class="inline">Мои данные</h3>
-                            <a href="#" class="inline">Редактировать</a>
+                            <ul>
+                                <li class="list-label">Мои данные</li>
+                                <li><a href="#" class="display-none-mobile">Редактировать</a></li>
+                                <li><a href="#" class="edit-icon"><img th:src="@{/img/edit.svg}" alt="Edit" class="inline"></a></li>
+                            </ul>
                         </div>
 
                         <div class="user-data">
@@ -79,7 +82,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="offset-xl-1 col-xl-5">
+                    <div class="offset-lg-2 col-lg-4 offset-xl-1 col-xl-5 picture-container">
                         <img th:src="@{/img/pers-cab.png}" alt="Personal cabinet picture" class="pers-cab-img">
                     </div>
                 </div>
