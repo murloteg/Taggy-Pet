@@ -27,6 +27,19 @@ body {
     padding-left: 0px;
 }
 
+.menu {
+    display: none;
+}
+
+#burger, [for=burger]{
+    display: none;
+}
+
+.menu label {
+    font-weight: 600;
+    font-size: 25px;
+}
+
 .logout-btn {
     display: block;
     font-weight: 600;
@@ -187,4 +200,85 @@ li {
 h5 {
     font-weight: bold;
     font-size: 27px;
+}
+
+@media screen and (max-width: 1199px){
+    .personal-cabinet-col {
+        margin-left: 10px;
+    }
+
+    .logout-col {
+        padding-left: 50px;
+    }
+}
+
+@media screen and (max-width: 991.5px){
+    .menu, [for=burger]{
+        display: block;
+    }
+
+    [for=burger]::before {
+        content: '☰';
+        font-size: 27px;
+    }
+
+    nav {
+        z-index: 1;
+        display: none;
+        right: 0;
+        position: absolute;
+        width: 200px;
+        background-color: white;
+        box-shadow: 0 0 40px rgba(0,0,0,0.15);
+        border-radius: 20px;
+        padding: 10px 10px;
+    }
+
+    .display-none-md {
+        display: none;
+    }
+
+    #burger:checked + label + nav {
+        display: block;
+    }
+
+    #burger:checked +[for=burger]::before {
+        content: '⮾';
+    }
+
+    .menu li {
+        display: block;
+        margin-right: 0px;
+        padding: 0px;
+    }
+
+    .menu a {
+        font-weight: 600;
+        font-size: 18px;
+        color: #462446;
+    }
+
+    .logout-btn {
+        margin-bottom: 8px;
+        display: initial;
+
+        padding: 3px 15px;
+    }
+}
+
+@media screen and (max-width: 767.5px) {
+    .personal-cabinet-col {
+        padding-left: 0px;
+        margin-left: 0px;
+    }
+}
+
+@media screen and (max-width: 575.5px) {
+
+}
+
+@media screen and (max-width: 520px) {
+    .personal-cabinet-col {
+        display: none;
+    }
 }
