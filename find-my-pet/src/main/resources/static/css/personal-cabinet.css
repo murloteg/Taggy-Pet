@@ -102,7 +102,16 @@ h3 {
 }
 
 .edit-icon {
-    display: none;
+    display: contents;
+}
+
+.edit-icon:hover {
+    box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+.header-user-data img {
+    height: 48px;
+    padding-bottom: 1%;
 }
 
 .user-data {
@@ -113,9 +122,6 @@ table {
     padding: 30px 80px 30px 20px;
     border-radius: 20px;
     box-shadow: 0 0 40px rgba(0,0,0,0.15);
-    border-spacing: 13px 6px;
-    border-collapse: separate;
-
     border-spacing: 13px 6px;
     border-collapse: separate;
 }
@@ -134,7 +140,7 @@ table {
 
 .picture-container {
     z-index: -1;
-    padding-left: 80px;
+    padding-left: 30px;
 }
 
 .pers-cab-img {
@@ -226,6 +232,7 @@ h5 {
 
     .picture-container {
         padding-left: 0px;
+        margin-left: 100px
     }
 }
 
@@ -248,7 +255,7 @@ h5 {
         background-color: white;
         box-shadow: 0 0 40px rgba(0,0,0,0.15);
         border-radius: 20px;
-        padding: 10px 10px;
+        padding: 10px 15px;
     }
 
     .display-none-md {
@@ -261,6 +268,7 @@ h5 {
 
     #burger:checked +[for=burger]::before {
         content: '⮾';
+        color: #ff742b;
     }
 
     .menu li {
@@ -298,12 +306,28 @@ h5 {
     .offer {
         margin-bottom: 25px;
     }
+
+    .pets-list .col-md-6 {
+        padding-left: 30px;
+    }
+
+    .pets-list .container {
+        padding-right: 0px
+    }
 }
 
 @media screen and (max-width: 767.5px) {
     .personal-cabinet-col {
         padding-left: 0px;
         margin-left: 0px;
+    }
+
+    .pets-list .col-md-6 {
+        padding-left: 0px;
+    }
+
+    .pet-card {
+        width: 100%;
     }
 }
 
@@ -321,7 +345,7 @@ h5 {
     }
 
     .header-user-data img {
-        height: 35px;
+        height: 48px;
         padding-bottom: 1%;
     }
 
@@ -343,6 +367,22 @@ h5 {
         font-size: 28px;
     }
 
+    .pets-list .container {
+        padding-left: 0px;
+    }
+
+    .col-11 {
+        margin-left: auto;
+        margin-right: auto;
+        padding-right: 0px;
+    }
+
+    .pet-card {
+        margin-right: auto;
+        margin-left: auto;
+        width: 70%;
+    }
+
 }
 
 @media screen and (max-width: 520px) {
@@ -352,6 +392,9 @@ h5 {
 }
 
 @media screen and (max-width: 450px) {
+    .pet-card {
+        width: 80%;
+    }
 
 }
 
@@ -365,8 +408,9 @@ h5 {
     }
 }
 
-@media screen and (max-width: 300px) {
-    .header-user-data img {
-        height: 30px;
+@media screen and (max-width: 400px) {
+    .pet-card {
+        width: 95%;
     }
 }
+

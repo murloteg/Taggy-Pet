@@ -55,7 +55,6 @@
                         <div class="header-user-data">
                             <ul>
                                 <li class="list-label">Мои данные</li>
-                                <li><a href="#" class="display-none-mobile edit-label">Редактировать</a></li>
                                 <li><a href="#" class="edit-icon"><img th:src="@{/img/edit.svg}" alt="Edit" class="inline"></a></li>
                             </ul>
                         </div>
@@ -104,7 +103,7 @@
         <div class="pets-list">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-4" th:each="pet : ${pets}">
+                    <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet : ${pets}">
                         <a href="#" class="pet-info-link">
                             <div class="wrapper pet-card">
                                 <div class="pet-name">
