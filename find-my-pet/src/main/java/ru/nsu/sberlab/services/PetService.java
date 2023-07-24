@@ -49,7 +49,7 @@ public class PetService {
     public PetEditDto getPetEditDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, propertiesRepository.findAll()))
-                .orElse(null);
+                .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
     }
 
     public void updatePetInfo(User principal, PetEditDto petEditDto) { // TODO: this method doesn't delete features from table
