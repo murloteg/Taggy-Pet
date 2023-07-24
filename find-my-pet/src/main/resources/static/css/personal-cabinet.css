@@ -35,7 +35,7 @@ body {
     display: none;
 }
 
-#burger, [for=burger]{
+#burger, [for=burger] {
     display: none;
 }
 
@@ -121,7 +121,7 @@ h3 {
 table {
     padding: 30px 80px 30px 20px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.15);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
     border-spacing: 13px 6px;
     border-collapse: separate;
 }
@@ -199,7 +199,7 @@ li {
 
 .pet-card {
     position: relative;
-    background:linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,1)), url(../img/dog-example.jpg);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1)), url(../img/dog-example.jpg);
     background-size: cover;
     transition: 0.2s;
 }
@@ -221,7 +221,7 @@ h5 {
     font-size: 27px;
 }
 
-@media screen and (max-width: 1199px){
+@media screen and (max-width: 1199px) {
     .personal-cabinet-col {
         margin-left: 10px;
     }
@@ -236,8 +236,8 @@ h5 {
     }
 }
 
-@media screen and (max-width: 991.5px){
-    .menu, [for=burger]{
+@media screen and (max-width: 991.5px) {
+    .menu, [for=burger] {
         display: block;
     }
 
@@ -253,7 +253,7 @@ h5 {
         position: absolute;
         width: 200px;
         background-color: white;
-        box-shadow: 0 0 40px rgba(0,0,0,0.15);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
         border-radius: 20px;
         padding: 10px 15px;
     }
@@ -266,7 +266,7 @@ h5 {
         display: block;
     }
 
-    #burger:checked +[for=burger]::before {
+    #burger:checked + [for=burger]::before {
         content: '⮾';
         color: #ff742b;
     }
@@ -382,7 +382,6 @@ h5 {
         margin-left: auto;
         width: 70%;
     }
-
 }
 
 @media screen and (max-width: 520px) {
@@ -395,7 +394,6 @@ h5 {
     .pet-card {
         width: 80%;
     }
-
 }
 
 @media screen and (max-width: 400px) {
@@ -406,11 +404,9 @@ h5 {
     .title, .data {
         font-size: 16px;
     }
-}
 
-@media screen and (max-width: 400px) {
     .pet-card {
-        width: 95%;
+        width: 90%;
     }
 }
 
