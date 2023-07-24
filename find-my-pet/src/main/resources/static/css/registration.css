@@ -52,13 +52,17 @@ h1 {
     margin-bottom: 20px;
 }
 
-
-.form {
+.form-container {
     display: flex;
     justify-content: center;
 }
 
+form {
+    text-align: center;
+}
+
 .input {
+    width: 90%;
     padding: 10px 30px;
     border-style: solid;
     font-size: 15px;
@@ -75,7 +79,7 @@ input[type="submit"] {
     font-weight: bold;
     border-radius: 64px;
     padding: 10px 35px;
-    font-size: 17px;
+    font-size: 15px;
     border-style: none;
     outline: none;
     background-color: #FF742B;
@@ -87,4 +91,16 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #FF742B;
     box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+@media screen and (min-width: 1200px){
+    .input {
+        width: 280px;
+    }
+}
+
+@media screen and (min-width: 465px) and (max-width: 575px){
+    .offer .container {
+        width: 80%;
+    }
 }
