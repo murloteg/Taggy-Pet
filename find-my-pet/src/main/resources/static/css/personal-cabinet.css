@@ -2,6 +2,10 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+.mobile {
+    display: none;
+}
+
 .nav {
     margin-top: 25px;
     margin-bottom: 10px;
@@ -290,6 +294,10 @@ h5 {
     table {
         padding: 30px;
     }
+
+    .offer {
+        margin-bottom: 25px;
+    }
 }
 
 @media screen and (max-width: 767.5px) {
@@ -325,12 +333,26 @@ h5 {
         font-size: 23px;
     }
 
+    .mobile {
+        display: contents;
+    }
+
+    .pet-list-btn {
+        border-radius: 10px;
+        padding: 5px 15px;
+        font-size: 28px;
+    }
+
 }
 
 @media screen and (max-width: 520px) {
     .personal-cabinet-col {
         display: none;
     }
+}
+
+@media screen and (max-width: 450px) {
+
 }
 
 @media screen and (max-width: 400px) {
