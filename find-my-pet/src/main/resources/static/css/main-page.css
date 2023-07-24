@@ -18,6 +18,7 @@ body {
 }
 
 .reg-link {
+    margin-left: 3em;
     font-size: 16px;
     color: white;
     position: relative;
@@ -42,6 +43,10 @@ body {
     color: #462446;
     background-color: white;
     box-shadow: 1px 1px 30px 6px rgba(255, 255, 255, 100);
+}
+
+.pers-cab-icon-container {
+    display: none;
 }
 
 .personal-cab {
@@ -171,6 +176,19 @@ input[type="submit"]:hover {
 @media screen and (max-width: 575.5px) {
     .nav {
         margin-bottom: 15%;
+    }
+
+    .logo {
+        height: 45px;
+    }
+
+    .pers-cab-icon-container {
+        display: block;
+    }
+
+    .pers-cab-icon {
+        opacity: 70%;
+        height: 40px;
     }
 
     .display-none-mobile {
