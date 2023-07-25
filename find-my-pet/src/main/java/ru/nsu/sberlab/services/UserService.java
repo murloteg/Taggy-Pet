@@ -12,21 +12,20 @@ import ru.nsu.sberlab.models.dto.*;
 import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
+import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
-import ru.nsu.sberlab.repositories.PropertiesRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
-    private final PropertiesRepository propertiesRepository;
+    private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PasswordEncoder passwordEncoder;
     private final PropertyResolverUtils propertyResolver;
@@ -66,18 +65,18 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void createPet(User principal, PetCreationDto petCreationDto) {
+    public void createPet(PetInitializationDto petInitializationDto, User principal) {
         User user = userRepository.findUserByUserId(principal.getUserId()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
         user.getPets().add(
                 new Pet(
-                        petCreationDto.getChipId(),
-                        petCreationDto.getType(),
-                        petCreationDto.getBreed(),
-                        petCreationDto.getSex(),
-                        petCreationDto.getName(),
-                        parseFeaturesFromPetCreationDto(principal, petCreationDto.getFeatures())
+                        petInitializationDto.getChipId(),
+                        petInitializationDto.getType(),
+                        petInitializationDto.getBreed(),
+                        petInitializationDto.getSex(),
+                        petInitializationDto.getName(),
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
                 )
         );
         userRepository.save(user);
@@ -93,25 +92,20 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
+    public void updateUserInfo(UserInfoDto userInfoDto) {
+        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        user.setPhoneNumber(userInfoDto.getPhoneNumber());
+        user.setFirstName(userInfoDto.getFirstName());
+        userRepository.save(user);
+    }
+
     @Override
     public User loadUserByUsername(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
-    }
-
-    private List<Feature> parseFeaturesFromPetCreationDto(User principal, List<FeatureCreationDto> featureCreationDtoList) {
-        List<PropertyType> properties = propertiesRepository.findAll();
-        return IntStream.range(0, properties.size())
-                .filter(i -> !featureCreationDtoList.get(i).getDescription().isEmpty())
-                .mapToObj(
-                        i -> new Feature(
-                                featureCreationDtoList.get(i).getDescription(),
-                                properties.get(i),
-                                principal
-                        )
-                )
-                .toList();
     }
 
     private String message(String property) {

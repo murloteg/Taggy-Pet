@@ -13,8 +13,8 @@ public class SecurityConfiguration {
             "/",
             "/user/registration",
             "/pet/find",
-            "/img/**",
             "/css/**",
+            "/img/**",
             "/js/**"
     };
     private static final String LOGIN_PAGE = "/user/login";
