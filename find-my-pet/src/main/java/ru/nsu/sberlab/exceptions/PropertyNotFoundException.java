@@ -1,9 +1,9 @@
 package ru.nsu.sberlab.exceptions;
 
-public class PropertyTypeNotFoundException extends RuntimeException {
+public class PropertyNotFoundException extends RuntimeException {
     private final String message;
 
-    public PropertyTypeNotFoundException(String message) {
+    public PropertyNotFoundException(String message) {
         this.message = message;
     }
 

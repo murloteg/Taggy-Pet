@@ -22,4 +22,8 @@ public class PropertyType {
 
     @OneToMany(mappedBy = "property")
     private List<Feature> features = new ArrayList<>();
+
+    public PropertyType(String propertyValue) {
+        this.propertyValue = propertyValue;
+    }
 }

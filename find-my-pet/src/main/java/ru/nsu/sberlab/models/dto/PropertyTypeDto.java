@@ -1,10 +1,11 @@
 package ru.nsu.sberlab.models.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class PropertyTypeDto {
     private final String propertyValue;
+    private final Long propertyId;
 }
