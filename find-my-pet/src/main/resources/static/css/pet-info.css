@@ -109,6 +109,10 @@ table.pet {
     margin-bottom: 1%;
 }
 
+.features-list {
+    align-items: normal;
+}
+
 h2 {
     font-weight: bold;
     font-size: 1.6em;

@@ -23,11 +23,11 @@
         <div class="offer">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-4 mx-auto authorization_window">
+                    <div class="col-10 col-sm-7 col-md-5 col-lg-4 col-xl-4 mx-auto authorization_window">
                         <div class="title elem_in_window">
                             <h1>Авторизация</h1>
                         </div>
-                        <div class="form">
+                        <div class="form-container">
                             <form th:method="post" th:action="@{/login}">
                                 <input type="email" th:name="username" placeholder="Email" class="elem_in_window input"><br><br>
                                 <input type="password" th:name="password" placeholder="Пароль" class="elem_in_window input"><br><br>
