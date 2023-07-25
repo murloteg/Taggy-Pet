@@ -66,19 +66,20 @@ public class PetService {
                 .collect(Collectors.toMap(
                         feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
                 );
-        List<Feature> mergedFeatures = new ArrayList<>();
-        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
-                .forEach(feature -> {
-                    Long key = feature.getProperty().getPropertyId();
-                    Feature value = featureMap.get(key);
-                    if (Objects.nonNull(value)) {
-                        feature.setFeatureId(value.getFeatureId());
-                        feature.setPets(value.getPets());
-                        feature.setDateTime(LocalDate.now());
-                    }
-                    mergedFeatures.add(feature);
-                }
-                );
+        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                .stream()
+                .map(feature -> {
+                            Long key = feature.getProperty().getPropertyId();
+                            Feature value = featureMap.get(key);
+                            if (Objects.nonNull(value)) {
+                                feature.setFeatureId(value.getFeatureId());
+                                feature.setPets(value.getPets());
+                                feature.setDateTime(LocalDate.now());
+                            }
+                            return feature;
+                        }
+                )
+                .toList();
         pet.setFeatures(mergedFeatures);
         petRepository.save(pet);
     }
