@@ -63,15 +63,12 @@ body {
     background-color: #462446;
     color: white;
 }
-
-.delete-link {
-}
-
 .delete-link:hover {
     text-decoration: blink;
 }
 
 .delete-label {
+    margin-bottom: 0px;
     font-size: 17px;
     font-weight: bold;
     color: #462446;
