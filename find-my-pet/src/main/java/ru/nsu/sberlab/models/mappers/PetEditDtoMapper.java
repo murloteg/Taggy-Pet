@@ -9,6 +9,8 @@ import ru.nsu.sberlab.models.entities.PropertyType;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -17,18 +19,15 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<PropertyType>, Pet
 
     @Override
     public PetInitializationDto apply(Pet pet, List<PropertyType> properties) {
-        Map<Long, String> propertyMap = new HashMap<>();
         List<Feature> features = pet.getFeatures();
-        for (Feature feature : features) {
-            propertyMap.put(feature.getProperty().getPropertyId(), feature.getDescription());
-        }
-        int index = 0;
-        while (index < properties.size()) {
-            if (!propertyMap.containsKey((long) index)) {
-                features.add(index, new Feature(null, properties.get(index)));
-            }
-            ++index;
-        }
+        Map<Long, String> propertyMap = features
+                .stream()
+                .collect(Collectors.toMap(
+                        feature -> feature.getProperty().getPropertyId(), Feature::getDescription, (a, b) -> b)
+                );
+        IntStream.range(0, properties.size())
+                .filter(index -> !propertyMap.containsKey((long) index))
+                .forEach(index -> features.add(index, new Feature(null, properties.get(index))));
         return new PetInitializationDto(
                 pet.getChipId(),
                 pet.getName(),

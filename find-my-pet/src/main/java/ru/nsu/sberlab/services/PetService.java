@@ -20,6 +20,7 @@ import ru.nsu.sberlab.repositories.PropertiesRepository;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,24 +61,24 @@ public class PetService {
         pet.setBreed(petInitializationDto.getBreed());
         pet.setSex(petInitializationDto.getSex());
         pet.setName(petInitializationDto.getName());
-
-        Map<Long, Feature> featureMap = new HashMap<>();
-        List<Feature> oldFeatures = pet.getFeatures();
-        for (Feature feature : oldFeatures) {
-            featureMap.put(feature.getProperty().getPropertyId(), feature);
-        }
-        List<Feature> newFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal);
+        Map<Long, Feature> featureMap = pet.getFeatures()
+                .stream()
+                .collect(Collectors.toMap(
+                        feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
+                );
         List<Feature> mergedFeatures = new ArrayList<>();
-        for (Feature feature : newFeatures) {
-            Long key = feature.getProperty().getPropertyId();
-            if (featureMap.containsKey(key)) {
-                Feature value = featureMap.get(key);
-                feature.setFeatureId(value.getFeatureId());
-                feature.setPets(value.getPets());
-                feature.setDateTime(LocalDate.now());
-            }
-            mergedFeatures.add(feature);
-        }
+        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                .forEach(feature -> {
+                    Long key = feature.getProperty().getPropertyId();
+                    Feature value = featureMap.get(key);
+                    if (Objects.nonNull(value)) {
+                        feature.setFeatureId(value.getFeatureId());
+                        feature.setPets(value.getPets());
+                        feature.setDateTime(LocalDate.now());
+                    }
+                    mergedFeatures.add(feature);
+                }
+                );
         pet.setFeatures(mergedFeatures);
         petRepository.save(pet);
     }
