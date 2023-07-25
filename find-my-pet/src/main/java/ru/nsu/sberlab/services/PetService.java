@@ -76,14 +76,11 @@ public class PetService {
                                 value.setDescription(feature.getDescription());
                                 value.setDateTime(LocalDate.now());
                                 return value;
-//                                feature.setFeatureId(value.getFeatureId());
-//                                feature.setPets(value.getPets());
-//                                feature.setDateTime(LocalDate.now());
                             }
                             return feature;
                         }
                 )
-                .toList();
+                .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
         petRepository.save(pet);
     }

@@ -59,14 +59,14 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
-//    @OneToMany(cascade = {
-//            CascadeType.DETACH,
-//            CascadeType.MERGE,
-//            CascadeType.REFRESH,
-//            CascadeType.PERSIST
-//    }, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id")
-//    private List<Feature> features = new ArrayList<>();
+    @OneToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    }, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private List<Feature> features = new ArrayList<>();
 
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;

@@ -32,7 +32,7 @@ public class Feature {
     private PropertyType property;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     public Feature(String description, PropertyType property) {
