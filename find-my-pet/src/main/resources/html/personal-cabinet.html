@@ -36,13 +36,13 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="offset-md-2 col-md-1 offset-lg-2 col-lg-2 offset-xl-3 col-xl-2 logout-col display-none-md">
+                <div class="offset-md-2 col-md-1 offset-lg-2 col-lg-1 offset-xl-3 col-xl-1 logout-col display-none-md">
                     <form th:method="post" th:action="@{/logout}">
                         <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
                         <input type="submit" class="logout-btn" value="Выйти">
                     </form>
                 </div>
-                <div class="col text-right display-none-md">
+                <div class="col col-lg-2 display-none-md delete-col">
                     <a href="/user/delete-account" class="delete-link"><h6 class="delete-label">Удалить аккаунт</h6></a>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     <div class="header-user-data">
                         <ul>
                             <li class="list-label">Мои данные</li>
-<!--                            TODO: вместо # - ссылка на страницу редактирования данных пользователя-->
+                            <!--                            TODO: вместо # - ссылка на страницу редактирования данных пользователя-->
                             <li><a href="#" class="edit-icon"><img th:src="@{/img/edit.svg}" alt="Edit" class="inline"></a>
                             </li>
                         </ul>
@@ -76,7 +76,7 @@
                             </tr>
                             <tr>
                                 <td class="title">Телеграм</td>
-<!--                                TODO: вывод телеги пользователя-->
+                                <!--                                TODO: вывод телеги пользователя-->
                                 <td class="data">@makarbesty</td>
                             </tr>
                         </table>
@@ -106,8 +106,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet : ${pets}">
-<!--                    TODO: вместо # - ссылка на страницу редактирования данных о питомце-->
-                    <a href="#" class="pet-info-link">
+                    <a href="@{/pet/my-pets/{id}(id = ${pet.chipId})}" class="pet-info-link">
                         <div class="wrapper pet-card">
                             <div class="pet-name">
                                 <h5 th:text="${pet.name}">pet.name</h5>
