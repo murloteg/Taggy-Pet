@@ -63,6 +63,13 @@ body {
     background-color: #462446;
     color: white;
 }
+
+.delete-col {
+    margin-left: 60px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .delete-link:hover {
     text-decoration: blink;
 }
@@ -225,6 +232,10 @@ h5 {
 
     .logout-col {
         padding-left: 50px;
+    }
+
+    .delete-col {
+        margin-left: 120px;
     }
 
     .picture-container {
