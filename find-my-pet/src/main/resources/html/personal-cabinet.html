@@ -11,88 +11,112 @@
     <link rel="stylesheet" href="/css/personal-cabinet.css">
 </head>
 <body>
-    <header class="header">
-        <div class="nav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-2">
-                        <a href="/"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
-                    </div>
-                    <div class="col-xl-3 change-bootstrap-padding">
-                        <h6 class="personal-cabinet-label">Личный кабинет</h6>
-                    </div>
-                    <div class="offset-xl-3 col-xl-1">
-                        <form th:method="post" th:action="@{/logout}">
-                            <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
-                            <input type="submit" class="logout-btn" value="Выйти">
-                        </form>
-                    </div>
-                    <div class="offset-xl-1 col-xl-2">
-                        <a href="/user/delete-account" class="delete-link"><h6 class="delete-label">Удалить аккаунт</h6></a>
-                    </div>
+<header class="header">
+    <div class="nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-4 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                    <a href="/"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
                 </div>
-            </div>
-        </div>
-        <div class="offer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6">
-                        <h3>Мои данные</h3>
-                        <div class="user-data">
-                            <table class="user-data-table">
-                                <tr>
-                                    <td class="title">Имя</td>
-                                    <td class="data" th:text="${user.firstName}">user.firstName</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Телефон</td>
-                                    <td class="data" th:text="${user.phoneNumber}">user.phoneNumber</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Email</td>
-                                    <td class="data" th:text="${user.email}">user.email</td>
-                                </tr>
-                                <tr>
-                                    <td class="title">Телеграм</td>
-<!--                                    TODO: вывод телеги пользователя-->
-                                    <td class="data">@makarbesty</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="offset-xl-1 col-xl-5">
-                        <img th:src="@{/img/pers-cab.png}" alt="Personal cabinet picture" class="pers-cab-img">
-                    </div>
+                <div class="col-5 col-sm-5 col-md-4 col-lg-3 col-xl-3 personal-cabinet-col display-none-sm">
+                    <h6 class="personal-cabinet-label">Личный кабинет</h6>
                 </div>
-            </div>
-        </div>
-        <div class="pets-list-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5">
+                <div class="col text-right menu">
+                    <input type="checkbox" id="burger">
+                    <label for="burger"></label>
+                    <nav>
                         <ul>
-                            <li class="list-label">Мои питомцы</li>
-                            <li><a href="/pet/add-new-pet" class="pet-list-btn">+ <span class="add-label">Добавить</span></a></li>
+                            <li>
+                                <form th:method="post" th:action="@{/logout}">
+                                    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                                    <input type="submit" class="logout-btn" value="Выйти">
+                                </form>
+                            </li>
+                            <li><a th:href="@{/user/delete-account}" class="menu-link">Удалить аккаунт</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="offset-md-2 col-md-1 offset-lg-2 col-lg-1 offset-xl-3 col-xl-1 logout-col display-none-md">
+                    <form th:method="post" th:action="@{/logout}">
+                        <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                        <input type="submit" class="logout-btn" value="Выйти">
+                    </form>
+                </div>
+                <div class="col col-lg-2 display-none-md delete-col">
+                    <a href="/user/delete-account" class="delete-link"><h6 class="delete-label">Удалить аккаунт</h6></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-xl-6">
+                    <div class="header-user-data">
+                        <ul>
+                            <li class="list-label">Мои данные</li>
+                            <!--                            TODO: вместо # - ссылка на страницу редактирования данных пользователя-->
+                            <li><a href="#" class="edit-icon"><img th:src="@{/img/edit.svg}" alt="Edit" class="inline"></a>
+                            </li>
                         </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="pets-list">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4" th:each="pet : ${pets}">
-                        <a th:href="@{/pet/my-pets/{id}(id = ${pet.chipId})}" class="pet-info-link">
-                            <div class="wrapper pet-card">
-                                <div class="pet-name">
-                                    <h5 th:text="${pet.name}">pet.name</h5>
-                                </div>
-                            </div>
-                        </a>
+                    <div class="user-data">
+                        <table class="user-data-table">
+                            <tr>
+                                <td class="title">Имя</td>
+                                <td class="data" th:text="${user.firstName}">user.firstName</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Телефон</td>
+                                <td class="data" th:text="${user.phoneNumber}">user.phoneNumber</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Email</td>
+                                <td class="data" th:text="${user.email}">user.email</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Телеграм</td>
+                                <!--                                TODO: вывод телеги пользователя-->
+                                <td class="data">@makarbesty</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
+                <div class="offset-lg-2 col-lg-4 offset-xl-1 col-xl-5 picture-container">
+                    <img th:src="@{/img/pers-cab.png}" alt="Personal cabinet picture" class="pers-cab-img">
+                </div>
             </div>
         </div>
-    </header>
+    </div>
+    <div class="pets-list-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-5">
+                    <ul>
+                        <li class="list-label">Мои питомцы</li>
+                        <li class="display-none-mobile"><a href="/pet/add-new-pet" class="pet-list-btn">+ <span
+                                class="add-label">Добавить</span></a></li>
+                        <li class="mobile"><a href="/pet/add-new-pet" class="pet-list-btn">+</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pets-list">
+        <div class="container">
+            <div class="row">
+                <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet : ${pets}">
+                    <a href="@{/pet/my-pets/{id}(id = ${pet.chipId})}" class="pet-info-link">
+                        <div class="wrapper pet-card">
+                            <div class="pet-name">
+                                <h5 th:text="${pet.name}">pet.name</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 </body>
 </html>
