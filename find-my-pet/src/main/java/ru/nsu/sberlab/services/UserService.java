@@ -13,6 +13,7 @@ import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
+import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
@@ -29,6 +30,7 @@ public class UserService implements UserDetailsService {
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PasswordEncoder passwordEncoder;
     private final PropertyResolverUtils propertyResolver;
+    private final PetCleaner petCleaner;
 
     @Transactional
     public void createUser(UserRegistrationDto userDto) {
@@ -61,7 +63,10 @@ public class UserService implements UserDetailsService {
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
+        List<Pet> pets = user.getPets();
         userRepository.deleteById(user.getUserId());
+        pets.forEach(pet -> pet.getUsers().remove(user));
+        pets.forEach(petCleaner::clear);
     }
 
     @Transactional
@@ -76,7 +81,7 @@ public class UserService implements UserDetailsService {
                         petInitializationDto.getBreed(),
                         petInitializationDto.getSex(),
                         petInitializationDto.getName(),
-                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures())
                 )
         );
         userRepository.save(user);

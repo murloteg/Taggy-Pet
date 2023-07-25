@@ -3,6 +3,7 @@ package ru.nsu.sberlab.services;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetInitializationDto;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
@@ -53,7 +54,7 @@ public class PetService {
     }
 
     @Transactional
-    public void updatePetInfo(PetInitializationDto petInitializationDto, User principal) { // TODO: this method doesn't delete features from table
+    public void updatePetInfo(PetInitializationDto petInitializationDto) { // TODO: this method doesn't delete features from table
         Pet pet = petRepository.findByChipId(petInitializationDto.getChipId()).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
@@ -66,15 +67,18 @@ public class PetService {
                 .collect(Collectors.toMap(
                         feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
                 );
-        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures())
                 .stream()
                 .map(feature -> {
                             Long key = feature.getProperty().getPropertyId();
                             Feature value = featureMap.get(key);
                             if (Objects.nonNull(value)) {
-                                feature.setFeatureId(value.getFeatureId());
-                                feature.setPets(value.getPets());
-                                feature.setDateTime(LocalDate.now());
+                                value.setDescription(feature.getDescription());
+                                value.setDateTime(LocalDate.now());
+                                return value;
+//                                feature.setFeatureId(value.getFeatureId());
+//                                feature.setPets(value.getPets());
+//                                feature.setDateTime(LocalDate.now());
                             }
                             return feature;
                         }
@@ -85,8 +89,21 @@ public class PetService {
     }
 
     @Transactional
-    public void deletePet(String chipId) { // TODO: add this feature later
-        petRepository.deleteByChipId(chipId);
+    public void deletePet(String chipId, User principal) {
+        Pet pet = petRepository.findByChipId(chipId).orElseThrow(
+                () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
+        );
+        boolean userHasAccessToPet = !principal.getPets()
+                .stream()
+                .filter(i -> i.getChipId().equals(pet.getChipId()))
+                .toList()
+                .isEmpty();
+        if (userHasAccessToPet) {
+            pet.getUsers().forEach(user -> user.getPets().remove(pet));
+            petRepository.deleteByChipId(pet.getChipId());
+        } else {
+            throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
+        }
     }
 
     private String message(String property) {
