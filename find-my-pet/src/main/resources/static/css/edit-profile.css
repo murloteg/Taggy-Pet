@@ -1,7 +1,7 @@
 body {
     font-family: 'Montserrat', sans-serif;
     color: white;
-    background-color: #462446;
+    background-color: #eaeaea;
 }
 
 .nav {
@@ -25,15 +25,28 @@ h1 {
 }
 
 .offer {
+    margin-top: 20px;
     justify-content: center;
     display: flex;
     width: 100%;
-    left: 0;
-    top: 0;
-    position: absolute;
     height: 100%;
     align-content: center;
     align-items: center;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    align-items: center;
+    color: black;
+    display: flex;
+}
+
+.lock-img {
+    margin-bottom: 4px;
+    margin-left: 6px;
+    height: 15px;
+    opacity: 80%;
 }
 
 .edit-window {
@@ -43,6 +56,7 @@ h1 {
     flex-direction: column;
     justify-content: center;
     padding-bottom: 35px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
 }
 
 .elem-in-window {
@@ -64,23 +78,26 @@ form {
 }
 
 .input {
-    width: 90%;
-    padding: 10px 30px;
+    background-color: #eaeaeab3;
+    width: 100%;
+    padding: 10px 15px;
     border-style: solid;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
     color: black;
     border-width: 3px;
-    border-color: #FF742B;
+    border-color: #c5c5c5;
     border-radius: 20px;
     outline: none;
+    margin-bottom: 10px;
 }
 
 input[type="submit"] {
+    margin-top: 15px;
     display: block;
     font-weight: bold;
     border-radius: 64px;
-    padding: 10px 35px;
+    padding: 12px 35px;
     font-size: 15px;
     border-style: none;
     outline: none;
@@ -96,11 +113,28 @@ input[type="submit"]:hover {
 }
 
 @media screen and (max-width: 575px){
-    input {
-        width: 90%;
+    body {
+        background-color: white;
+    }
+
+    .offer {
+        margin-top: 0px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .edit-window {
+        box-shadow: none;
+    }
+
+    .input {
+        width: 260px;
     }
 
     input[type="submit"] {
-        font-size: 12px;
+        width: 265px;
+        font-size: 14px;
     }
 }
