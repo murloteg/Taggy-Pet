@@ -72,14 +72,14 @@ public class PetService {
                             Long key = feature.getProperty().getPropertyId();
                             Feature value = featureMap.get(key);
                             if (Objects.nonNull(value)) {
-                                feature.setFeatureId(value.getFeatureId());
-                                feature.setPets(value.getPets());
-                                feature.setDateTime(LocalDate.now());
+                                value.setDescription(feature.getDescription());
+                                value.setDateTime(LocalDate.now());
+                                return value;
                             }
                             return feature;
                         }
                 )
-                .toList();
+                .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
         petRepository.save(pet);
     }

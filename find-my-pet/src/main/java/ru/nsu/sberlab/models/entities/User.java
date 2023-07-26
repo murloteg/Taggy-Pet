@@ -59,16 +59,16 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
+    @PrePersist
+    private void initialization() {
+        dateOfCreated = LocalDateTime.now();
+    }
+
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.password = password;
-    }
-
-    @PrePersist
-    private void init() {
-        dateOfCreated = LocalDateTime.now();
     }
 
     @Override
