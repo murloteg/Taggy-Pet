@@ -51,6 +51,16 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void updateUserInfo(UserInfoDto userInfoDto) {
+        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        user.setPhoneNumber(userInfoDto.getPhoneNumber());
+        user.setFirstName(userInfoDto.getFirstName());
+        userRepository.save(user);
+    }
+
+    @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findUserByUserId(userId).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
@@ -81,7 +91,7 @@ public class UserService implements UserDetailsService {
                         petInitializationDto.getBreed(),
                         petInitializationDto.getSex(),
                         petInitializationDto.getName(),
-                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures())
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
                 )
         );
         userRepository.save(user);
@@ -95,15 +105,6 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .map(petInfoDtoMapper)
                 .toList();
-    }
-
-    public void updateUserInfo(UserInfoDto userInfoDto) {
-        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
-        );
-        user.setPhoneNumber(userInfoDto.getPhoneNumber());
-        user.setFirstName(userInfoDto.getFirstName());
-        userRepository.save(user);
     }
 
     @Override

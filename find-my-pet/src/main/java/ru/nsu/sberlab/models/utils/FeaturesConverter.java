@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.exceptions.PropertyNotFoundException;
 import ru.nsu.sberlab.models.dto.FeatureCreationDto;
 import ru.nsu.sberlab.models.entities.Feature;
+import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.repositories.PropertiesRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,17 +20,18 @@ public class FeaturesConverter {
     private final PropertiesRepository propertiesRepository;
     private final PropertyResolverUtils propertyResolver;
 
-    public List<Feature> convertFeatureDtoListToFeatures(List<FeatureCreationDto> featureCreationDtoList) {
+    public List<Feature> convertFeatureDtoListToFeatures(List<FeatureCreationDto> featureCreationDtoList, User principal) {
         return featureCreationDtoList
                 .stream()
                 .filter(dto -> !dto.getDescription().isEmpty())
                 .map(dto -> new Feature(
-                        dto.getDescription(),
-                        propertiesRepository.findById(dto.getPropertyId()).orElseThrow(
-                                () -> new PropertyNotFoundException(message("api.server.error.property-not-found")))
+                                dto.getDescription(),
+                                propertiesRepository.findById(dto.getPropertyId()).orElseThrow(
+                                        () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
+                                principal
                         )
                 )
-                .toList();
+                .collect(Collectors.toCollection(ArrayList<Feature>::new));
     }
 
     private String message(String property) {

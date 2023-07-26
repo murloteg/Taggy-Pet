@@ -7,6 +7,7 @@ import ru.nsu.sberlab.models.entities.Pet;
 
 import java.util.Comparator;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +26,12 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
                 pet.getUsers()
                         .stream()
                         .map(userInfoMapper)
-                        .toList(),
+                        .collect(Collectors.toList()),
                 pet.getFeatures()
                         .stream()
                         .map(featureInfoDtoMapper)
                         .sorted(Comparator.naturalOrder())
-                        .toList()
+                        .collect(Collectors.toList())
         );
     }
 }

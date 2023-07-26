@@ -77,7 +77,7 @@ public class UserController {
     @DeleteMapping("delete-account")
     public String deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getUserId());
-        return "main-page";
+        return "redirect:/logout";
     }
 
     @GetMapping("edit-profile")

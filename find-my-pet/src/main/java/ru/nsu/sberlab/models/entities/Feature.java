@@ -32,12 +32,13 @@ public class Feature {
     private PropertyType property;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public Feature(String description, PropertyType property) {
+    public Feature(String description, PropertyType property, User principal) {
         this.description = description;
         this.property = property;
+        this.user = principal;
     }
 
     @PrePersist

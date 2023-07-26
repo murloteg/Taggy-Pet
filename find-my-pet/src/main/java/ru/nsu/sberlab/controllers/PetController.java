@@ -36,8 +36,11 @@ public class PetController {
     }
 
     @PutMapping("edit")
-    public String editPet(PetInitializationDto petInitializationDto) {
-        petService.updatePetInfo(petInitializationDto);
+    public String editPet(
+            PetInitializationDto petInitializationDto,
+            @AuthenticationPrincipal User principal
+    ) {
+        petService.updatePetInfo(petInitializationDto, principal);
         return "redirect:/user/personal-cabinet";
     }
 
