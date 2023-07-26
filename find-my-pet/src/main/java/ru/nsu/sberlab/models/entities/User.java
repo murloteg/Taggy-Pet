@@ -68,16 +68,16 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id")
     private List<Feature> features = new ArrayList<>();
 
+    @PrePersist
+    private void initialization() {
+        dateOfCreated = LocalDateTime.now();
+    }
+
     public User(String email, String phoneNumber, String firstName, String password) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.password = password;
-    }
-
-    @PrePersist
-    private void initialization() {
-        dateOfCreated = LocalDateTime.now();
     }
 
     @Override
