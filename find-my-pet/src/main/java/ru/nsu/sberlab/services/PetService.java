@@ -100,16 +100,15 @@ public class PetService {
         Pet pet = petRepository.findByChipId(chipId).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
-        List<User> users = pet.getUsers();
-        if (users.size() == 1 && accessToPetChecker.checkIfUserHasAccess(principal, pet)) {
-            User lastOwner = users
-                    .stream()
-                    .findFirst()
-                    .orElseThrow(
-                            () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
-                    );
-            lastOwner.getPets().remove(pet);
-            users.remove(lastOwner);
+        List<User> petOwners = pet.getUsers();
+        User currentUser = petOwners
+                .stream()
+                .filter(user -> user.getEmail().equals(principal.getEmail()))
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+        if (accessToPetChecker.checkIfUserHasAccess(principal, pet) && !petOwners.isEmpty()) {
+            currentUser.getPets().remove(pet);
+            petOwners.remove(currentUser);
             petCleaner.clear(pet);
         } else {
             throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));

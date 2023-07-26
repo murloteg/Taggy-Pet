@@ -2,6 +2,7 @@ package ru.nsu.sberlab.models.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.repositories.PetRepository;
@@ -14,6 +15,7 @@ public class PetCleaner {
     private final PetRepository petRepository;
     private final FeatureCleaner featureCleaner;
 
+    @Transactional
     public void clear(Pet pet) {
         if (pet.getUsers().isEmpty()) {
             List<Feature> features = pet.getFeatures();

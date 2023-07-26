@@ -59,12 +59,7 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(cascade = {
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.REFRESH,
-            CascadeType.PERSIST
-    }, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<Feature> features = new ArrayList<>();
 
