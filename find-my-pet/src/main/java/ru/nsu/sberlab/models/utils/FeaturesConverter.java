@@ -9,10 +9,8 @@ import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.repositories.PropertiesRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class FeaturesConverter {
                                 principal
                         )
                 )
-                .collect(Collectors.toCollection(ArrayList<Feature>::new));
+                .toList();
     }
 
     private String message(String property) {

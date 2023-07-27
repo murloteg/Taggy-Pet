@@ -43,7 +43,7 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<PropertyType>, Pet
                         .stream()
                         .map(featureCreationDtoMapper)
                         .sorted(Comparator.naturalOrder())
-                        .collect(Collectors.toList())
+                        .toList()
         );
     }
 }

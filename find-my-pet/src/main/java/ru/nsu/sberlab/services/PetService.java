@@ -14,13 +14,13 @@ import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
-import ru.nsu.sberlab.models.utils.AccessToPetChecker;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.repositories.PropertiesRepository;
+import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -30,11 +30,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PetService {
     private final PetRepository petRepository;
+    private final UserRepository userRepository;
     private final PropertiesRepository propertiesRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
-    private final AccessToPetChecker accessToPetChecker;
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
@@ -64,35 +64,36 @@ public class PetService {
         Pet pet = petRepository.findByChipId(petInitializationDto.getChipId()).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
-        if (accessToPetChecker.checkIfUserHasAccess(principal, pet)) {
-            pet.setType(petInitializationDto.getType());
-            pet.setBreed(petInitializationDto.getBreed());
-            pet.setSex(petInitializationDto.getSex());
-            pet.setName(petInitializationDto.getName());
-            Map<Long, Feature> featureMap = pet.getFeatures()
-                    .stream()
-                    .collect(Collectors.toMap(
-                            feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
-                    );
-            List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
-                    .stream()
-                    .map(feature -> {
-                                Long key = feature.getProperty().getPropertyId();
-                                Feature value = featureMap.get(key);
-                                if (Objects.nonNull(value)) {
-                                    value.setDescription(feature.getDescription());
-                                    value.setDateTime(LocalDate.now());
-                                    return value;
-                                }
-                                return feature;
+        User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        checkIfUserHasAccessToPet(currentUser, pet);
+
+        pet.setType(petInitializationDto.getType());
+        pet.setBreed(petInitializationDto.getBreed());
+        pet.setSex(petInitializationDto.getSex());
+        pet.setName(petInitializationDto.getName());
+        Map<Long, Feature> featureMap = pet.getFeatures()
+                .stream()
+                .collect(Collectors.toMap(
+                        feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
+                );
+        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                .stream()
+                .map(feature -> {
+                            Long key = feature.getProperty().getPropertyId();
+                            Feature value = featureMap.get(key);
+                            if (Objects.nonNull(value)) {
+                                value.setDescription(feature.getDescription());
+                                value.setDateTime(LocalDate.now());
+                                return value;
                             }
-                    )
-                    .collect(Collectors.toCollection(ArrayList<Feature>::new));
-            pet.setFeatures(mergedFeatures);
-            petRepository.save(pet);
-        } else {
-            throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
-        }
+                            return feature;
+                        }
+                )
+                .collect(Collectors.toCollection(ArrayList<Feature>::new));
+        pet.setFeatures(mergedFeatures);
+        petRepository.save(pet);
     }
 
     @Transactional
@@ -100,18 +101,15 @@ public class PetService {
         Pet pet = petRepository.findByChipId(chipId).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
-        List<User> petOwners = pet.getUsers();
-        User currentUser = petOwners
-                .stream()
-                .filter(user -> user.getEmail().equals(principal.getEmail()))
-                .findFirst()
-                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
-        if (accessToPetChecker.checkIfUserHasAccess(principal, pet) && !petOwners.isEmpty()) {
+        User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        checkIfUserHasAccessToPet(currentUser, pet);
+
+        if (!pet.getUsers().isEmpty()) {
             currentUser.getPets().remove(pet);
-            petOwners.remove(currentUser);
+            pet.getUsers().remove(currentUser);
             petCleaner.clear(pet);
-        } else {
-            throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
         }
     }
 
@@ -121,6 +119,15 @@ public class PetService {
                 .stream()
                 .map(petInfoDtoMapper)
                 .toList();
+    }
+
+    private void checkIfUserHasAccessToPet(User user, Pet pet) {
+        boolean userHasAccess = user.getPets()
+                .stream()
+                .anyMatch(i -> i.getChipId().equals(pet.getChipId()));
+        if (!userHasAccess) {
+            throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
+        }
     }
 
     private String message(String property) {

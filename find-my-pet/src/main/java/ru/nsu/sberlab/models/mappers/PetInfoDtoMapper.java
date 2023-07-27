@@ -26,12 +26,12 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
                 pet.getUsers()
                         .stream()
                         .map(userInfoMapper)
-                        .collect(Collectors.toList()),
+                        .toList(),
                 pet.getFeatures()
                         .stream()
                         .map(featureInfoDtoMapper)
                         .sorted(Comparator.naturalOrder())
-                        .collect(Collectors.toList())
+                        .toList()
         );
     }
 }
