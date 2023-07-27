@@ -26,13 +26,13 @@
                     <div class="form-container">
                         <form th:method="put" th:action="@{/user/edit-profile}">
                             <label for="firstName">Имя</label>
-                            <input type="text" th:name="firstName" id="firstName" value="Ваше имя" th:value="${user.firstName}" class="elem-in-window input">
+                            <input type="text" th:name="firstName" id="firstName" th:value="${user.firstName}" class="elem-in-window input">
 
                             <label for="firstName">Email<img th:src="@{/img/lock.svg}" alt="Lock" class="lock-img"></label>
-                            <input type="email" th:name="email" value="Ваша почта" th:value="${user.email}" class="elem-in-window input">
+                            <input type="email" th:name="email" th:value="${user.email}" readonly class="elem-in-window input">
 
                             <label for="firstName">Телефон</label>
-                            <input type="tel" th:name="phoneNumber" value="Ваш телефон" th:value="${user.phoneNumber}" class="elem-in-window input">
+                            <input type="tel" th:name="phoneNumber" th:value="${user.phoneNumber}" class="elem-in-window input">
 
                             <label for="firstName">Пароль</label>
                             <input type="password" th:name="password" class="elem-in-window input">
