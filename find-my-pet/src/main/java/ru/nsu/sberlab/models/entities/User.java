@@ -38,6 +38,12 @@ public class User implements UserDetails {
     @Column(name = "date_of_creation")
     private LocalDateTime dateOfCreated;
 
+    @Column(name = "permission_to_show_phone_number")
+    private boolean hasPermitToShowPhoneNumber;
+
+    @Column(name = "permission_to_show_email")
+    private boolean hasPermitToShowEmail;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_roles",
@@ -59,8 +65,10 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<SocialNetwork> socialNetworks = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Feature> features = new ArrayList<>();
 
     @PrePersist
@@ -68,11 +76,13 @@ public class User implements UserDetails {
         dateOfCreated = LocalDateTime.now();
     }
 
-    public User(String email, String phoneNumber, String firstName, String password) {
+    public User(String email, String phoneNumber, String firstName, String password, boolean hasPermitToShowPhoneNumber, boolean hasPermitToShowEmail) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.password = password;
+        this.hasPermitToShowPhoneNumber = hasPermitToShowPhoneNumber;
+        this.hasPermitToShowEmail = hasPermitToShowEmail;
     }
 
     @Override

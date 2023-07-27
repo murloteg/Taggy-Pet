@@ -38,7 +38,9 @@ public class UserService implements UserDetailsService {
                 userDto.getEmail(),
                 userDto.getPhoneNumber(),
                 userDto.getFirstName(),
-                userDto.getPassword()
+                userDto.getPassword(),
+                userDto.isHasPermitToShowPhoneNumber(),
+                userDto.isHasPermitToShowEmail()
         );
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {

@@ -10,4 +10,6 @@ public class UserRegistrationDto {
     private final String phoneNumber;
     private final String firstName;
     private final String password;
+    private final boolean hasPermitToShowPhoneNumber;
+    private final boolean hasPermitToShowEmail;
 }

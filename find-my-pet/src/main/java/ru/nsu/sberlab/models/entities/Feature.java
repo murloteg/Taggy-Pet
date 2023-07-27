@@ -31,7 +31,12 @@ public class Feature {
     @JoinColumn(name = "property_id")
     private PropertyType property;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    }, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

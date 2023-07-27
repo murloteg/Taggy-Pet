@@ -14,7 +14,9 @@ public class UserRegistrationDtoMapper implements Function<User, UserRegistratio
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getFirstName(),
-                user.getPassword()
+                user.getPassword(),
+                user.isHasPermitToShowPhoneNumber(),
+                user.isHasPermitToShowEmail()
         );
     }
 }
