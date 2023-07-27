@@ -27,7 +27,12 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<PropertyType>, Pet
                 );
         IntStream.range(0, properties.size())
                 .filter(index -> !propertyMap.containsKey((long) index))
-                .forEach(index -> features.add(index, new Feature(null, properties.get(index))));
+                .forEach(index -> features.add(index, new Feature(
+                                null,
+                                properties.get(index),
+                                null)
+                        )
+                );
         return new PetInitializationDto(
                 pet.getChipId(),
                 pet.getName(),

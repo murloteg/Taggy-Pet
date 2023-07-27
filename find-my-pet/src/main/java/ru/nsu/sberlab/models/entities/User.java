@@ -59,6 +59,10 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<Feature> features = new ArrayList<>();
+
     @PrePersist
     private void initialization() {
         dateOfCreated = LocalDateTime.now();
