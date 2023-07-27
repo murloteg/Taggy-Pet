@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Редактировать профиль</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Редактирование профиля</title>
+    <div th:replace="fragments/common-dependencies :: common-dependencies"></div>
+    <link rel="stylesheet" th:href="@{/css/edit-profile.css}">
 </head>
-
 <body>
-<h5>Для того, чтобы отредактировать свой профиль, просто измените значения ниже:</h5>
-<form th:method="put" th:action="@{/user/edit-profile}">
-    <b>Имя:</b> <input type="text" th:name="firstName" placeholder="Имя пользователя" value="Ваше имя"
-                       th:value="${user.firstName}"><br><br>
-    <b>email:</b> <input type="email" th:name="email" placeholder="Email" value="Ваш email" th:value="${user.email}"
-                         readonly> <br><br>
-    <b>Телефон:</b> <input type="text" th:name="phoneNumber" placeholder="Телефон" value="Ваш телефон"
-                           th:value="${user.phoneNumber}"> <br><br>
-    <input type="password" th:name="password" placeholder="Пароль"><br><br>
-    <input type="password" th:name="retypePassword" placeholder="Введите пароль ещё раз"><br><br>
-    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Подтвердить изменения" class="elem_in_window">
-</form>
+<header class="header">
+    <div class="nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4">
+                    <a th:href="@{/}"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-9 col-md-7 col-lg-5 col-xl-5 mx-auto edit-window">
+                    <div class="title elem-in-window">
+                        <h1>Редактировать профиль</h1>
+                    </div>
+                    <div class="form-container">
+                        <form th:method="put" th:action="@{/user/edit-profile}">
+                            <label for="firstName">Имя</label>
+                            <input type="text" th:name="firstName" id="firstName" value="Ваше имя" th:value="${user.firstName}" class="elem-in-window input">
+
+                            <label for="firstName">Email<img th:src="@{/img/lock.svg}" alt="Lock" class="lock-img"></label>
+                            <input type="email" th:name="email" value="Ваша почта" th:value="${user.email}" class="elem-in-window input">
+
+                            <label for="firstName">Телефон</label>
+                            <input type="tel" th:name="phoneNumber" value="Ваш телефон" th:value="${user.phoneNumber}" class="elem-in-window input">
+
+                            <label for="firstName">Пароль</label>
+                            <input type="password" th:name="password" class="elem-in-window input">
+
+                            <label for="firstName">Введите пароль еще раз</label>
+                            <input type="password" th:name="retypePassword" class="elem-in-window input"><br>
+
+                            <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                            <input type="submit" value="Подтвердить изменения" class="elem-in-window">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 </body>
 </html>
