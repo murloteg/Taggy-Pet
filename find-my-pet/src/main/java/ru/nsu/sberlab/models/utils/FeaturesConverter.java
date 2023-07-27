@@ -7,7 +7,7 @@ import ru.nsu.sberlab.exceptions.PropertyNotFoundException;
 import ru.nsu.sberlab.models.dto.FeatureCreationDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.User;
-import ru.nsu.sberlab.repositories.PropertiesRepository;
+import ru.nsu.sberlab.repositories.FeaturePropertiesRepository;
 
 import java.util.List;
 import java.util.Locale;
@@ -15,7 +15,7 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class FeaturesConverter {
-    private final PropertiesRepository propertiesRepository;
+    private final FeaturePropertiesRepository featurePropertiesRepository;
     private final PropertyResolverUtils propertyResolver;
 
     public List<Feature> convertFeatureDtoListToFeatures(List<FeatureCreationDto> featureCreationDtoList, User principal) {
@@ -24,7 +24,7 @@ public class FeaturesConverter {
                 .filter(dto -> !dto.getDescription().isEmpty())
                 .map(dto -> new Feature(
                                 dto.getDescription(),
-                                propertiesRepository.findById(dto.getPropertyId()).orElseThrow(
+                                featurePropertiesRepository.findById(dto.getPropertyId()).orElseThrow(
                                         () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
                                 principal
                         )

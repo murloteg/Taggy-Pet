@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.models.dto.PetInitializationDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
-import ru.nsu.sberlab.models.entities.PropertyType;
+import ru.nsu.sberlab.models.entities.FeatureProperty;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -14,11 +14,11 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
-public class PetEditDtoMapper implements BiFunction<Pet, List<PropertyType>, PetInitializationDto> {
+public class PetEditDtoMapper implements BiFunction<Pet, List<FeatureProperty>, PetInitializationDto> {
     private final FeatureCreationDtoMapper featureCreationDtoMapper;
 
     @Override
-    public PetInitializationDto apply(Pet pet, List<PropertyType> properties) {
+    public PetInitializationDto apply(Pet pet, List<FeatureProperty> properties) {
         List<Feature> features = pet.getFeatures();
         Map<Long, String> propertyMap = features
                 .stream()
@@ -27,12 +27,7 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<PropertyType>, Pet
                 );
         IntStream.range(0, properties.size())
                 .filter(index -> !propertyMap.containsKey((long) index))
-                .forEach(index -> features.add(index, new Feature(
-                                null,
-                                properties.get(index),
-                                null)
-                        )
-                );
+                .forEach(index -> features.add(index, new Feature(properties.get(index))));
         return new PetInitializationDto(
                 pet.getChipId(),
                 pet.getName(),

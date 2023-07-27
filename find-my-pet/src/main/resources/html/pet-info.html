@@ -102,10 +102,11 @@
                             <tr>
                                 <td class="title-table">Телеграм</td>
                                 <td class="data-table">
-                                    <!--                                        TODO: ссылка на тг должна браться таймлифом из юзера-->
-                                    <a th:href="@{https://telegram.me/makar_mikhalev}" class="tg-btn">
-                                        <img th:src="@{/img/tg.svg}" alt="Telegram">Написать
-                                    </a>
+                                    <div th:each="socialNetwork : ${user.socialNetworks}">
+                                        <a th:href="@{${'https://telegram.me/' + socialNetwork.link}}" class="tg-btn">
+                                            <img th:src="@{/img/icons/TG.svg}" alt="Telegram">Написать
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

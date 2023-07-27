@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.models.mappers;
 
 import org.springframework.stereotype.Service;
+import ru.nsu.sberlab.models.dto.SocialNetworkInfoDto;
 import ru.nsu.sberlab.models.dto.UserInfoDto;
 import ru.nsu.sberlab.models.entities.User;
 
@@ -13,7 +14,15 @@ public class UserInfoMapper implements Function<User, UserInfoDto> {
         return new UserInfoDto(
                 user.getEmail(),
                 user.getPhoneNumber(),
-                user.getFirstName()
+                user.getFirstName(),
+                user.getSocialNetworks()
+                        .stream()
+                        .map(socialNetwork -> new SocialNetworkInfoDto(
+                                        socialNetwork.getSocialNetworkProperty().getPropertyValue(),
+                                        socialNetwork.getLink()
+                                )
+                        )
+                        .toList()
         );
     }
 }

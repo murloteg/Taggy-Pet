@@ -19,7 +19,7 @@ import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.repositories.PropertiesRepository;
+import ru.nsu.sberlab.repositories.FeaturePropertiesRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
-    private final PropertiesRepository propertiesRepository;
+    private final FeaturePropertiesRepository featurePropertiesRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
@@ -46,7 +46,7 @@ public class PetService {
 
     public PetInitializationDto getPetInitializationDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
-                .map(pet -> petEditDtoMapper.apply(pet, propertiesRepository.findAll()))
+                .map(pet -> petEditDtoMapper.apply(pet, featurePropertiesRepository.findAll()))
                 .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
     }
 
@@ -78,7 +78,7 @@ public class PetService {
                 .collect(Collectors.toMap(
                         feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
                 );
-        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), currentUser)
                 .stream()
                 .map(feature -> {
                             Long key = feature.getProperty().getPropertyId();

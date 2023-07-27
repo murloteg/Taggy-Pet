@@ -65,7 +65,12 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    }, fetch = FetchType.LAZY, mappedBy = "user")
     private List<SocialNetwork> socialNetworks = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -76,7 +81,14 @@ public class User implements UserDetails {
         dateOfCreated = LocalDateTime.now();
     }
 
-    public User(String email, String phoneNumber, String firstName, String password, boolean hasPermitToShowPhoneNumber, boolean hasPermitToShowEmail) {
+    public User(
+            String email,
+            String phoneNumber,
+            String firstName,
+            String password,
+            boolean hasPermitToShowPhoneNumber,
+            boolean hasPermitToShowEmail
+    ) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;

@@ -14,6 +14,7 @@ import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
+import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
@@ -26,11 +27,12 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final PropertyResolverUtils propertyResolver;
     private final PetCleaner petCleaner;
+    private final PropertyResolverUtils propertyResolver;
 
     @Transactional
     public void createUser(UserRegistrationDto userDto) {
@@ -49,7 +51,8 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        savedUser.setSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(userDto.getSocialNetworks(), savedUser));
     }
 
     @Transactional
@@ -93,7 +96,7 @@ public class UserService implements UserDetailsService {
                         petInitializationDto.getBreed(),
                         petInitializationDto.getSex(),
                         petInitializationDto.getName(),
-                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), user)
                 )
         );
         userRepository.save(user);

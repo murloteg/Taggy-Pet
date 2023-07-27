@@ -29,7 +29,7 @@ public class Feature {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id")
-    private PropertyType property;
+    private FeatureProperty property;
 
     @ManyToOne(cascade = {
             CascadeType.MERGE,
@@ -40,7 +40,11 @@ public class Feature {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Feature(String description, PropertyType property, User principal) {
+    public Feature(FeatureProperty property) {
+        this.property = property;
+    }
+
+    public Feature(String description, FeatureProperty property, User principal) {
         this.description = description;
         this.property = property;
         this.user = principal;
