@@ -106,11 +106,9 @@ public class PetService {
         );
         checkIfUserHasAccessToPet(currentUser, pet);
 
-        if (!pet.getUsers().isEmpty()) {
-            currentUser.getPets().remove(pet);
-            pet.getUsers().remove(currentUser);
-            petCleaner.clear(pet);
-        }
+        currentUser.getPets().remove(pet);
+        pet.getUsers().remove(currentUser);
+        petCleaner.clear(pet);
     }
 
     public List<PetInfoDto> petsList(Pageable pageable) {
