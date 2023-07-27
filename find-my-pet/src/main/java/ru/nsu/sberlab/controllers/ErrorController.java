@@ -10,7 +10,7 @@ import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 
 @ControllerAdvice
 @RequiredArgsConstructor
-public class ErrorController {
+public class ErrorController { // TODO: add handling of IllegalAccessToPetException
     @ExceptionHandler(value = {FailedPetSearchException.class})
     @GetMapping
     public String handleFailedPetSearchException(

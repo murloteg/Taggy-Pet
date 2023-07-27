@@ -3,34 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Список моих питомцев</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <h3>Список моих питомцев</h3>
-    <hr>
-    <div th:if="${not #lists.isEmpty(pets)}">
-        <div th:each="pet : ${pets}">
-            <b>Чип:</b> <p style="display: inline" th:text="${pet.chipId}">chipID</p><br>
-            <b>Вид животного:</b> <p style="display: inline" th:text="${pet.type}">type</p><br>
-            <b>Порода:</b> <p style="display: inline" th:text="${pet.breed}">breed</p><br>
-            <b>Пол:</b> <p style="display: inline" th:text="${pet.sex}">sex</p><br>
-            <b>Кличка:</b> <p style="display: inline" th:text="${pet.name}">chipID</p><br>
-            <br><br>
-            <div th:if="${not #lists.isEmpty(pet.features)}">
-                <h4>Информация об особенностях питомца</h4>
-                <div th:each="feature : ${pet.features}">
-                    <b>Тип особенности:</b> <p th:text="${feature.propertyType.propertyValue}">feature.propertyType.propertyValue</p>
-                    <b>Комментарий по особенности:</b> <p th:text="${feature.description}">feature.description</p>
-                </div>
+<h3>Список моих питомцев</h3>
+<hr>
+<div th:if="${not #lists.isEmpty(pets)}">
+    <div th:each="pet : ${pets}">
+        <b>Чип:</b>
+        <p style="display: inline" th:text="${pet.chipId}">chipID</p><br>
+        <b>Вид животного:</b>
+        <p style="display: inline" th:text="${pet.type}">type</p><br>
+        <b>Порода:</b>
+        <p style="display: inline" th:text="${pet.breed}">breed</p><br>
+        <b>Пол:</b>
+        <p style="display: inline" th:text="${pet.sex}">sex</p><br>
+        <b>Кличка:</b>
+        <p style="display: inline" th:text="${pet.name}">chipID</p><br>
+        <br><br>
+        <div th:if="${not #lists.isEmpty(pet.features)}">
+            <h4>Информация об особенностях питомца</h4>
+            <div th:each="feature : ${pet.features}">
+                <b>Тип особенности:</b>
+                <p th:text="${feature.propertyType.propertyValue}">feature.propertyType.propertyValue</p>
+                <b>Комментарий по особенности:</b>
+                <p th:text="${feature.description}">feature.description</p>
             </div>
-            <div th:unless="${not #lists.isEmpty(pet.features)}">
-                <h4>Особенностей ухода нет</h4>
-            </div>
-            <hr>
         </div>
+        <div th:unless="${not #lists.isEmpty(pet.features)}">
+            <h4>Особенностей ухода нет</h4>
+        </div>
+        <hr>
     </div>
-    <div th:unless="${not #lists.isEmpty(pets)}">
-        <h2>Не добавлено ни одного питомца</h2>
-    </div>
+</div>
+<div th:unless="${not #lists.isEmpty(pets)}">
+    <h2>Не добавлено ни одного питомца</h2>
+</div>
 </body>
 </html>

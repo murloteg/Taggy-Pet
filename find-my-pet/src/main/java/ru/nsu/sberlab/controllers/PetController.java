@@ -27,7 +27,7 @@ public class PetController {
 
     @GetMapping("my-pets/{id}")
     public String myPetInfo(
-            @PathVariable("id") String chipId,
+            @PathVariable(value = "id") String chipId,
             Model model
     ) {
         model.addAttribute("properties", propertyService.properties());
@@ -41,6 +41,24 @@ public class PetController {
             @AuthenticationPrincipal User principal
     ) {
         petService.updatePetInfo(petInitializationDto, principal);
+        return "redirect:/user/personal-cabinet";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deletePetPage(
+            @PathVariable(value = "id") String chipId,
+            Model model
+    ) {
+        model.addAttribute("pet", petService.getPetInfoByChipId(chipId));
+        return "delete-pet";
+    }
+
+    @DeleteMapping("delete/{id}")
+    public String deletePet(
+            @PathVariable(value = "id") String chipId,
+            @AuthenticationPrincipal User principal
+    ) {
+        petService.deletePet(chipId, principal);
         return "redirect:/user/personal-cabinet";
     }
 

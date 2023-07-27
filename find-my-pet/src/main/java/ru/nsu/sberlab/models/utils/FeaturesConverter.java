@@ -23,10 +23,10 @@ public class FeaturesConverter {
                 .stream()
                 .filter(dto -> !dto.getDescription().isEmpty())
                 .map(dto -> new Feature(
-                        dto.getDescription(),
-                        propertiesRepository.findById(dto.getPropertyId()).orElseThrow(
-                                () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
-                        principal
+                                dto.getDescription(),
+                                propertiesRepository.findById(dto.getPropertyId()).orElseThrow(
+                                        () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
+                                principal
                         )
                 )
                 .toList();

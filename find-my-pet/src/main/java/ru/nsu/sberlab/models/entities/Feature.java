@@ -35,15 +35,10 @@ public class Feature {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Feature(String description, PropertyType propertyType, User user) {
-        this.description = description;
-        this.property = propertyType;
-        this.user = user;
-    }
-
-    public Feature(String description, PropertyType property) {
+    public Feature(String description, PropertyType property, User principal) {
         this.description = description;
         this.property = property;
+        this.user = principal;
     }
 
     @PrePersist

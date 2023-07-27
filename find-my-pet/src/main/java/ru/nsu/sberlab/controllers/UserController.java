@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("registration")
     public String createUser(UserRegistrationDto user) {
         userService.createUser(user);
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     @GetMapping("personal-cabinet")
@@ -77,7 +77,7 @@ public class UserController {
     @DeleteMapping("delete-account")
     public String deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getUserId());
-        return "main-page";
+        return "redirect:/logout";
     }
 
     @GetMapping("edit-profile")
