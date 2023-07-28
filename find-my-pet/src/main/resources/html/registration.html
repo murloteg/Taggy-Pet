@@ -27,9 +27,26 @@
                     <div class="form-container">
                         <form th:method="post" th:action="@{/user/registration}">
                             <input type="text" th:name="firstName" placeholder="Имя" class="elem-in-window input"><br><br>
-                            <input type="email" th:name="email" placeholder="Email" class="elem-in-window input"> <br><br>
+
+                            <!-- TODO: обработать чекбоксы -->
+                            <label for="email">Даю разрешение на показ моего адреса электронной почты</label>
+                            <input type="checkbox" th:name="hasPermitToShowEmail" th:value="true"><br>
+                            <input type="email" id="email" th:name="email" placeholder="Email" class="elem-in-window input"> <br><br>
+
+                            <!-- TODO: обработать чекбоксы -->
+                            <label for="phone">Даю разрешение на показ моего номера телефона</label>
+                            <input type="checkbox" id="phone" th:name="hasPermitToShowPhoneNumber" th:value="true"> <br>
                             <input type="tel" data-tel-input th:name="phoneNumber" placeholder="Телефон" class="elem-in-window input"> <br><br>
+
                             <input type="password" th:name="password" placeholder="Пароль" class="elem-in-window input"><br><br>
+
+                            <!-- TODO: возможно стоит добавить чекбокс: "я хочу указать соцсети" -->
+                            <!-- TODO: обработать иконку + строку -->
+                            <div th:each="property, iterator : ${properties}">
+                                <img th:src="@{${'/img/icons/' + property.propertyValue + '.svg'}}" alt="Logo">
+                                <input type="hidden" th:name="|socialNetworks[${iterator.index}].propertyId|" th:value="${iterator.index}">
+                                <input type="text" th:name="|socialNetworks[${iterator.index}].shortName|" placeholder="Ссылка на социальную сеть"/><br><br>
+                            </div>
                             <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
                             <input type="submit" value="Зарегистрироваться" class="elem-in-window">
                         </form>

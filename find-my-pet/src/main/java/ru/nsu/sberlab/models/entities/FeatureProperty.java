@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "properties")
+@Table(name = "feature_properties")
 @Data
 @NoArgsConstructor
-public class PropertyType {
+public class FeatureProperty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "property_id")
@@ -22,8 +22,4 @@ public class PropertyType {
 
     @OneToMany(mappedBy = "property")
     private List<Feature> features = new ArrayList<>();
-
-    public PropertyType(String propertyValue) {
-        this.propertyValue = propertyValue;
-    }
 }

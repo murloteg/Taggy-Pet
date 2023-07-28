@@ -10,6 +10,7 @@ import ru.nsu.sberlab.models.dto.UserInfoDto;
 import ru.nsu.sberlab.models.dto.UserRegistrationDto;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
+import ru.nsu.sberlab.services.SocialNetworkPropertiesService;
 import ru.nsu.sberlab.services.UserService;
 
 @RequestMapping("/user/")
@@ -17,6 +18,7 @@ import ru.nsu.sberlab.services.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final SocialNetworkPropertiesService socialNetworkPropertiesService;
 
     @GetMapping("login")
     public String loginPage() {
@@ -24,7 +26,8 @@ public class UserController {
     }
 
     @GetMapping("registration")
-    public String registrationPage() {
+    public String registrationPage(Model model) {
+        model.addAttribute("properties", socialNetworkPropertiesService.properties());
         return "registration";
     }
 

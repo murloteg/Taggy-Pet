@@ -29,13 +29,22 @@ public class Feature {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id")
-    private PropertyType property;
+    private FeatureProperty property;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    }, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Feature(String description, PropertyType property, User principal) {
+    public Feature(FeatureProperty property) {
+        this.property = property;
+    }
+
+    public Feature(String description, FeatureProperty property, User principal) {
         this.description = description;
         this.property = property;
         this.user = principal;

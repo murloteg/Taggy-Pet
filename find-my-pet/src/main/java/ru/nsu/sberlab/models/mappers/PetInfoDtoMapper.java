@@ -7,7 +7,6 @@ import ru.nsu.sberlab.models.entities.Pet;
 
 import java.util.Comparator;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

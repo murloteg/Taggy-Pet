@@ -10,18 +10,18 @@ import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import ru.nsu.sberlab.services.PropertyService;
+import ru.nsu.sberlab.services.FeaturePropertiesService;
 
 @Controller
 @RequestMapping("/pet/")
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
-    private final PropertyService propertyService;
+    private final FeaturePropertiesService featurePropertiesService;
 
     @GetMapping("add-new-pet")
     public String petCreationPage(Model model) {
-        model.addAttribute("properties", propertyService.properties());
+        model.addAttribute("properties", featurePropertiesService.properties());
         return "pet-creation";
     }
 
@@ -30,7 +30,7 @@ public class PetController {
             @PathVariable(value = "id") String chipId,
             Model model
     ) {
-        model.addAttribute("properties", propertyService.properties());
+        model.addAttribute("properties", featurePropertiesService.properties());
         model.addAttribute("pet", petService.getPetInitializationDtoByChipId(chipId));
         return "edit-pet"; // TODO: make another page for this feature
     }
