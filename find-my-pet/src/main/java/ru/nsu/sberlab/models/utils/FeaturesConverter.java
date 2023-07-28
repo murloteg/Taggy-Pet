@@ -25,7 +25,10 @@ public class FeaturesConverter {
                 .map(dto -> new Feature(
                                 dto.getDescription(),
                                 featurePropertiesRepository.findById(dto.getPropertyId()).orElseThrow(
-                                        () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
+                                        () -> new PropertyNotFoundException(
+                                                message("api.server.error.property-not-found")
+                                        )
+                                ),
                                 user
                         )
                 )

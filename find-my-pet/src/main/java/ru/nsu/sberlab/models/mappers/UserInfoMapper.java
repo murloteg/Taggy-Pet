@@ -11,14 +11,8 @@ import java.util.function.Function;
 public class UserInfoMapper implements Function<User, UserInfoDto> {
     @Override
     public UserInfoDto apply(User user) {
-        String handledEmail = null;
-        if (user.isHasPermitToShowEmail()) {
-            handledEmail = user.getEmail();
-        }
-        String handledPhoneNumber = null;
-        if (user.isHasPermitToShowPhoneNumber()) {
-            handledPhoneNumber = user.getPhoneNumber();
-        }
+        String handledEmail = user.isHasPermitToShowEmail() ? user.getEmail() : null;
+        String handledPhoneNumber = user.isHasPermitToShowPhoneNumber() ? user.getPhoneNumber() : null;
         return new UserInfoDto(
                 handledEmail,
                 handledPhoneNumber,

@@ -78,7 +78,10 @@ public class PetService {
                 .collect(Collectors.toMap(
                         feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
                 );
-        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), currentUser)
+        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(
+                        petInitializationDto.getFeatures(),
+                        currentUser
+                )
                 .stream()
                 .map(feature -> {
                             Long key = feature.getProperty().getPropertyId();

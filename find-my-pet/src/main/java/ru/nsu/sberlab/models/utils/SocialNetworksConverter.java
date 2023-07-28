@@ -18,13 +18,18 @@ public class SocialNetworksConverter {
     private final SocialNetworkPropertiesRepository socialNetworkPropertiesRepository;
     private final PropertyResolverUtils propertyResolver;
 
-    public List<UserSocialNetwork> convertSocialNetworksDtoToSocialNetworks(List<SocialNetworkRegistrationDto> socialNetworkRegistrationDtoList, User user) {
+    public List<UserSocialNetwork> convertSocialNetworksDtoToSocialNetworks(
+            List<SocialNetworkRegistrationDto> socialNetworkRegistrationDtoList,
+            User user
+    ) {
         return socialNetworkRegistrationDtoList
                 .stream()
                 .map(dto -> new UserSocialNetwork(
                                 dto.getShortName(),
                                 socialNetworkPropertiesRepository.findById(dto.getPropertyId()).orElseThrow(
-                                        () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))
+                                        () -> new PropertyNotFoundException(
+                                                message("api.server.error.property-not-found")
+                                        )
                                 ),
                                 user
                         )
