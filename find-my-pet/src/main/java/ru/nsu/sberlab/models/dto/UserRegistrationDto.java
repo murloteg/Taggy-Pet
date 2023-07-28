@@ -2,12 +2,19 @@ package ru.nsu.sberlab.models.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
-    private final String email;
-    private final String phoneNumber;
-    private final String firstName;
-    private final String password;
+    private String email;
+    private String phoneNumber;
+    private String firstName;
+    private String password;
+    private boolean hasPermitToShowPhoneNumber;
+    private boolean hasPermitToShowEmail;
+    private List<SocialNetworkRegistrationDto> socialNetworks;
 }

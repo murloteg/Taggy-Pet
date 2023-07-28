@@ -13,6 +13,8 @@ import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
+import ru.nsu.sberlab.models.utils.PetCleaner;
+import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
@@ -25,9 +27,11 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
-    private final PasswordEncoder passwordEncoder;
+    private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
     @Transactional
@@ -36,7 +40,9 @@ public class UserService implements UserDetailsService {
                 userDto.getEmail(),
                 userDto.getPhoneNumber(),
                 userDto.getFirstName(),
-                userDto.getPassword()
+                userDto.getPassword(),
+                userDto.isHasPermitToShowPhoneNumber(),
+                userDto.isHasPermitToShowEmail()
         );
         Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
         if (currentUser.isPresent() && currentUser.get().isActive()) {
@@ -45,6 +51,21 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
+        User savedUser = userRepository.save(user);
+        savedUser.setUserSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
+                        userDto.getSocialNetworks(),
+                        savedUser
+                )
+        );
+    }
+
+    @Transactional
+    public void updateUserInfo(UserInfoDto userInfoDto) {
+        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+        );
+        user.setPhoneNumber(userInfoDto.getPhoneNumber());
+        user.setFirstName(userInfoDto.getFirstName());
         userRepository.save(user);
     }
 
@@ -61,7 +82,10 @@ public class UserService implements UserDetailsService {
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
+        List<Pet> pets = user.getPets();
         userRepository.deleteById(user.getUserId());
+        pets.forEach(pet -> pet.getUsers().remove(user));
+        pets.forEach(petCleaner::clear);
     }
 
     @Transactional
@@ -76,7 +100,7 @@ public class UserService implements UserDetailsService {
                         petInitializationDto.getBreed(),
                         petInitializationDto.getSex(),
                         petInitializationDto.getName(),
-                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), principal)
+                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), user)
                 )
         );
         userRepository.save(user);
@@ -90,15 +114,6 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .map(petInfoDtoMapper)
                 .toList();
-    }
-
-    public void updateUserInfo(UserInfoDto userInfoDto) {
-        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
-        );
-        user.setPhoneNumber(userInfoDto.getPhoneNumber());
-        user.setFirstName(userInfoDto.getFirstName());
-        userRepository.save(user);
     }
 
     @Override

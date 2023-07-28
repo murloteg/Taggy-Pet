@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Редактировать питомца</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
 <h3>Для того, чтобы отредактировать своего питомца, просто измените значения ниже:</h3>
 <form th:method="put" th:action="@{/pet/edit}">
-    <b>Чип:</b> <input type="text" th:name="chipId" placeholder="Чип питомца" value="Чип" th:value="${pet.chipId}" readonly><br><br>
-    <b>Вид животного:</b> <input type="text" th:name="type" placeholder="Вид животного" value="Вид животного" th:value="${pet.type}"> <br><br>
+    <b>Чип:</b> <input type="text" th:name="chipId" placeholder="Чип питомца" value="Чип" th:value="${pet.chipId}"
+                       readonly><br><br>
+    <b>Вид животного:</b> <input type="text" th:name="type" placeholder="Вид животного" value="Вид животного"
+                                 th:value="${pet.type}"> <br><br>
     <b>Порода:</b> <input type="text" th:name="breed" placeholder="" value="Порода" th:value="${pet.breed}"/> <br><br>
     <label>Пол</label><br>
     <input type="radio" id="female" th:name="sex" value="FEMALE">Самка
     <input type="radio" id="male" th:name="sex" value="MALE" checked="checked">Самец
     <br><br>
-    <b>Кличка:</b> <input type="text" th:name="name" placeholder="Кличка" value="Кличка" th:value="${pet.name}"> <br><br>
+    <b>Кличка:</b> <input type="text" th:name="name" placeholder="Кличка" value="Кличка" th:value="${pet.name}">
+    <br><br>
     <hr>
     <b>Особенности ухода:</b>
     <br>
-        <div th:each="property, iterator : ${properties}">
-            <div th:text="${property.propertyValue}"></div>
-            <input type="hidden" th:name="|features[${iterator.index}].propertyId|" th:value="${iterator.index}">
-            <input type="text" th:name="|features[${iterator.index}].description|" placeholder="" th:value="${pet.features[iterator.index].description}"/><br><br>
-        </div>
+    <div th:each="property, iterator : ${properties}">
+        <div th:text="${property.propertyValue}"></div>
+        <input type="hidden" th:name="|features[${iterator.index}].propertyId|" th:value="${iterator.index}">
+        <input type="text" th:name="|features[${iterator.index}].description|" placeholder=""
+               th:value="${pet.features[iterator.index].description}"/><br><br>
+    </div>
     <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Подтвердить изменения" class="elem_in_window">
+    <input type="submit" value="Подтвердить изменения" class="elem-in-window">
 </form>
 </body>
 </html>

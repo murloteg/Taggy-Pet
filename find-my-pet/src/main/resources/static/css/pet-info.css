@@ -39,7 +39,7 @@ body {
     border-spacing: 13px 6px;
 }
 
-.elem_in_window {
+.elem-in-window {
     margin: auto;
 }
 
@@ -53,10 +53,19 @@ h1 {
     color: black;
 }
 
+.narrow-screen-header {
+    display: none;
+}
+
 .data-container {
     align-items: center;
     flex-direction: row;
     display: flex;
+}
+
+.pet-data {
+    overflow: auto;
+    width: 265px;
 }
 
 .wrapper {
@@ -69,7 +78,7 @@ h1 {
 
 .pet-card {
     position: relative;
-    background:linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,1)), url(../img/dog-example.jpg);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1)), url(../img/dog-example.jpg);
     background-size: cover;
 }
 
@@ -86,10 +95,18 @@ h4 {
     font-weight: bold;
 }
 
+td {
+    vertical-align: top;
+}
+
+td {
+    font-size: 18px;
+}
+
 table.pet {
     font-size: 20px;
     border-collapse: separate;
-    border-spacing: 1em 0.1em;
+    border-spacing: 0.5em 0.1em;
 }
 
 .title-table {
@@ -103,6 +120,10 @@ table.pet {
 
 .features {
     margin-top: 2em;
+}
+
+.feature-col {
+    margin-bottom: 0.5em;
 }
 
 .features-header {
@@ -123,7 +144,7 @@ h2 {
 }
 
 .contacts {
-    margin-top: 2em;
+    margin-top: 1.3em;
     margin-bottom: 2em;
 }
 
@@ -166,4 +187,176 @@ h3 {
 
 .feature-description {
     font-weight: 600;
+    max-width: 28em;
+}
+
+@media screen and (max-width: 1199.5px) {
+    .find-pet-label-col {
+        margin-left: 1.2em;
+    }
+}
+
+@media screen and (max-width: 991.5px) {
+    .find-pet-label-col {
+        margin-left: 4em;
+    }
+
+    h3 {
+        font-size: 1.3em;
+    }
+
+    .feature-description {
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 767.5px) {
+    .find-pet-label-col {
+        margin-left: 2.6em;
+    }
+
+    .wrapper {
+        width: 210px;
+        height: 140px;
+        margin-right: 1.5em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    .feature-description {
+        max-width: 15em;
+    }
+}
+
+@media screen and (max-width: 575.5px) {
+    .display-none-mobile {
+        display: none;
+    }
+
+    .pet-data-window {
+        padding: 6% 5%;
+    }
+
+    .data-container {
+        flex-direction: column;
+    }
+
+    .wrapper {
+        margin-bottom: 1em;
+        margin-right: 0px;
+        width: 249px;
+        height: 166px;
+    }
+
+    .title {
+        margin-top: 0px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 1.4em;
+    }
+
+    h3 {
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .features-list {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .feature-description {
+        text-align: center;
+        font-size: 1.1em;
+        max-width: none;
+    }
+
+    .contacts-cards {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .user-data {
+        overflow: auto;
+        width: 310px;
+    }
+
+    .user-card {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (max-width: 349px) {
+    .title {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 1.3em;
+    }
+
+    h2 {
+        font-size: 1.15em;
+    }
+
+    .normal-header, .user img {
+        display: none;
+    }
+
+    .narrow-screen-header {
+        display: block;
+    }
+
+    .wrapper {
+        width: 210px;
+        height: 140px;
+    }
+
+    .elem_in_window {
+        margin: 0px;
+    }
+
+    .pet-data {
+        width: 230px;
+    }
+
+    td {
+        font-size: 0.77em
+    }
+
+    .user-data {
+        width: 230px;
+    }
+
+    .user-card {
+        padding: 0.6em;
+    }
+
+    .user-data table {
+        border-spacing: 0.5em 0.23em;
+    }
+
+    .tg-btn {
+        font-size: 0.8em;
+        display: inline-table;
+        padding: 0.5em 1.2em 0.5em 1.2em;
+    }
 }

@@ -10,27 +10,27 @@ import ru.nsu.sberlab.services.PetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import ru.nsu.sberlab.services.PropertyService;
+import ru.nsu.sberlab.services.FeaturePropertiesService;
 
 @Controller
 @RequestMapping("/pet/")
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
-    private final PropertyService propertyService;
+    private final FeaturePropertiesService featurePropertiesService;
 
     @GetMapping("add-new-pet")
     public String petCreationPage(Model model) {
-        model.addAttribute("properties", propertyService.properties());
+        model.addAttribute("properties", featurePropertiesService.properties());
         return "pet-creation";
     }
 
     @GetMapping("my-pets/{id}")
     public String myPetInfo(
-            @PathVariable("id") String chipId,
+            @PathVariable(value = "id") String chipId,
             Model model
     ) {
-        model.addAttribute("properties", propertyService.properties());
+        model.addAttribute("properties", featurePropertiesService.properties());
         model.addAttribute("pet", petService.getPetInitializationDtoByChipId(chipId));
         return "edit-pet"; // TODO: make another page for this feature
     }
@@ -41,6 +41,24 @@ public class PetController {
             @AuthenticationPrincipal User principal
     ) {
         petService.updatePetInfo(petInitializationDto, principal);
+        return "redirect:/user/personal-cabinet";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deletePetPage(
+            @PathVariable(value = "id") String chipId,
+            Model model
+    ) {
+        model.addAttribute("pet", petService.getPetInfoByChipId(chipId));
+        return "delete-pet";
+    }
+
+    @DeleteMapping("delete/{id}")
+    public String deletePet(
+            @PathVariable(value = "id") String chipId,
+            @AuthenticationPrincipal User principal
+    ) {
+        petService.deletePet(chipId, principal);
         return "redirect:/user/personal-cabinet";
     }
 
