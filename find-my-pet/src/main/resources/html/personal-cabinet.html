@@ -69,11 +69,13 @@
                                 <td class="title">Email</td>
                                 <td class="data" th:text="${user.email}">user.email</td>
                             </tr>
-                            <tr>
-                                <td class="title">Телеграм</td>
-                                <!--                                TODO: вывод телеги пользователя-->
-                                <td class="data">@makarbesty</td>
-                            </tr>
+                            <!-- TODO: обработка всех соц. сетей пользователя -->
+                            <div th:each="socialNetwork : ${user.userSocialNetworks}">
+                                <tr>
+                                <td class="title" th:text="${socialNetwork.socialNetwork.propertyValue}"></td>
+                                <td class="data" th:text="${socialNetwork.shortName}"></td>
+                                </tr>
+                            </div>
                         </table>
                     </div>
                 </div>

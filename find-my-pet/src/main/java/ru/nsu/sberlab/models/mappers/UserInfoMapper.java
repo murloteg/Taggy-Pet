@@ -11,15 +11,24 @@ import java.util.function.Function;
 public class UserInfoMapper implements Function<User, UserInfoDto> {
     @Override
     public UserInfoDto apply(User user) {
+        String handledEmail = null;
+        if (user.isHasPermitToShowEmail()) {
+            handledEmail = user.getEmail();
+        }
+        String handledPhoneNumber = null;
+        if (user.isHasPermitToShowPhoneNumber()) {
+            handledPhoneNumber = user.getPhoneNumber();
+        }
         return new UserInfoDto(
-                user.getEmail(),
-                user.getPhoneNumber(),
+                handledEmail,
+                handledPhoneNumber,
                 user.getFirstName(),
-                user.getSocialNetworks()
+                user.getUserSocialNetworks()
                         .stream()
                         .map(socialNetwork -> new SocialNetworkInfoDto(
-                                        socialNetwork.getSocialNetworkProperty().getPropertyValue(),
-                                        socialNetwork.getLink()
+                                        socialNetwork.getSocialNetwork().getPropertyValue(),
+                                        socialNetwork.getSocialNetwork().getBaseUrl(),
+                                        socialNetwork.getShortName()
                                 )
                         )
                         .toList()

@@ -2,7 +2,7 @@ package ru.nsu.sberlab.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.models.entities.SocialNetworkProperty;
+import ru.nsu.sberlab.models.entities.SocialNetwork;
 import ru.nsu.sberlab.repositories.SocialNetworkPropertiesRepository;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class SocialNetworkPropertiesService {
     private final SocialNetworkPropertiesRepository socialNetworkPropertiesRepository;
 
-    public List<SocialNetworkProperty> properties() {
+    public List<SocialNetwork> properties() {
         return socialNetworkPropertiesRepository.findAll();
     }
 }

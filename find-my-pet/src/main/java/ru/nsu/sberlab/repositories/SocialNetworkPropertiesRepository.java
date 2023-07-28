@@ -1,7 +1,9 @@
 package ru.nsu.sberlab.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.nsu.sberlab.models.entities.SocialNetworkProperty;
+import org.springframework.stereotype.Repository;
+import ru.nsu.sberlab.models.entities.SocialNetwork;
 
-public interface SocialNetworkPropertiesRepository extends JpaRepository<SocialNetworkProperty, Long> {
+@Repository
+public interface SocialNetworkPropertiesRepository extends JpaRepository<SocialNetwork, Long> {
 }

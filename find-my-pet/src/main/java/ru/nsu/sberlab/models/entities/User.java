@@ -71,7 +71,7 @@ public class User implements UserDetails {
             CascadeType.REFRESH,
             CascadeType.PERSIST
     }, fetch = FetchType.LAZY, mappedBy = "user")
-    private List<SocialNetwork> socialNetworks = new ArrayList<>();
+    private List<UserSocialNetwork> userSocialNetworks = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Feature> features = new ArrayList<>();

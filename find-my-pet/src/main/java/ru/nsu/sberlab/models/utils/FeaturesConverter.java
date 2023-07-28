@@ -18,7 +18,7 @@ public class FeaturesConverter {
     private final FeaturePropertiesRepository featurePropertiesRepository;
     private final PropertyResolverUtils propertyResolver;
 
-    public List<Feature> convertFeatureDtoListToFeatures(List<FeatureCreationDto> featureCreationDtoList, User principal) {
+    public List<Feature> convertFeatureDtoListToFeatures(List<FeatureCreationDto> featureCreationDtoList, User user) {
         return featureCreationDtoList
                 .stream()
                 .filter(dto -> !dto.getDescription().isEmpty())
@@ -26,7 +26,7 @@ public class FeaturesConverter {
                                 dto.getDescription(),
                                 featurePropertiesRepository.findById(dto.getPropertyId()).orElseThrow(
                                         () -> new PropertyNotFoundException(message("api.server.error.property-not-found"))),
-                                principal
+                                user
                         )
                 )
                 .toList();

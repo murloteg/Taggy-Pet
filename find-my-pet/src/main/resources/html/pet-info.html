@@ -89,26 +89,28 @@
                         <table class="user">
                             <tr>
                                 <td class="title-table">Имя</td>
-                                <td class="data-table" th:text="${user.firstName}">[Здесь отобразится имя хозяина]</td>
+                                <td class="data-table" th:text="${user.firstName}">Имя владельца</td>
                             </tr>
                             <tr>
                                 <td class="title-table">Телефон</td>
-                                <td class="data-table" th:text="${user.phoneNumber}">+7 913 472-93-04</td>
+                                <!-- TODO: проверка поля на null: если null, то отображать "телефон скрыт"-->
+                                <td class="data-table" th:text="${user.phoneNumber}">Телефон владельца, если его показ разрешен</td>
                             </tr>
                             <tr>
                                 <td class="title-table">Email</td>
-                                <td class="data-table" th:text="${user.email}">sergay@gmail.com</td>
+                                <!-- TODO: проверка поля на null: если null, то отображать "email скрыт"-->
+                                <td class="data-table" th:text="${user.email}">Email владельца, если его показ разрешен</td>
                             </tr>
-                            <tr>
-                                <td class="title-table">Телеграм</td>
-                                <td class="data-table">
-                                    <div th:each="socialNetwork : ${user.socialNetworks}">
-                                        <a th:href="@{${'https://telegram.me/' + socialNetwork.link}}" class="tg-btn">
-                                            <img th:src="@{/img/icons/TG.svg}" alt="Telegram">Написать
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <!-- TODO: обработать то, что может идти много соц. сетей -->
+                            <div th:each="socialNetwork : ${user.socialNetworks}">
+                                <tr>
+                                    <td class="data-table">
+                                    <a th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}" class="tg-btn">
+                                        <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Link">Написать
+                                    </a>
+                                    </td>
+                                </tr>
+                            </div>
                         </table>
                     </div>
                 </div>

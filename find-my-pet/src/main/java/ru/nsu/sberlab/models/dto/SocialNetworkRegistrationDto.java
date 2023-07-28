@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SocialNetworkRegistrationDto {
     private Long propertyId;
-    private String link;
+    private String shortName;
 }

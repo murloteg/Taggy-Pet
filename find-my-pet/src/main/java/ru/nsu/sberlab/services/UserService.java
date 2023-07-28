@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         User savedUser = userRepository.save(user);
-        savedUser.setSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(userDto.getSocialNetworks(), savedUser));
+        savedUser.setUserSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(userDto.getSocialNetworks(), savedUser));
     }
 
     @Transactional

@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class SocialNetworkInfoDto {
     private final String name;
-    private final String link;
+    private final String baseUrl;
+    private final String shortName;
 }
