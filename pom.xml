@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>ru.nsu.sberlab</groupId>
-	<artifactId>find-my-pet</artifactId>
+	<artifactId>Taggy-Pet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Chipped-Pets-Helper</name>
+	<name>Taggy-Pet</name>
 	<description>Service to find lost pets</description>
 
 	<properties>
