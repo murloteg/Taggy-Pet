@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Taggy Pet</title>
-    <div th:replace="fragments/common-dependencies :: common-dependencies"></div>
+    <title>TaggyPet</title>
+    <div th:replace="~{fragments/common-dependencies :: common-dependencies}"></div>
     <link rel="stylesheet" th:href="@{/css/main-page.css}">
 </head>
 <body>
@@ -12,8 +12,7 @@
             <div th:if="${user != null}">
                 <div class="row" id="navbar">
                     <div class="col-9 col-sm-8 col-md-3 col-xl-3">
-                        <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper"
-                                               class="logo"></a>
+                        <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" alt="TaggyPet" class="logo"></a>
                     </div>
                     <div class="col text-right display-none-mobile">
                         <a th:href="@{/user/personal-cabinet}" class="personal-cab">Личный кабинет</a>
@@ -59,11 +58,10 @@
                         <div class="search">
                             <form th:method="get" th:action="@{/pet/find}">
                                 <div class="search-input">
-                                    <input type="text" th:name="chipId" placeholder="Введите номер чипа" class="">
+                                    <input type="text" th:name="chipId" required id="chipId" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')">
                                     <br><br>
                                 </div>
                                 <div class="search-btn">
-                                    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
                                     <input type="submit" value="Найти"> <br><br>
                                 </div>
                             </form>
@@ -79,5 +77,6 @@
         </div>
     </div>
 </header>
+<script src="/js/chip-id-validation.js"></script>
 </body>
 </html>

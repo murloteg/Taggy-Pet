@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Информация о питомце</title>
-    <div th:replace="fragments/common-dependencies :: common-dependencies"></div>
+    <div th:replace="~{fragments/common-dependencies :: common-dependencies}"></div>
     <link rel="stylesheet" th:href="@{/css/pet-info.css}">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-3 col-md-2 col-lg-2 col-xl-2">
-                    <a th:href="@{/}"><img th:src="@{/img/logo-black.svg}" alt="Chipped Pets Helper" class="logo"></a>
+                    <a th:href="@{/}"><img th:src="@{/img/logo-black.svg}" alt="TaggyPet" class="logo"></a>
                 </div>
                 <div class="col-sm-5 col-md-4 col-lg-3 col-xl-3 change-bootstrap-padding display-none-mobile find-pet-label-col">
                     <h6 class="find-pet-label">Поиск питомца</h6>

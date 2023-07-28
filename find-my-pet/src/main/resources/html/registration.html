@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Регистрация</title>
-    <div th:replace="fragments/common-dependencies :: common-dependencies"></div>
+    <div th:replace="~{fragments/common-dependencies :: common-dependencies}"></div>
     <link rel="stylesheet" th:href="@{/css/registration.css}">
     <script src="/js/phoneinput.js"></script>
 </head>
@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-4">
-                    <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" alt="Chipped Pets Helper" class="logo"></a>
+                    <a th:href="@{/}"><img th:src="@{/img/logo-white.svg}" alt="TaggyPet" class="logo"></a>
                 </div>
             </div>
         </div>
