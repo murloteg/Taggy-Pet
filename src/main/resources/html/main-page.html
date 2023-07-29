@@ -58,7 +58,7 @@
                         <div class="search">
                             <form th:method="get" th:action="@{/pet/find}">
                                 <div class="search-input">
-                                    <input type="text" th:name="chipId" required id="chipId" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninput="this.setCustomValidity('')" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')">
+                                    <input type="text" th:name="chipId" required id="chipId" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)">
                                     <br><br>
                                 </div>
                                 <div class="search-btn">

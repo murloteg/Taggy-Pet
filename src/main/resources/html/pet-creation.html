@@ -25,11 +25,9 @@
                     </div>
                     <div class="form-container">
                         <form th:method="post" th:action="@{/user/create-pet}" enctype="multipart/form-data">
-                            <!-- TODO: валидация сломалась и пришлось ее отключить :( -->
-<!--                            <input type="text" th:name="chipId" required id="chipId" placeholder="Чип" pattern="\d{15}" maxlength="15" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')" class="input elem-in-window"><br><br>-->
-                            <input type="text" th:name="chipId" required id="chipId" placeholder="Чип" class="input elem-in-window"><br><br>
-                            <input type="text" th:name="type" required placeholder="Вид животного" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
-                            <input type="text" th:name="breed" required placeholder="Порода" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
+                            <input type="text" th:name="chipId" id="chipId" placeholder="Чип" required maxlength="15" pattern="[0-9]{15}" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)" class="input elem-in-window"><br><br>
+                            <input type="text" th:name="type" required placeholder="Вид животного" oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
+                            <input type="text" th:name="breed" required placeholder="Порода" oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
                             <div class="radios-container">
                                 <label>
                                     <input type="radio" id="female" th:name="sex" value="FEMALE" class="real-radio">
@@ -42,7 +40,7 @@
                                     Самец
                                 </label>
                             </div>
-                            <input type="text" th:name="name" required placeholder="Кличка" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
+                            <input type="text" th:name="name" required placeholder="Кличка" oninvalid="this.setCustomValidity('Это поле является обязательным')" onchange="this.setCustomValidity('')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
                             <div class="checked">
                                 <label>
                                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>

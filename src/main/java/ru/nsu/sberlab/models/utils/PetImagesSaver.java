@@ -32,8 +32,7 @@ public final class PetImagesSaver {
         if (imageFile.isEmpty()) {
             return;
         }
-        Path currentPath = Paths.get(".");
-        Path absolutePath = currentPath.toAbsolutePath();
+        Path absolutePath = Paths.get(".").toAbsolutePath();
         String previousPath = absolutePath + FILE_SYSTEM_RESOURCES_PATH + File.separator;
         deletePreviousPetImageFromFileSystem(previousPath, petImage.getImageUUIDName());
         File saveFile = new ClassPathResource(RUNTIME_RESOURCES_PATH).getFile();
@@ -42,8 +41,7 @@ public final class PetImagesSaver {
     }
 
     private static void updatePetImage(String saveFilePath, MultipartFile imageFile, PetImage petImage) throws IOException {
-        Path currentPath = Paths.get(".");
-        Path absolutePath = currentPath.toAbsolutePath();
+        Path absolutePath = Paths.get(".").toAbsolutePath();
         petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getOriginalFilename());
         Path totalFilePath = Paths.get(absolutePath + FILE_SYSTEM_RESOURCES_PATH + File.separator + petImage.getImageUUIDName());
         Files.copy(imageFile.getInputStream(), totalFilePath, StandardCopyOption.REPLACE_EXISTING);

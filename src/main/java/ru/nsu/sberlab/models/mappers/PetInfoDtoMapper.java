@@ -19,7 +19,6 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
     @Override
     public PetInfoDto apply(Pet pet) {
         PetImageDto petImageDto = Objects.isNull(pet.getPetImage()) ? null : new PetImageDto(
-                pet.getPetImage().getImagePath(),
                 pet.getPetImage().getImageUUIDName()
         );
         return new PetInfoDto(

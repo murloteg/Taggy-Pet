@@ -30,7 +30,6 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<FeatureProperty>, 
                 .filter(index -> !propertyMap.containsKey((long) index))
                 .forEach(index -> features.add(index, new Feature(properties.get(index))));
         PetImageDto petImageDto = Objects.isNull(pet.getPetImage()) ? null : new PetImageDto(
-                pet.getPetImage().getImagePath(),
                 pet.getPetImage().getImageUUIDName()
         );
         return new PetEditDto(
