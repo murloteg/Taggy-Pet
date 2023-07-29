@@ -22,7 +22,6 @@ public final class PetImagesSaver {
         File saveFile = new ClassPathResource(RUNTIME_RESOURCES_PATH).getFile();
         if (imageFile.isEmpty()) {
             petImage.setImageUUIDName(DEFAULT_PET_IMAGE);
-            petImage.setImagePath(saveFile.getAbsolutePath() + File.separator);
             return;
         }
         updatePetImage(saveFile.getAbsolutePath(), imageFile, petImage);
@@ -46,8 +45,7 @@ public final class PetImagesSaver {
         Path totalFilePath = Paths.get(absolutePath + FILE_SYSTEM_RESOURCES_PATH + File.separator + petImage.getImageUUIDName());
         Files.copy(imageFile.getInputStream(), totalFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-        petImage.setImagePath(saveFilePath + File.separator);
-        Path localFilePath = Paths.get(petImage.getImagePath() + petImage.getImageUUIDName());
+        Path localFilePath = Paths.get(saveFilePath + File.separator + petImage.getImageUUIDName());
         Files.copy(imageFile.getInputStream(), localFilePath, StandardCopyOption.REPLACE_EXISTING);
     }
 
