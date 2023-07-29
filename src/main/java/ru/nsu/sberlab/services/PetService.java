@@ -5,23 +5,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
+import ru.nsu.sberlab.exceptions.InternalServerErrorException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
-import ru.nsu.sberlab.models.dto.PetInitializationDto;
+import ru.nsu.sberlab.models.dto.PetEditDto;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
+import ru.nsu.sberlab.models.entities.PetImage;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
+import ru.nsu.sberlab.models.utils.PetImagesSaver;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.repositories.FeaturePropertiesRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,7 +48,7 @@ public class PetService {
                 .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
-    public PetInitializationDto getPetInitializationDtoByChipId(String chipId) {
+    public PetEditDto getPetInitializationDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, featurePropertiesRepository.findAll()))
                 .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
@@ -55,13 +59,13 @@ public class PetService {
      * Note: this method doesn't delete features from features table.
      * </p>
      *
-     * @param petInitializationDto this parameter contains new information about pet
+     * @param petEditDto this parameter contains new information about pet
      * @param principal            this parameter present user authentication session
      * @author Kirill Bolotov
      */
     @Transactional
-    public void updatePetInfo(PetInitializationDto petInitializationDto, User principal) {
-        Pet pet = petRepository.findByChipId(petInitializationDto.getChipId()).orElseThrow(
+    public void updatePetInfo(PetEditDto petEditDto, User principal) {
+        Pet pet = petRepository.findByChipId(petEditDto.getChipId()).orElseThrow(
                 () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
         );
         User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
@@ -69,17 +73,17 @@ public class PetService {
         );
         checkIfUserHasAccessToPet(currentUser, pet);
 
-        pet.setType(petInitializationDto.getType());
-        pet.setBreed(petInitializationDto.getBreed());
-        pet.setSex(petInitializationDto.getSex());
-        pet.setName(petInitializationDto.getName());
+        pet.setType(petEditDto.getType());
+        pet.setBreed(petEditDto.getBreed());
+        pet.setSex(petEditDto.getSex());
+        pet.setName(petEditDto.getName());
         Map<Long, Feature> featureMap = pet.getFeatures()
                 .stream()
                 .collect(Collectors.toMap(
                         feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
                 );
         List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(
-                        petInitializationDto.getFeatures(),
+                        petEditDto.getFeatures(),
                         currentUser
                 )
                 .stream()
@@ -96,6 +100,13 @@ public class PetService {
                 )
                 .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
+        try {
+            PetImage petImage = pet.getPetImage();
+            PetImagesSaver.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
+            pet.setPetImage(petImage);
+        } catch (IOException exception) {
+            throw new InternalServerErrorException();
+        }
         petRepository.save(pet);
     }
 

@@ -8,8 +8,8 @@
 </head>
 
 <body>
-<h3>Для того, чтобы отредактировать своего питомца, просто измените значения ниже:</h3>
-<form th:method="put" th:action="@{/pet/edit}">
+<h3>Для того чтобы отредактировать своего питомца, просто измените значения ниже:</h3>
+<form th:method="put" th:action="@{/pet/edit}" enctype="multipart/form-data">
     <b>Чип:</b> <input type="text" th:name="chipId" placeholder="Чип питомца" value="Чип" th:value="${pet.chipId}"
                        readonly><br><br>
     <b>Вид животного:</b> <input type="text" th:name="type" placeholder="Вид животного" value="Вид животного"
@@ -30,6 +30,10 @@
         <input type="text" th:name="|features[${iterator.index}].description|" placeholder=""
                th:value="${pet.features[iterator.index].description}"/><br><br>
     </div>
+    <div th:if="${pet.petImageDto != null}">
+        <img th:src="@{${'/img/pet_images/' + pet.petImageDto.imageName}}" alt="Фотография животного" width="320" height="240">
+    </div>
+    <input type="file" th:name="imageFile" accept="image/png, image/jpeg">
     <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Подтвердить изменения" class="elem-in-window">
 </form>

@@ -24,8 +24,10 @@
                         <h1>Добавить питомца</h1>
                     </div>
                     <div class="form-container">
-                        <form th:method="post" th:action="@{/user/create-pet}">
-                            <input type="text" th:name="chipId" required id="chipId" placeholder="Чип" pattern="\d{15}" maxlength="15" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')" class="input elem-in-window"><br><br>
+                        <form th:method="post" th:action="@{/user/create-pet}" enctype="multipart/form-data">
+                            <!-- TODO: валидация сломалась и пришлось ее отключить :( -->
+<!--                            <input type="text" th:name="chipId" required id="chipId" placeholder="Чип" pattern="\d{15}" maxlength="15" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')" class="input elem-in-window"><br><br>-->
+                            <input type="text" th:name="chipId" required id="chipId" placeholder="Чип" class="input elem-in-window"><br><br>
                             <input type="text" th:name="type" required placeholder="Вид животного" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
                             <input type="text" th:name="breed" required placeholder="Порода" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
                             <div class="radios-container">
@@ -55,6 +57,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="file" th:name="imageFile" accept="image/png, image/jpeg">
                             <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
                             <input type="submit" value="Добавить питомца" id="add-button" class="elem-in-window">
                         </form>
