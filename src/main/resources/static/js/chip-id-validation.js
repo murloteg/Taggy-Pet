@@ -1,3 +1,13 @@
+function customValidationMessages(input) {
+    input.setCustomValidity('');
+    if (input.validity.valueMissing) {
+        input.setCustomValidity("Это поле является обязательным");
+    }
+    if (input.validity.patternMismatch) {
+        input.setCustomValidity("Чип должен состоять из 15 цифр");
+    }
+}
+
 function getInputNumbersValue(input) {
     return input.value.replace(/\D/g, '');
 }

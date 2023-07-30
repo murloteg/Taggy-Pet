@@ -26,13 +26,13 @@
                     <div class="form-container">
                         <form th:method="put" th:action="@{/pet/edit}">
                             <label for="chipId">Чип</label>
-                            <input type="text" id="chipId" th:name="chipId" th:value="${pet.chipId}" pattern="\d{15}" maxlength="15" oninvalid="this.setCustomValidity('Чип должен состоять из 15 цифр')" class="input elem-in-window"><br><br>
+                            <input type="text" id="chipId" th:name="chipId" th:value="${pet.chipId}" required maxlength="15" pattern="[0-9]{15}" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)" class="input elem-in-window"><br><br>
 
                             <label for="type">Вид</label>
-                            <input type="text" id="type" th:name="type" th:value="${pet.type}" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
+                            <input type="text" id="type" th:name="type" th:value="${pet.type}" required oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
 
                             <label for="breed">Порода</label>
-                            <input type="text" id="breed" th:name="breed" th:value="${pet.breed}" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
+                            <input type="text" id="breed" th:name="breed" th:value="${pet.breed}" required oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
 
                             <div class="radios-container">
                                 <label>
@@ -48,7 +48,7 @@
                             </div>
 
                             <label for="name">Кличка</label>
-                            <input type="text" id="name" th:name="name" th:value="${pet.name}" oninvalid="this.setCustomValidity('Это поле является обязательным')" class="input elem-in-window"><br><br>
+                            <input type="text" id="name" th:name="name" th:value="${pet.name}" required oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
 
                             <div class="features">
                                 <h2>Особенности</h2>
