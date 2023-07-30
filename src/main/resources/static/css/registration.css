@@ -79,7 +79,7 @@ h5 {
 
 .checkboxes {
     margin-bottom: 15px;
-    display: inline-flex;
+    display: inline-block;
 }
 
 .real-checkbox {
