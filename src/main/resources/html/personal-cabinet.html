@@ -69,7 +69,7 @@
                                 <td class="title">Email</td>
                                 <td class="data" th:text="${user.email}">user.email</td>
                             </tr>
-                            <div th:each="socialNetwork : ${user.userSocialNetworks}">
+                            <div th:each="socialNetwork : ${user.userSocialNetworks}" th:if="${socialNetwork.shortName != ''}">
                                 <tr>
                                     <td class="title social-network">
                                         <img th:src="@{${'/img/icons/' + socialNetwork.socialNetwork.propertyValue + '.svg'}}" alt="Social network logo" class="social-network-logo">

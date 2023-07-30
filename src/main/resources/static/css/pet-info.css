@@ -34,7 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 3%;
+    padding: 40px 3% 40px 3%;
     border-radius: 40px;
     border-spacing: 13px 6px;
 }
@@ -48,6 +48,7 @@ body {
 }
 
 h1 {
+    text-align: center;
     font-size: 2.4em;
     font-weight: bold;
     color: black;
@@ -65,7 +66,7 @@ h1 {
 
 .pet-data {
     overflow: auto;
-    width: 265px;
+    width: 269px;
 }
 
 .wrapper {
@@ -123,11 +124,7 @@ table.pet {
 }
 
 .feature-col {
-    margin-bottom: 0.5em;
-}
-
-.features-header {
-    margin-bottom: 1%;
+    margin-top: 0.5em;
 }
 
 .features-list {
@@ -144,8 +141,12 @@ h2 {
 }
 
 .contacts {
-    margin-top: 1.3em;
+    margin-top: 1.6em;
     margin-bottom: 2em;
+}
+
+.contacts-header {
+    margin-bottom: 0.8em;
 }
 
 .user-card {
@@ -188,6 +189,16 @@ h3 {
 .feature-description {
     font-weight: 600;
     max-width: 28em;
+}
+
+.social-networks-container {
+    margin-top: 20px;
+    display: flex;
+    padding-left: 15px;
+}
+
+.social-network {
+    margin-right: 20px;
 }
 
 @media screen and (max-width: 1199.5px) {

@@ -42,6 +42,9 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
+        User user = userService.loadUserByUsername(principal.getEmail());
+
+
         model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
         model.addAttribute(
                 "hasPrivilegedAccess",
