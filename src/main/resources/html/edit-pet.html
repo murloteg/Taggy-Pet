@@ -25,8 +25,8 @@
                     </div>
                     <div class="form-container">
                         <form th:method="put" th:action="@{/pet/edit}">
-                            <label for="chipId">Чип</label>
-                            <input type="text" id="chipId" th:name="chipId" th:value="${pet.chipId}" required maxlength="15" pattern="[0-9]{15}" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)" class="input elem-in-window"><br><br>
+                            <label for="chipId">Чип<img th:src="@{/img/lock.svg}" alt="Lock" class="lock-img"></label>
+                            <input type="text" id="chipId" th:name="chipId" th:value="${pet.chipId}" readonly class="input elem-in-window"><br><br>
 
                             <label for="type">Вид</label>
                             <input type="text" id="type" th:name="type" th:value="${pet.type}" required oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
@@ -94,7 +94,6 @@
         </div>
     </div>
 </header>
-<script src="/js/chip-id-validation.js"></script>
 <script src="/js/popup.js"></script>
 </body>
 </html>

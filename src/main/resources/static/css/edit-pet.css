@@ -46,6 +46,13 @@ h2 {
     align-items: normal;
 }
 
+.lock-img {
+    margin-bottom: 4px;
+    margin-left: 6px;
+    height: 15px;
+    opacity: 80%;
+}
+
 label {
     font-weight: 600;
     margin-bottom: 5px;
