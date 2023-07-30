@@ -142,6 +142,14 @@ table {
     font-size: 20px;
 }
 
+td.social-network {
+    opacity: 100%;
+}
+
+.social-network-logo {
+    height: 40px;
+}
+
 .picture-container {
     z-index: -1;
     padding-left: 30px;
@@ -152,6 +160,7 @@ table {
 }
 
 .pets-list-header {
+    margin-top: 35px;
     margin-bottom: 30px;
 }
 
@@ -417,4 +426,3 @@ h5 {
         width: 90%;
     }
 }
-

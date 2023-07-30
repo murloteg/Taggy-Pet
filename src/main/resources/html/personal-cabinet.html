@@ -69,11 +69,12 @@
                                 <td class="title">Email</td>
                                 <td class="data" th:text="${user.email}">user.email</td>
                             </tr>
-                            <!-- TODO: обработка всех соц. сетей пользователя -->
                             <div th:each="socialNetwork : ${user.userSocialNetworks}">
                                 <tr>
-                                <td class="title" th:text="${socialNetwork.socialNetwork.propertyValue}"></td>
-                                <td class="data" th:text="${socialNetwork.shortName}"></td>
+                                    <td class="title social-network">
+                                        <img th:src="@{${'/img/icons/' + socialNetwork.socialNetwork.propertyValue + '.svg'}}" alt="Social network logo" class="social-network-logo">
+                                    </td>
+                                    <td class="data" th:text="${socialNetwork.shortName}"></td>
                                 </tr>
                             </div>
                         </table>
@@ -91,8 +92,7 @@
                 <div class="col-xl-5">
                     <ul>
                         <li class="list-label">Мои питомцы</li>
-                        <li class="display-none-mobile"><a th:href="@{/pet/add-new-pet}" class="pet-list-btn">+ <span
-                                class="add-label">Добавить</span></a></li>
+                        <li class="display-none-mobile"><a th:href="@{/pet/add-new-pet}" class="pet-list-btn">+ <span class="add-label">Добавить</span></a></li>
                         <li class="mobile"><a th:href="@{/pet/add-new-pet}" class="pet-list-btn">+</a></li>
                     </ul>
                 </div>
