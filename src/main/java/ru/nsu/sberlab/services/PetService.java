@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
-import ru.nsu.sberlab.exceptions.InternalServerErrorException;
+import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
@@ -18,7 +18,6 @@ import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
-import ru.nsu.sberlab.models.utils.PetImagesSaver;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,7 @@ public class PetService {
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
     private final PetCleaner petCleaner;
+    private final PetImageSaver petImageSaver;
     private final PropertyResolverUtils propertyResolver;
 
     public PetInfoDto getPetInfoByChipId(String chipId) {
@@ -102,10 +102,10 @@ public class PetService {
         pet.setFeatures(mergedFeatures);
         try {
             PetImage petImage = pet.getPetImage();
-            PetImagesSaver.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
+            petImageSaver.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
             pet.setPetImage(petImage);
         } catch (IOException exception) {
-            throw new InternalServerErrorException();
+            throw new FileSystemErrorException(exception.getMessage());
         }
         petRepository.save(pet);
     }

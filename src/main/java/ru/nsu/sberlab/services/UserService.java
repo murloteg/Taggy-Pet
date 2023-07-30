@@ -8,14 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
-import ru.nsu.sberlab.exceptions.InternalServerErrorException;
+import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.models.dto.*;
 import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
-import ru.nsu.sberlab.models.utils.PetImagesSaver;
 import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
@@ -35,6 +34,7 @@ public class UserService implements UserDetailsService {
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetCleaner petCleaner;
+    private final PetImageSaver petImageSaver;
     private final PropertyResolverUtils propertyResolver;
 
     @Transactional
@@ -98,9 +98,9 @@ public class UserService implements UserDetailsService {
         );
         PetImage petImage = new PetImage();
         try {
-            PetImagesSaver.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
+            petImageSaver.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
         } catch (IOException exception) {
-            throw new InternalServerErrorException();
+            throw new FileSystemErrorException(exception.getMessage());
         }
         user.getPets().add(
                 new Pet(

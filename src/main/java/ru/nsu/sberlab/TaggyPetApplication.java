@@ -1,14 +1,11 @@
 package ru.nsu.sberlab;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@RequiredArgsConstructor
-public class FindMyPetApplication {
+public class TaggyPetApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(FindMyPetApplication.class, args);
+		SpringApplication.run(TaggyPetApplication.class, args);
 	}
 }
