@@ -25,13 +25,11 @@ h1 {
 }
 
 .offer {
-    justify-content: center;
-    display: flex;
     width: 100%;
-    left: 0;
-    top: 0;
-    position: absolute;
     height: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
     align-content: center;
     align-items: center;
 }
@@ -63,6 +61,75 @@ form {
     text-align: center;
 }
 
+label {
+    cursor: pointer;
+    margin-right: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    align-items: center;
+    color: black;
+    display: flex;
+}
+
+h5 {
+    color: black;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.checkboxes {
+    margin-bottom: 15px;
+    display: inline-flex;
+}
+
+.real-checkbox {
+    width: 0;
+    height: 0;
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+.real-checkbox:focus + .custom-checkbox {
+    box-shadow: 0px 0px 0px 1px #ff742b, 0px 0px 10px rgba(250, 128, 64, 0.8);
+}
+
+.real-checkbox:hover + .custom-checkbox {
+    box-shadow: 0px 0px 0px 1px #ff742b, 0px 0px 10px rgba(250, 128, 64, 0.8);
+}
+
+.custom-checkbox {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 3px solid #ff742b8a;
+    border-radius: 4px;
+    vertical-align: sub;
+    margin-right: 5px;
+}
+
+.custom-checkbox::before {
+    content: '';
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background-image: url("../img/check.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: 1px;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 0.2s ease-in;
+}
+
+.real-checkbox:checked + .custom-checkbox::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
 .input {
     width: 90%;
     padding: 10px 30px;
@@ -76,6 +143,27 @@ form {
     outline: none;
 }
 
+.checked label {
+    display: contents;
+}
+
+.checked .toggle {
+    margin-top: 22px;
+    display: none;
+}
+
+.checked .real-checkbox:checked .toggle{
+    display: block;
+}
+
+.social-network-logo {
+    margin-right: 10px;
+}
+
+.social-network-container input[type="text"] {
+    width: 70%;
+}
+
 input[type="submit"] {
     display: block;
     font-weight: bold;
@@ -87,12 +175,19 @@ input[type="submit"] {
     background-color: #FF742B;
     color: white;
     cursor: pointer;
-    transition: 0.2s;
+    width: 87%;
+    margin-top: 15px;
 }
 
 input[type="submit"]:hover {
     background-color: #FF742B;
     box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+@media screen and (max-width: 1199.5px){
+    input[type="submit"] {
+        width: 90%;
+    }
 }
 
 @media screen and (max-width: 575px){
