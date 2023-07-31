@@ -33,7 +33,11 @@ public class ErrorController { // TODO: add handling of IllegalAccessToPetExcept
 
     @ExceptionHandler(value = Exception.class)
     @GetMapping
-    public String handleException() {
+    public String handleException(
+            Model model,
+            Exception exception
+    ) {
+        model.addAttribute("exception", exception.getMessage());
         return "error-message";
     }
 }
