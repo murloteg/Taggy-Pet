@@ -10,6 +10,7 @@ import ru.nsu.sberlab.models.entities.PetImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -133,7 +134,8 @@ public class PetImageRepositoryImpl implements CustomPetImageRepository {
     @Override
     public void saveDefaultImageOnFileSystemIfRequired(String defaultImageName) {
         try {
-            String pathToImagesDirectory = ResourceUtils.getURL("classpath:" + RUNTIME_IMAGES_PATH).toURI().getPath();
+            URI imagesDirectoryURI = ResourceUtils.getURL("classpath:" + RUNTIME_IMAGES_PATH).toURI();
+            String pathToImagesDirectory = Paths.get(imagesDirectoryURI).toString();
             Path petImagesFolderPath = Paths.get(pathToImagesDirectory + File.separator + PET_IMAGES_FOLDER);
             if (!Files.exists(petImagesFolderPath)) { // FIXME: remove business logic later.
                 Files.createDirectory(petImagesFolderPath);
