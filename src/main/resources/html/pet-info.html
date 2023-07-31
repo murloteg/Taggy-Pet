@@ -61,6 +61,12 @@
             </div>
         </div>
     </div>
+
+    <!-- TODO: изменить размеры фотографии, и вообще перенести ее на карточку животного -->
+    <div th:if="${pet.petImageDto != null}">
+        <img th:src="@{${'/img/pet_images/' + pet.petImageDto.imageName}}" alt="Фотография животного" width="320" height="240">
+    </div>
+
     <div class="features" th:if="${not #lists.isEmpty(pet.features)}">
         <div class="container">
             <div class="row features-header display-none-mobile">

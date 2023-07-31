@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
+import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.models.dto.*;
 import ru.nsu.sberlab.models.entities.*;
 import ru.nsu.sberlab.models.enums.Role;
@@ -16,8 +17,10 @@ import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
+import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.UserRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -27,6 +30,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
+    private final PetImageRepositoryImpl petImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
@@ -82,25 +86,36 @@ public class UserService implements UserDetailsService {
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
+
+        user.getUserSocialNetworks().clear();
+        user.getFeatures().clear();
         List<Pet> pets = user.getPets();
-        userRepository.deleteById(user.getUserId());
-        pets.forEach(pet -> pet.getUsers().remove(user));
-        pets.forEach(petCleaner::clear);
+        pets.forEach(pet -> petCleaner.detachUser(pet, user));
+        pets.forEach(petCleaner::detachFeatures);
+        userRepository.deleteByUserId(user.getUserId());
+        pets.forEach(petCleaner::removePet);
     }
 
     @Transactional
-    public void createPet(PetInitializationDto petInitializationDto, User principal) {
+    public void createPet(PetCreationDto petCreationDto, User principal) {
         User user = userRepository.findUserByUserId(principal.getUserId()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
+        PetImage petImage = new PetImage();
+        try {
+            petImageRepository.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
+        } catch (IOException exception) {
+            throw new FileSystemErrorException(exception.getMessage());
+        }
         user.getPets().add(
                 new Pet(
-                        petInitializationDto.getChipId(),
-                        petInitializationDto.getType(),
-                        petInitializationDto.getBreed(),
-                        petInitializationDto.getSex(),
-                        petInitializationDto.getName(),
-                        featuresConverter.convertFeatureDtoListToFeatures(petInitializationDto.getFeatures(), user)
+                        petCreationDto.getChipId(),
+                        petCreationDto.getType(),
+                        petCreationDto.getBreed(),
+                        petCreationDto.getSex(),
+                        petCreationDto.getName(),
+                        featuresConverter.convertFeatureDtoListToFeatures(petCreationDto.getFeatures(), user),
+                        petImage
                 )
         );
         userRepository.save(user);

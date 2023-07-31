@@ -49,12 +49,17 @@ public class Pet {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets")
     private List<User> users = new ArrayList<>();
 
-    public Pet(String chipId, String type, String breed, Sex sex, String name, List<Feature> features) {
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private PetImage petImage;
+
+    public Pet(String chipId, String type, String breed, Sex sex, String name, List<Feature> features, PetImage petImage) {
         this.chipId = chipId;
         this.type = type;
         this.breed = breed;
         this.sex = sex;
         this.name = name;
         this.features = features;
+        this.petImage = petImage;
     }
 }

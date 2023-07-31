@@ -3,25 +3,58 @@ package ru.nsu.sberlab.models.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nsu.sberlab.models.entities.Feature;
+import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.models.entities.Pet;
+import ru.nsu.sberlab.models.entities.User;
+import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.PetRepository;
 
-import java.util.List;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class PetCleaner {
     private final PetRepository petRepository;
-    private final FeatureCleaner featureCleaner;
+    private final PetImageRepositoryImpl petImageRepository;
 
-    @Transactional
-    public void clear(Pet pet) {
+    /**
+     * <p>This method detach user from pet's list of users.</p>
+     *
+     * @param pet  this parameter present pet entity
+     * @param user this parameter present user entity
+     */
+    public void detachUser(Pet pet, User user) {
+        pet.getUsers().remove(user);
+    }
+
+    /**
+     * <p>This method detach all pet's features from pet.
+     * Pet's features are removed when the user (owner of features) is deleted.
+     * </p>
+     *
+     * @param pet this parameter present pet entity
+     */
+    public void detachFeatures(Pet pet) {
         if (pet.getUsers().isEmpty()) {
-            List<Feature> features = pet.getFeatures();
+            pet.getFeatures().forEach(feature -> feature.getPets().remove(pet));
+            pet.getFeatures().clear();
+        }
+    }
+
+    /**
+     * <p>This method delete pet from database and delete pet's image from file system.</p>
+     *
+     * @param pet this parameter present pet entity
+     */
+    @Transactional
+    public void removePet(Pet pet) {
+        if (pet.getUsers().isEmpty()) {
+            try {
+                petImageRepository.removePetImage(pet.getPetImage());
+            } catch (IOException exception) {
+                throw new FileSystemErrorException(exception.getMessage());
+            }
             petRepository.deleteByChipId(pet.getChipId());
-            features.forEach(feature -> feature.getPets().remove(pet));
-            features.forEach(featureCleaner::clear);
         }
     }
 }

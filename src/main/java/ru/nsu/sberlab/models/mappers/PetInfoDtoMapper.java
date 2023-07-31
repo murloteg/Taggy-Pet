@@ -2,10 +2,12 @@ package ru.nsu.sberlab.models.mappers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nsu.sberlab.models.dto.PetImageDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Pet;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -16,6 +18,9 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
 
     @Override
     public PetInfoDto apply(Pet pet) {
+        PetImageDto petImageDto = Objects.isNull(pet.getPetImage()) ? null : new PetImageDto(
+                pet.getPetImage().getImageUUIDName()
+        );
         return new PetInfoDto(
                 pet.getChipId(),
                 pet.getName(),
@@ -30,7 +35,8 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
                         .stream()
                         .map(featureInfoDtoMapper)
                         .sorted(Comparator.naturalOrder())
-                        .toList()
+                        .toList(),
+                petImageDto
         );
     }
 }
