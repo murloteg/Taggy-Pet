@@ -37,10 +37,20 @@ public class PetImageRepositoryImpl implements CustomPetImageRepository {
     @Value("${pet.images.folder}")
     private String PET_IMAGES_FOLDER;
 
+    /**
+     * <p>This method saves pet image in file system.
+     * If user didn't send any image from web-form then this method sets default pet image and returns.
+     * Otherwise, this method saves new image in the file system and in /target/classes/{RUNTIME_RESOURCES_PATH}.
+     * </p>
+     *
+     * @param imageFile this parameter present MultipartFile submitted from web-form
+     * @param petImage  this parameter present pet image entity
+     * @throws IOException
+     */
     @Override
     public void saveImageOnFileSystem(MultipartFile imageFile, PetImage petImage) throws IOException {
         File runtimeResourcesFolder = ResourceUtils.getFile("classpath:" + RUNTIME_RESOURCES_PATH);
-        if (imageFile.isEmpty()) {
+        if (imageFile.isEmpty()) { // FIXME: remove business logic later.
             petImage.setImageUUIDName(DEFAULT_PET_IMAGE);
             return;
         }
