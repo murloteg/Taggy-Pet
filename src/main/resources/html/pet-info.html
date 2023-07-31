@@ -97,28 +97,29 @@
                                 <td class="title-table">Имя</td>
                                 <td class="data-table" th:text="${user.firstName}">Имя владельца</td>
                             </tr>
-                            <tr>
+                            <tr th:if="${user.phoneNumber != null}">
                                 <td class="title-table">Телефон</td>
-                                <!-- TODO: проверка поля на null: если null, то отображать "телефон скрыт"-->
-                                <td class="data-table" th:text="${user.phoneNumber}">Телефон владельца, если его показ разрешен</td>
+                                <td class="data-table" th:text="${user.phoneNumber}">Телефон владельца, если его показ
+                                    разрешен
+                                </td>
                             </tr>
-                            <tr>
+                            <tr th:if="${user.email != null}">
                                 <td class="title-table">Email</td>
-                                <!-- TODO: проверка поля на null: если null, то отображать "email скрыт"-->
-                                <td class="data-table" th:text="${user.email}">Email владельца, если его показ разрешен</td>
+                                <td class="data-table" th:text="${user.email}">Email владельца, если его показ
+                                    разрешен
+                                </td>
                             </tr>
-                            <!-- TODO: обработать то, что может идти много соц. сетей -->
-                            <div th:each="socialNetwork : ${user.socialNetworks}">
-                                <tr>
-                                    <td class="data-table">
-                                    <a th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}" class="tg-btn">
-                                        <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Link">Написать
-                                    </a>
-                                    </td>
-                                </tr>
-                            </div>
                         </table>
+                        <div class="social-networks-container">
+                            <!-- TODO: обработка всех соц. сетей пользователя -->
+                            <div th:each="socialNetwork : ${user.socialNetworks}" th:if="${socialNetwork.shortName != ''}" class="social-network">
+                                <a  th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}" class="social-network-link">
+                                    <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Link" class="social-network-logo">
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
