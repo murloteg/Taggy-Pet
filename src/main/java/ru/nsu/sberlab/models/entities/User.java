@@ -65,15 +65,10 @@ public class User implements UserDetails {
     )
     private List<Pet> pets = new ArrayList<>();
 
-    @OneToMany(cascade = {
-            CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.REFRESH,
-            CascadeType.PERSIST
-    }, fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<UserSocialNetwork> userSocialNetworks = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
     private List<Feature> features = new ArrayList<>();
 
     @PrePersist

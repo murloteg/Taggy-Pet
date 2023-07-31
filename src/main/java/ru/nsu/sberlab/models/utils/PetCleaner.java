@@ -1,61 +1,60 @@
 package ru.nsu.sberlab.models.utils;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nsu.sberlab.exceptions.FileSystemErrorException;
-import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
-import ru.nsu.sberlab.models.entities.PetImage;
+import ru.nsu.sberlab.models.entities.User;
+import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.PetRepository;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PetCleaner {
     private final PetRepository petRepository;
-    private final FeatureCleaner featureCleaner;
+    private final PetImageRepositoryImpl petImageRepository;
 
-    @Value("${default.file.system.resources.path}")
-    private String FILE_SYSTEM_RESOURCES_PATH;
+    /**
+     * <p>This method detach user from pet's list of users.</p>
+     *
+     * @param pet  this parameter present pet entity
+     * @param user this parameter present user entity
+     */
+    public void detachUser(Pet pet, User user) {
+        pet.getUsers().remove(user);
+    }
 
-    @Value("${default.runtime.resources.path}")
-    private String RUNTIME_RESOURCES_PATH;
-
-    @Value("${default.pet.image.name}")
-    private String DEFAULT_PET_IMAGE;
-
-    @Transactional
-    public void clear(Pet pet) {
+    /**
+     * <p>This method detach all pet's features from pet.
+     * Pet's features are removed when the user (owner of features) is deleted.
+     * </p>
+     *
+     * @param pet this parameter present pet entity
+     */
+    public void detachFeatures(Pet pet) {
         if (pet.getUsers().isEmpty()) {
-            removePetImage(pet.getPetImage());
-            List<Feature> features = pet.getFeatures();
-            petRepository.deleteByChipId(pet.getChipId());
-            features.forEach(feature -> feature.getPets().remove(pet));
-            features.forEach(featureCleaner::clear);
+            pet.getFeatures().forEach(feature -> feature.getPets().remove(pet));
+            pet.getFeatures().clear();
         }
     }
 
-    private void removePetImage(PetImage petImage) {
-        try {
-            ImageRemover.removeImageFromFileSystem(
-                    PathResolver.resolvePath(FILE_SYSTEM_RESOURCES_PATH),
-                    petImage.getImageUUIDName(),
-                    DEFAULT_PET_IMAGE
-            );
-            File saveFile = new ClassPathResource(RUNTIME_RESOURCES_PATH).getFile();
-            ImageRemover.removeImageFromFileSystem(
-                    saveFile.getAbsolutePath() + File.separator,
-                    petImage.getImageUUIDName(),
-                    DEFAULT_PET_IMAGE
-            );
-        } catch (IOException exception) {
-            throw new FileSystemErrorException(exception.getMessage());
+    /**
+     * <p>This method delete pet from database and delete pet's image from file system.</p>
+     *
+     * @param pet this parameter present pet entity
+     */
+    @Transactional
+    public void removePet(Pet pet) {
+        if (pet.getUsers().isEmpty()) {
+            try {
+                petImageRepository.removePetImage(pet.getPetImage());
+            } catch (IOException exception) {
+                throw new FileSystemErrorException(exception.getMessage());
+            }
+            petRepository.deleteByChipId(pet.getChipId());
         }
     }
 }

@@ -18,6 +18,7 @@ import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
+import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,12 @@ import java.util.stream.Collectors;
 public class PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
+    private final PetImageRepositoryImpl petImageRepository;
     private final FeaturePropertiesRepository featurePropertiesRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
     private final PetCleaner petCleaner;
-    private final PetImageSaver petImageSaver;
     private final PropertyResolverUtils propertyResolver;
 
     public PetInfoDto getPetInfoByChipId(String chipId) {
@@ -60,7 +61,7 @@ public class PetService {
      * </p>
      *
      * @param petEditDto this parameter contains new information about pet
-     * @param principal            this parameter present user authentication session
+     * @param principal  this parameter present user authentication session
      * @author Kirill Bolotov
      */
     @Transactional
@@ -102,7 +103,7 @@ public class PetService {
         pet.setFeatures(mergedFeatures);
         try {
             PetImage petImage = pet.getPetImage();
-            petImageSaver.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
+            petImageRepository.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
             pet.setPetImage(petImage);
         } catch (IOException exception) {
             throw new FileSystemErrorException(exception.getMessage());
@@ -122,7 +123,8 @@ public class PetService {
 
         currentUser.getPets().remove(pet);
         pet.getUsers().remove(currentUser);
-        petCleaner.clear(pet);
+        petCleaner.detachFeatures(pet);
+        petCleaner.removePet(pet);
     }
 
     public List<PetInfoDto> petsList(Pageable pageable) {

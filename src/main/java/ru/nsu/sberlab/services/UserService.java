@@ -17,6 +17,7 @@ import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
+import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.io.IOException;
@@ -29,12 +30,12 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
+    private final PetImageRepositoryImpl petImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetCleaner petCleaner;
-    private final PetImageSaver petImageSaver;
     private final PropertyResolverUtils propertyResolver;
 
     @Transactional
@@ -85,10 +86,14 @@ public class UserService implements UserDetailsService {
                 user.getDateOfCreated()
         );
         deletedUserRepository.save(deletedUser);
+
+        user.getUserSocialNetworks().clear();
+        user.getFeatures().clear();
         List<Pet> pets = user.getPets();
-        userRepository.deleteById(user.getUserId());
-        pets.forEach(pet -> pet.getUsers().remove(user));
-        pets.forEach(petCleaner::clear);
+        pets.forEach(pet -> petCleaner.detachUser(pet, user));
+        pets.forEach(petCleaner::detachFeatures);
+        userRepository.deleteByUserId(user.getUserId());
+        pets.forEach(petCleaner::removePet);
     }
 
     @Transactional
@@ -98,7 +103,7 @@ public class UserService implements UserDetailsService {
         );
         PetImage petImage = new PetImage();
         try {
-            petImageSaver.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
+            petImageRepository.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
         } catch (IOException exception) {
             throw new FileSystemErrorException(exception.getMessage());
         }
