@@ -42,9 +42,6 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        User user = userService.loadUserByUsername(principal.getEmail());
-
-
         model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
         model.addAttribute(
                 "hasPrivilegedAccess",
@@ -61,7 +58,6 @@ public class UserController {
             PetInitializationDto pet,
             @AuthenticationPrincipal User principal
     ) {
-
         userService.createPet(pet, principal);
         return "redirect:/user/personal-cabinet";
     }

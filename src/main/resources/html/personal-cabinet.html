@@ -69,6 +69,7 @@
                                 <td class="title">Email</td>
                                 <td class="data" th:text="${user.email}">user.email</td>
                             </tr>
+                            <!-- TODO: обработка всех соц. сетей пользователя -->
                             <div th:each="socialNetwork : ${user.userSocialNetworks}" th:if="${socialNetwork.shortName != ''}">
                                 <tr>
                                     <td class="title social-network">
