@@ -103,9 +103,9 @@
     <div class="pets-list">
         <div class="container">
             <div class="row">
-                <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet : ${pets}">
+                <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet, iterator : ${pets}">
                     <a th:href="@{/pet/my-pets/{id}(id = ${pet.chipId})}" class="pet-info-link">
-                        <div class="wrapper pet-card">
+                        <div class="wrapper pet-card" th:id="${iterator.index}">
                             <div class="pet-name">
                                 <h5 th:text="${pet.name}">pet.name</h5>
                             </div>
@@ -116,5 +116,19 @@
         </div>
     </div>
 </header>
+<script th:inline="javascript">
+    let pets = /*[[${pets}]]*/ [];
+    let petCard;
+    let petImage;
+    for (let i = 0; i < pets.length; ++i) {
+        petCard = document.getElementById(i.toString());
+        petImage = pets[i].petImageDto.imageName;
+        if (petImage == 'default-pet-image.png') {
+            petCard.style.background = "url(/img/pet_images/" + petImage + ")";
+        } else {
+            petCard.style.background = "linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1)), url(/img/pet_images/" + petImage + ")";
+        }
+    }
+</script>
 </body>
 </html>
