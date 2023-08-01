@@ -14,9 +14,18 @@ public class PetImage {
     @Column(name = "image_id")
     private Long imageId;
 
-    @Column(name = "image_uuid_name")
+    @Column(name = "image_uuid_name", unique = true)
     private String imageUUIDName;
-    
+
+    @Column(name = "image_size")
+    private Long size;
+
+    @Column(name = "image_type")
+    private String contentType;
+
+    @Lob
+    private String imageData;
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "petImage")
     private Pet pet;
 }

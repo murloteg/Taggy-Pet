@@ -7,30 +7,34 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 import ru.nsu.sberlab.exceptions.FileSystemErrorException;
-import ru.nsu.sberlab.models.dto.*;
-import ru.nsu.sberlab.models.entities.*;
+import ru.nsu.sberlab.models.dto.PetCreationDto;
+import ru.nsu.sberlab.models.dto.PetInfoDto;
+import ru.nsu.sberlab.models.dto.UserInfoDto;
+import ru.nsu.sberlab.models.dto.UserRegistrationDto;
+import ru.nsu.sberlab.models.entities.DeletedUser;
+import ru.nsu.sberlab.models.entities.Pet;
+import ru.nsu.sberlab.models.entities.PetImage;
+import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
+import ru.nsu.sberlab.models.utils.DefaultImagesUtils;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
 import ru.nsu.sberlab.repositories.DeletedUserRepository;
-import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final DeletedUserRepository deletedUserRepository;
-    private final PetImageRepositoryImpl petImageRepository;
     private final PasswordEncoder passwordEncoder;
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
@@ -103,7 +107,15 @@ public class UserService implements UserDetailsService {
         );
         PetImage petImage = new PetImage();
         try {
-            petImageRepository.saveImageOnFileSystem(petCreationDto.getImageFile(), petImage);
+            MultipartFile imageFile = petCreationDto.getImageFile();
+            if (imageFile.isEmpty()) {
+                petImage.setImageUUIDName(DefaultImagesUtils.getDefaultPetImageName()); // FIXME
+            } else {
+                petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+                petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
+                petImage.setContentType(imageFile.getContentType());
+                petImage.setSize(imageFile.getSize());
+            }
         } catch (IOException exception) {
             throw new FileSystemErrorException(exception.getMessage());
         }

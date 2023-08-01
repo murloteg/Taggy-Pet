@@ -3,19 +3,14 @@ package ru.nsu.sberlab.models.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.models.entities.Pet;
 import ru.nsu.sberlab.models.entities.User;
-import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
 import ru.nsu.sberlab.repositories.PetRepository;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class PetCleaner {
     private final PetRepository petRepository;
-    private final PetImageRepositoryImpl petImageRepository;
 
     /**
      * <p>This method detach user from pet's list of users.</p>
@@ -49,11 +44,11 @@ public class PetCleaner {
     @Transactional
     public void removePet(Pet pet) {
         if (pet.getUsers().isEmpty()) {
-            try {
-                petImageRepository.removePetImage(pet.getPetImage());
-            } catch (IOException exception) {
-                throw new FileSystemErrorException(exception.getMessage());
-            }
+//            try {
+//                petImageRepository.removePetImage(pet.getPetImage());
+//            } catch (IOException exception) {
+//                throw new FileSystemErrorException(exception.getMessage());
+//            }
             petRepository.deleteByChipId(pet.getChipId());
         }
     }
