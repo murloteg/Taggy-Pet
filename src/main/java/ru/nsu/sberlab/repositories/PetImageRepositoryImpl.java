@@ -134,15 +134,16 @@ public class PetImageRepositoryImpl implements CustomPetImageRepository {
     @Override
     public void saveDefaultImageOnFileSystemIfRequired(String defaultImageName) {
         try {
-            URI imagesDirectoryURI = ResourceUtils.getURL("classpath:" + RUNTIME_IMAGES_PATH).toURI();
+            URI imagesDirectoryURI = ResourceUtils.getURL("classpath:" + RUNTIME_IMAGES_PATH).toURI(); // FIXME: docker can't resolve it.
             String pathToImagesDirectory = Paths.get(imagesDirectoryURI).toString();
             Path petImagesFolderPath = Paths.get(pathToImagesDirectory + File.separator + PET_IMAGES_FOLDER);
             if (!Files.exists(petImagesFolderPath)) { // FIXME: remove business logic later.
                 Files.createDirectory(petImagesFolderPath);
                 Files.createDirectory(Paths.get(restorePath(FILE_SYSTEM_IMAGES_PATH) + File.separator + PET_IMAGES_FOLDER));
             }
-            File runtimeResourcesFolder = ResourceUtils.getFile("classpath:" + RUNTIME_RESOURCES_PATH);
-            Path pathToSave = Paths.get(runtimeResourcesFolder.getAbsolutePath() + File.separator + defaultImageName);
+            URI runtimeResourcesFolderURI = ResourceUtils.getURL("classpath:" + RUNTIME_RESOURCES_PATH).toURI();
+            String pathToRuntimeResourcesFolder = Paths.get(runtimeResourcesFolderURI).toString();
+            Path pathToSave = Paths.get(pathToRuntimeResourcesFolder + File.separator + defaultImageName);
             if (!Files.exists(pathToSave)) { // FIXME: remove business logic later.
                 Path defaultImagePath = Paths.get(restorePath(FILE_SYSTEM_IMAGES_PATH) + File.separator + defaultImageName);
                 Files.copy(defaultImagePath, pathToSave, StandardCopyOption.REPLACE_EXISTING);
