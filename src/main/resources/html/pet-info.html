@@ -30,9 +30,9 @@
                         </h1>
                     </div>
                     <div class="data-container elem-in-window">
-                        <div class="wrapper pet-card">
+                        <div class="wrapper pet-card" id="pet-card">
                             <div class="pet-name">
-                                <h4 th:text="${pet.name}">Вобла</h4>
+                                <h4 id="pets-name" th:text="${pet.name}">Вобла</h4>
                             </div>
                         </div>
                         <div class="pet-data">
@@ -61,12 +61,6 @@
             </div>
         </div>
     </div>
-
-    <!-- TODO: изменить размеры фотографии, и вообще перенести ее на карточку животного -->
-    <div th:if="${pet.petImageDto != null}">
-        <img th:src="@{${'/img/pet_images/' + pet.petImageDto.imageName}}" alt="Фотография животного" width="320" height="240">
-    </div>
-
     <div class="features" th:if="${not #lists.isEmpty(pet.features)}">
         <div class="container">
             <div class="row features-header display-none-mobile">
@@ -125,5 +119,17 @@
         </div>
     </div>
 </header>
+<script th:inline="javascript">
+    let petCard = document.getElementById('pet-card');
+    let petImage = /*[[${pet.petImageDto.imageName}]]*/ "Pet's image";
+    if (petImage == 'default-pet-image.png') {
+        petCard.style.background = "url(/img/pet_images/" + petImage + ")";
+    } else {
+        petCard.style.background = "linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1)), url(/img/pet_images/" + petImage + ")";
+    }
+    petCard.style.backgroundRepeat = "no-repeat";
+    petCard.style.backgroundPosition = "center";
+    petCard.style.backgroundSize = "cover";
+</script>
 </body>
 </html>
