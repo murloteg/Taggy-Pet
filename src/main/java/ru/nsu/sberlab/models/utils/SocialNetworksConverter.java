@@ -24,6 +24,7 @@ public class SocialNetworksConverter {
     ) {
         return socialNetworkRegistrationDtoList
                 .stream()
+                .filter(dto -> !dto.getShortName().isEmpty())
                 .map(dto -> new UserSocialNetwork(
                                 dto.getShortName(),
                                 socialNetworkPropertiesRepository.findById(dto.getPropertyId()).orElseThrow(
