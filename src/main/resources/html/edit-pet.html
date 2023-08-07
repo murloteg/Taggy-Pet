@@ -50,15 +50,11 @@
                             <label for="name">Кличка</label>
                             <input type="text" id="name" th:name="name" th:value="${pet.name}" required oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
 
-                            <!-- TODO: изменить размеры фотографии, и вообще перенести ее на карточку животного -->
+                            <!-- FIXME: с помощью JS отображать тут фото питомца, в зависимости от UUID!! -->
                             <div th:if="${pet.petImageDto != null}">
                                 <img th:src="@{${'/img/pet_images/' + pet.petImageDto.imageName}}" alt="Фотография животного" width="320" height="240">
                             </div>
                             <input type="file" th:name="imageFile" accept="image/png, image/jpeg">
-<!--                             <div th:if="${pet.petImageDto != null}">
-                                <img th:src="@{${'/img/pet_images/' + pet.petImageDto.imageName}}" alt="Фотография животного" width="320" height="240">
-                            </div>
-                            <input type="file" th:name="imageFile" accept="image/png, image/jpeg">                           -->
                           
                             <div class="features">
                                 <h2>Особенности</h2>

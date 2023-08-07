@@ -123,8 +123,8 @@
     for (let i = 0; i < pets.length; ++i) {
         petCard = document.getElementById(i.toString());
         petImage = pets[i].petImageDto.imageName;
-        if (petImage == 'default-pet-image.png') {
-            petCard.style.background = "url(/pet/images/" + petImage + ")";
+        if ("default-pet-image.png".localeCompare(petImage) === 0) {
+            petCard.style.background = "url(/img/" + petImage + ")";
         } else {
             petCard.style.background = "linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1)), url(/pet/images/" + petImage + ")";
         }

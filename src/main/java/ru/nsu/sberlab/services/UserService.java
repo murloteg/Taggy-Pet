@@ -40,6 +40,7 @@ public class UserService implements UserDetailsService {
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetCleaner petCleaner;
+    private final DefaultImagesUtils defaultImagesUtils;
     private final PropertyResolverUtils propertyResolver;
 
     @Transactional
@@ -109,7 +110,7 @@ public class UserService implements UserDetailsService {
         try {
             MultipartFile imageFile = petCreationDto.getImageFile();
             if (imageFile.isEmpty()) {
-                petImage.setImageUUIDName(DefaultImagesUtils.getDefaultPetImageName()); // FIXME
+                petImage.setImageUUIDName(defaultImagesUtils.getDefaultPetImage());
             } else {
                 petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
                 petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());

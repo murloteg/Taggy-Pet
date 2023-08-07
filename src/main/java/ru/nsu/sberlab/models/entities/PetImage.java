@@ -14,7 +14,7 @@ public class PetImage {
     @Column(name = "image_id")
     private Long imageId;
 
-    @Column(name = "image_uuid_name", unique = true)
+    @Column(name = "image_uuid_name")
     private String imageUUIDName;
 
     @Column(name = "image_size")

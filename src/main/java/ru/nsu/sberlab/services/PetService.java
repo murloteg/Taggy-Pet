@@ -48,7 +48,7 @@ public class PetService {
                 .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
-    public PetEditDto getPetInitializationDtoByChipId(String chipId) {
+    public PetEditDto getPetEditDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, featurePropertiesRepository.findAll()))
                 .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
@@ -102,11 +102,13 @@ public class PetService {
         pet.setFeatures(mergedFeatures);
         try {
             PetImage petImage = pet.getPetImage();
-            MultipartFile imageFile = petEditDto.getImageFile(); // FIXME: NULL CHECK
-            petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
-            petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName()); // TODO: set default.png, if file not present.
-            petImage.setContentType(imageFile.getContentType());
-            petImage.setSize(imageFile.getSize());
+            MultipartFile imageFile = petEditDto.getImageFile();
+            if (!imageFile.isEmpty()) {
+                petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+                petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
+                petImage.setContentType(imageFile.getContentType());
+                petImage.setSize(imageFile.getSize());
+            }
         } catch (IOException exception) {
             throw new FileSystemErrorException(exception.getMessage());
         }
