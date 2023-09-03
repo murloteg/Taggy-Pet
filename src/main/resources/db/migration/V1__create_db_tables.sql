@@ -1,3 +1,4 @@
+create sequence user_seq start with 3 increment by 1;
 create sequence pet_images_seq start with 1 increment by 50;
 create sequence pets_seq start with 1 increment by 50;
 

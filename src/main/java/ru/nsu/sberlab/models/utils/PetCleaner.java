@@ -44,11 +44,6 @@ public class PetCleaner {
     @Transactional
     public void removePet(Pet pet) {
         if (pet.getUsers().isEmpty()) {
-//            try {
-//                petImageRepository.removePetImage(pet.getPetImage());
-//            } catch (IOException exception) {
-//                throw new FileSystemErrorException(exception.getMessage());
-//            }
             petRepository.deleteByChipId(pet.getChipId());
         }
     }

@@ -16,7 +16,8 @@ import java.util.*;
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+    @SequenceGenerator(name = "user_id_generator", sequenceName = "user_seq", initialValue = 3, allocationSize = 1)
     @Column(name = "user_id")
     private Long userId;
 

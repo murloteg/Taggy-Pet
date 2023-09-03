@@ -32,7 +32,7 @@ public class PetController {
     ) {
         model.addAttribute("properties", featurePropertiesService.properties());
         model.addAttribute("pet", petService.getPetEditDtoByChipId(chipId));
-        return "edit-pet"; // TODO: make another page for this feature
+        return "edit-pet";
     }
 
     @PutMapping("edit")
