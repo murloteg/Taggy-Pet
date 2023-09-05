@@ -15,8 +15,8 @@ public class PetCleaner {
     /**
      * <p>This method detach user from pet's list of users.</p>
      *
-     * @param pet  this parameter present pet entity
-     * @param user this parameter present user entity
+     * @param pet  this parameter presents pet entity
+     * @param user this parameter presents user entity
      */
     public void detachUser(Pet pet, User user) {
         pet.getUsers().remove(user);
@@ -27,7 +27,7 @@ public class PetCleaner {
      * Pet's features are removed when the user (owner of features) is deleted.
      * </p>
      *
-     * @param pet this parameter present pet entity
+     * @param pet this parameter presents pet entity
      */
     public void detachFeatures(Pet pet) {
         if (pet.getUsers().isEmpty()) {
@@ -37,9 +37,9 @@ public class PetCleaner {
     }
 
     /**
-     * <p>This method delete pet from database and delete pet's image from file system.</p>
+     * <p>This method delete pet from database.</p>
      *
-     * @param pet this parameter present pet entity
+     * @param pet this parameter presents pet entity
      */
     @Transactional
     public void removePet(Pet pet) {

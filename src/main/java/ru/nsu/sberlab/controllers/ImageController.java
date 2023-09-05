@@ -13,7 +13,6 @@ import ru.nsu.sberlab.models.entities.PetImage;
 import ru.nsu.sberlab.repositories.PetImageRepository;
 
 import java.io.ByteArrayInputStream;
-import java.util.Base64;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,10 +23,9 @@ public class ImageController {
     @ResponseBody
     public ResponseEntity<InputStreamResource> getPetImageByUUIDName(@PathVariable String uuidName) {
         PetImage petImage = petImageRepository.findByImageUUIDName(uuidName).orElseThrow(ImageNotFoundException::new);
-        byte[] decodedImageData = Base64.getDecoder().decode(petImage.getImageData().getBytes());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(petImage.getContentType()))
                 .contentLength(petImage.getSize())
-                .body(new InputStreamResource(new ByteArrayInputStream(decodedImageData)));
+                .body(new InputStreamResource(new ByteArrayInputStream(petImage.getImageData())));
     }
 }

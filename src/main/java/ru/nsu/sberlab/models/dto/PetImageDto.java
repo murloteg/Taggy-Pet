@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PetImageDto {
-    private String imageName;
+    private String imageUUIDName;
 }

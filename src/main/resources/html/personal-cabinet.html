@@ -122,7 +122,7 @@
     let petImage;
     for (let i = 0; i < pets.length; ++i) {
         petCard = document.getElementById(i.toString());
-        petImage = pets[i].petImageDto.imageName;
+        petImage = pets[i].petImageDto.imageUUIDName;
         if ("default-pet-image.png".localeCompare(petImage) === 0) {
             petCard.style.background = "url(/img/" + petImage + ")";
         } else {

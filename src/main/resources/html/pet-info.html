@@ -121,7 +121,7 @@
 </header>
 <script th:inline="javascript">
     let petCard = document.getElementById('pet-card');
-    let petImage = /*[[${pet.petImageDto.imageName}]]*/ "Pet's image";
+    let petImage = /*[[${pet.petImageDto.imageUUIDName}]]*/ "Pet's image";
     if ("default-pet-image.png".localeCompare(petImage) === 0) {
         petCard.style.background = "url(/img/" + petImage + ")";
     } else {

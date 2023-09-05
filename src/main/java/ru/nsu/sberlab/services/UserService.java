@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
-import ru.nsu.sberlab.exceptions.FileSystemErrorException;
+import ru.nsu.sberlab.exceptions.CustomIOException;
 import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.dto.UserInfoDto;
@@ -107,18 +107,18 @@ public class UserService implements UserDetailsService {
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
         PetImage petImage = new PetImage();
-        try {
-            MultipartFile imageFile = petCreationDto.getImageFile();
-            if (imageFile.isEmpty()) {
-                petImage.setImageUUIDName(defaultImagesUtils.getDefaultPetImage());
-            } else {
-                petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+        MultipartFile imageFile = petCreationDto.getImageFile();
+        if (imageFile.isEmpty()) {
+            petImage.setImageUUIDName(defaultImagesUtils.getDefaultPetImage());
+        } else {
+            try {
+                petImage.setImageData(imageFile.getBytes());
                 petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
                 petImage.setContentType(imageFile.getContentType());
                 petImage.setSize(imageFile.getSize());
+            } catch (IOException exception) {
+                throw new CustomIOException(exception.getMessage());
             }
-        } catch (IOException exception) {
-            throw new FileSystemErrorException(exception.getMessage());
         }
         user.getPets().add(
                 new Pet(

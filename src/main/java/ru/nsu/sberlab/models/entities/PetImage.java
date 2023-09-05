@@ -24,7 +24,8 @@ public class PetImage {
     private String contentType;
 
     @Lob
-    private String imageData;
+    @Column(name = "image_data")
+    private byte[] imageData;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "petImage")
     private Pet pet;

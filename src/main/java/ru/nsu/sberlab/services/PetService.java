@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
-import ru.nsu.sberlab.exceptions.FileSystemErrorException;
+import ru.nsu.sberlab.exceptions.CustomIOException;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
@@ -100,17 +100,17 @@ public class PetService {
                 )
                 .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
-        try {
-            PetImage petImage = pet.getPetImage();
-            MultipartFile imageFile = petEditDto.getImageFile();
-            if (!imageFile.isEmpty()) {
-                petImage.setImageData(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+        PetImage petImage = pet.getPetImage();
+        MultipartFile imageFile = petEditDto.getImageFile();
+        if (!imageFile.isEmpty()) {
+            try {
+                petImage.setImageData(imageFile.getBytes());
                 petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
                 petImage.setContentType(imageFile.getContentType());
                 petImage.setSize(imageFile.getSize());
+            } catch (IOException exception) {
+                throw new CustomIOException(exception.getMessage());
             }
-        } catch (IOException exception) {
-            throw new FileSystemErrorException(exception.getMessage());
         }
         petRepository.save(pet);
     }
@@ -126,7 +126,7 @@ public class PetService {
         checkIfUserHasAccessToPet(currentUser, pet);
 
         currentUser.getPets().remove(pet);
-        pet.getUsers().remove(currentUser);
+        petCleaner.detachUser(pet, currentUser);
         petCleaner.detachFeatures(pet);
         petCleaner.removePet(pet);
     }

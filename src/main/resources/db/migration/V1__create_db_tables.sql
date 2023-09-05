@@ -7,7 +7,7 @@ create table deleted_users
     user_id          bigint not null,
     email            varchar(255),
     phone_number     varchar(255),
-    first_name       varchar(255),
+    first_name       text,
     date_of_creation timestamp(6),
     date_of_deletion timestamp(6),
     primary key (user_id)
@@ -22,7 +22,7 @@ create table features
 (
     feature_id  bigserial not null,
     property_id bigint,
-    description varchar(255),
+    description text,
     date        date,
     user_id     bigint,
     primary key (feature_id)
@@ -69,7 +69,7 @@ create table users
     user_id                         bigserial not null,
     email                           varchar(255) unique,
     phone_number                    varchar(255),
-    first_name                      varchar(255),
+    first_name                      text,
     active                          boolean,
     date_of_creation                timestamp(6),
     permission_to_show_email        boolean,
