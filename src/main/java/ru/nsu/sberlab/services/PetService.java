@@ -100,9 +100,9 @@ public class PetService {
                 )
                 .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
-        PetImage petImage = pet.getPetImage();
         MultipartFile imageFile = petEditDto.getImageFile();
         if (!imageFile.isEmpty()) {
+            PetImage petImage = new PetImage();
             try {
                 petImage.setImageData(imageFile.getBytes());
                 petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
@@ -111,6 +111,7 @@ public class PetService {
             } catch (IOException exception) {
                 throw new CustomIOException(exception.getMessage());
             }
+            pet.setPetImage(petImage);
         }
         petRepository.save(pet);
     }
