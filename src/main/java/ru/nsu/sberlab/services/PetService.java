@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
-import ru.nsu.sberlab.exceptions.CustomIOException;
+import ru.nsu.sberlab.exceptions.AddPetImageException;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
@@ -109,7 +109,7 @@ public class PetService {
                 petImage.setContentType(imageFile.getContentType());
                 petImage.setSize(imageFile.getSize());
             } catch (IOException exception) {
-                throw new CustomIOException(exception.getMessage());
+                throw new AddPetImageException(exception.getMessage());
             }
             pet.setPetImage(petImage);
         }

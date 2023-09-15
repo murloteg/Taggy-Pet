@@ -59,11 +59,6 @@ create table social_networks
     property_name varchar(255),
     primary key (property_id)
 );
-create table user_roles
-(
-    user_id bigint not null,
-    roles   varchar(255) check (roles in ('ROLE_USER', 'ROLE_ADMIN', 'ROLE_PRIVILEGED_ACCESS'))
-);
 create table users
 (
     user_id                         bigserial not null,
@@ -75,6 +70,7 @@ create table users
     permission_to_show_email        boolean,
     permission_to_show_phone_number boolean,
     password                        varchar(128),
+    role   varchar(255) check (role in ('ROLE_USER', 'ROLE_ADMIN', 'ROLE_PRIVILEGED_ACCESS')),
     primary key (user_id)
 );
 create table users_pets
@@ -105,9 +101,6 @@ alter table if exists pets_features
 
 alter table if exists pets_features
     add constraint pets_pet_features_fk foreign key (pet_id) references pets;
-
-alter table if exists user_roles
-    add constraint users_user_roles_fk foreign key (user_id) references users;
 
 alter table if exists users_pets
     add constraint pets_users_pets_fk foreign key (pet_id) references pets;

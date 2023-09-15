@@ -2,6 +2,7 @@ package ru.nsu.sberlab.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.utils.PropertyResolverUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
-import ru.nsu.sberlab.exceptions.CustomIOException;
+import ru.nsu.sberlab.exceptions.AddPetImageException;
 import ru.nsu.sberlab.models.dto.PetCreationDto;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.dto.UserInfoDto;
@@ -20,7 +21,6 @@ import ru.nsu.sberlab.models.entities.PetImage;
 import ru.nsu.sberlab.models.entities.User;
 import ru.nsu.sberlab.models.enums.Role;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
-import ru.nsu.sberlab.models.utils.DefaultImagesUtils;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
 import ru.nsu.sberlab.models.utils.SocialNetworksConverter;
@@ -40,8 +40,10 @@ public class UserService implements UserDetailsService {
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetCleaner petCleaner;
-    private final DefaultImagesUtils defaultImagesUtils;
     private final PropertyResolverUtils propertyResolver;
+
+    @Value("${default.pet.image.name}")
+    private String defaultPetImageName;
 
     @Transactional
     public void createUser(UserRegistrationDto userDto) {
@@ -59,7 +61,7 @@ public class UserService implements UserDetailsService {
         }
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_USER);
+        user.setRole(Role.ROLE_USER);
         User savedUser = userRepository.save(user);
         savedUser.setUserSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
                         userDto.getSocialNetworks(),
@@ -109,7 +111,7 @@ public class UserService implements UserDetailsService {
         PetImage petImage = new PetImage();
         MultipartFile imageFile = petCreationDto.getImageFile();
         if (imageFile.isEmpty()) {
-            petImage.setImageUUIDName(defaultImagesUtils.getDefaultPetImage());
+            petImage.setImageUUIDName(defaultPetImageName);
         } else {
             try {
                 petImage.setImageData(imageFile.getBytes());
@@ -117,7 +119,7 @@ public class UserService implements UserDetailsService {
                 petImage.setContentType(imageFile.getContentType());
                 petImage.setSize(imageFile.getSize());
             } catch (IOException exception) {
-                throw new CustomIOException(exception.getMessage());
+                throw new AddPetImageException(exception.getMessage());
             }
         }
         user.getPets().add(

@@ -45,13 +45,9 @@ public class User implements UserDetails {
     @Column(name = "permission_to_show_email")
     private boolean hasPermitToShowEmail;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id")}
-    )
+    @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
 
     @ManyToMany(cascade = {
             CascadeType.DETACH,
@@ -100,6 +96,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
         return roles;
     }
 
