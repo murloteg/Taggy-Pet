@@ -18,7 +18,7 @@ public class Pet {
     @Column(name = "pet_id")
     private Long petId;
 
-    @Column(name = "chip_id", unique = true)
+    @Column(name = "chip_id", unique = true) // TODO: add also stamp_id column and pet_club_id column
     private String chipId;
 
     @Column(name = "type")

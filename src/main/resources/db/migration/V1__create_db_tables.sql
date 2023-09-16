@@ -87,6 +87,8 @@ create table users_social_networks
     primary key (social_network_id)
 );
 
+-- TODO: create table pet_clubs; add columns pet_club_id and stamp_id into table pets
+
 alter table if exists features
     add constraint feature_properties_features_fk foreign key (property_id) references feature_properties;
 
