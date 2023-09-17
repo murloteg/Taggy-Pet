@@ -87,6 +87,93 @@ body {
     color: #462446;
 }
 
+.pop-up {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2;
+}
+
+.pop-up.active {
+    display: block;
+}
+
+.pop-up-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.pop-up-body {
+    margin: auto;
+    width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 50px 35px 50px 35px;
+    position: relative;
+}
+
+.pop-up-body h2 {
+    font-weight: bold;
+    font-size: 1.7em;
+}
+
+.pop-up-body p {
+    font-size: 1.15em;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 2em;
+}
+
+.buttons-container {
+    display: inline-flex;
+}
+
+.pop-up-body input[type="submit"] {
+    border: 3px solid #f81d1d;
+    font-weight: 600;
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: #ffffff;
+    color: #f81d1d;
+    padding: 12px 35px;
+}
+
+.pop-up-body input[type="submit"]:hover {
+    color: white;
+    background-color: #f81d1d;
+    box-shadow: 1px 1px 15px 6px rgb(248, 29, 29);
+}
+
+.pop-up-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button {
+    border: none;
+    padding: 12px 35px;
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-left: 20px;
+    background: #464646;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.close-button:hover {
+    box-shadow: 1px 1px 15px 6px rgb(70, 70, 70);
+}
+
 h3 {
     font-weight: bold;
 }
@@ -398,6 +485,30 @@ h5 {
         margin-right: auto;
         margin-left: auto;
         width: 70%;
+    }
+
+    .pop-up input[type="submit"] {
+        width: 200px;
+        font-size: 14px;
+    }
+
+    .delete-button {
+        width: 260px;
+        display: table-cell;
+    }
+
+    .pop-up-body {
+        width: 300px;
+    }
+
+    .buttons-container {
+        justify-content: center;
+        display: grid;
+    }
+
+    .close-button {
+        margin-top: 15px;
+        margin-left: 0px;
     }
 }
 
