@@ -16,7 +16,8 @@ import java.util.*;
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+    @SequenceGenerator(name = "user_id_generator", sequenceName = "user_seq", initialValue = 3, allocationSize = 1)
     @Column(name = "user_id")
     private Long userId;
 
@@ -44,13 +45,9 @@ public class User implements UserDetails {
     @Column(name = "permission_to_show_email")
     private boolean hasPermitToShowEmail;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id")}
-    )
+    @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
 
     @ManyToMany(cascade = {
             CascadeType.DETACH,
@@ -99,7 +96,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return Set.of(role);
     }
 
     @Override

@@ -1,14 +1,17 @@
 package ru.nsu.sberlab.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import ru.nsu.sberlab.exceptions.FailedPetSearchException;
+import ru.nsu.sberlab.exceptions.AddPetImageException;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
-import ru.nsu.sberlab.exceptions.FileSystemErrorException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
-import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.models.dto.PetInfoDto;
 import ru.nsu.sberlab.models.entities.Feature;
 import ru.nsu.sberlab.models.entities.Pet;
@@ -18,11 +21,8 @@ import ru.nsu.sberlab.models.mappers.PetEditDtoMapper;
 import ru.nsu.sberlab.models.mappers.PetInfoDtoMapper;
 import ru.nsu.sberlab.models.utils.FeaturesConverter;
 import ru.nsu.sberlab.models.utils.PetCleaner;
-import ru.nsu.sberlab.repositories.PetImageRepositoryImpl;
-import ru.nsu.sberlab.repositories.PetRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.repositories.FeaturePropertiesRepository;
+import ru.nsu.sberlab.repositories.PetRepository;
 import ru.nsu.sberlab.repositories.UserRepository;
 
 import java.io.IOException;
@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 public class PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
-    private final PetImageRepositoryImpl petImageRepository;
     private final FeaturePropertiesRepository featurePropertiesRepository;
     private final PetInfoDtoMapper petInfoDtoMapper;
     private final PetEditDtoMapper petEditDtoMapper;
@@ -49,7 +48,7 @@ public class PetService {
                 .orElseThrow(() -> new FailedPetSearchException(chipId));
     }
 
-    public PetEditDto getPetInitializationDtoByChipId(String chipId) {
+    public PetEditDto getPetEditDtoByChipId(String chipId) {
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, featurePropertiesRepository.findAll()))
                 .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
@@ -101,12 +100,18 @@ public class PetService {
                 )
                 .collect(Collectors.toCollection(ArrayList<Feature>::new));
         pet.setFeatures(mergedFeatures);
-        try {
-            PetImage petImage = pet.getPetImage();
-            petImageRepository.replaceImageOnFileSystem(petEditDto.getImageFile(), petImage);
+        MultipartFile imageFile = petEditDto.getImageFile();
+        if (!imageFile.isEmpty()) {
+            PetImage petImage = new PetImage();
+            try {
+                petImage.setImageData(imageFile.getBytes());
+                petImage.setImageUUIDName(UUID.randomUUID() + imageFile.getName());
+                petImage.setContentType(imageFile.getContentType());
+                petImage.setSize(imageFile.getSize());
+            } catch (IOException exception) {
+                throw new AddPetImageException(exception.getMessage());
+            }
             pet.setPetImage(petImage);
-        } catch (IOException exception) {
-            throw new FileSystemErrorException(exception.getMessage());
         }
         petRepository.save(pet);
     }
@@ -122,7 +127,7 @@ public class PetService {
         checkIfUserHasAccessToPet(currentUser, pet);
 
         currentUser.getPets().remove(pet);
-        pet.getUsers().remove(currentUser);
+        petCleaner.detachUser(pet, currentUser);
         petCleaner.detachFeatures(pet);
         petCleaner.removePet(pet);
     }

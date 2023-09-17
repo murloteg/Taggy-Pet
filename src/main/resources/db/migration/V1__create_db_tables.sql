@@ -1,12 +1,13 @@
+create sequence user_seq start with 3 increment by 1;
 create sequence pet_images_seq start with 1 increment by 50;
 create sequence pets_seq start with 1 increment by 50;
 
 create table deleted_users
 (
     user_id          bigint not null,
-    email            varchar(255) not null,
-    phone_number     varchar(255) not null,
-    first_name       varchar(255) not null,
+    email            varchar(255),
+    phone_number     varchar(255),
+    first_name       text,
     date_of_creation timestamp(6),
     date_of_deletion timestamp(6),
     primary key (user_id)
@@ -14,31 +15,34 @@ create table deleted_users
 create table feature_properties
 (
     property_id    bigserial not null,
-    property_value varchar(255) not null,
+    property_value varchar(255),
     primary key (property_id)
 );
 create table features
 (
     feature_id  bigserial not null,
-    description varchar(255) not null,
+    property_id bigint,
+    description text,
     date        date,
-    property_id bigint not null,
     user_id     bigint,
     primary key (feature_id)
 );
 create table pet_images
 (
     image_id        bigint not null,
-    image_uuid_name varchar(255) not null,
+    image_size      bigint,
+    image_type      varchar(255),
+    image_uuid_name varchar(255) unique,
+    image_data      oid,
     primary key (image_id)
 );
 create table pets
 (
     pet_id   bigint not null,
-    chip_id  varchar(255) unique not null,
-    pet_name varchar(255) not null,
-    breed    varchar(255) not null,
-    type     varchar(255) not null,
+    chip_id  varchar(255) unique,
+    pet_name varchar(255),
+    type     varchar(255),
+    breed    varchar(255),
     sex      smallint check (sex between 0 and 1),
     image_id bigint unique,
     primary key (pet_id)
@@ -51,26 +55,22 @@ create table pets_features
 create table social_networks
 (
     property_id   bigserial not null,
-    base_url      varchar(255) not null,
-    property_name varchar(255) not null,
+    base_url      varchar(255),
+    property_name varchar(255),
     primary key (property_id)
-);
-create table user_roles
-(
-    user_id bigint not null,
-    roles   varchar(255) check (roles in ('ROLE_USER', 'ROLE_ADMIN', 'ROLE_PRIVILEGED_ACCESS'))
 );
 create table users
 (
     user_id                         bigserial not null,
-    email                           varchar(255) unique not null,
-    phone_number                    varchar(255) not null,
-    first_name                      varchar(255) not null,
-    date_of_creation                timestamp(6),
-    permission_to_show_email        boolean not null,
-    permission_to_show_phone_number boolean not null,
-    password                        varchar(128) not null,
+    email                           varchar(255) unique,
+    phone_number                    varchar(255),
+    first_name                      text,
     active                          boolean,
+    date_of_creation                timestamp(6),
+    permission_to_show_email        boolean,
+    permission_to_show_phone_number boolean,
+    password                        varchar(128),
+    role   varchar(255) check (role in ('ROLE_USER', 'ROLE_ADMIN', 'ROLE_PRIVILEGED_ACCESS')),
     primary key (user_id)
 );
 create table users_pets
@@ -83,36 +83,35 @@ create table users_social_networks
     property_id       bigint,
     social_network_id bigserial not null,
     user_id           bigint,
-    short_name        varchar(255) not null,
+    short_name        varchar(255),
     primary key (social_network_id)
 );
 
-alter table if exists features
-    add constraint feature_properties_to_features_fk foreign key (property_id) references feature_properties;
+-- TODO: create table pet_clubs; add columns pet_club_id and stamp_id into table pets
 
 alter table if exists features
-    add constraint users_to_features_fk foreign key (user_id) references users;
+    add constraint feature_properties_features_fk foreign key (property_id) references feature_properties;
+
+alter table if exists features
+    add constraint users_features_fk foreign key (user_id) references users;
 
 alter table if exists pets
-    add constraint pet_images_to_pets_fk foreign key (image_id) references pet_images;
+    add constraint pet_images_pets_fk foreign key (image_id) references pet_images;
 
 alter table if exists pets_features
-    add constraint features_to_pets_features_fk foreign key (feature_id) references features;
+    add constraint features_pets_features_fk foreign key (feature_id) references features;
 
 alter table if exists pets_features
-    add constraint pets_to_pets_features_fk foreign key (pet_id) references pets;
-
-alter table if exists user_roles
-    add constraint users_to_user_roles_fk foreign key (user_id) references users;
+    add constraint pets_pet_features_fk foreign key (pet_id) references pets;
 
 alter table if exists users_pets
-    add constraint pets_to_users_pets_fk foreign key (pet_id) references pets;
+    add constraint pets_users_pets_fk foreign key (pet_id) references pets;
 
 alter table if exists users_pets
-    add constraint users_to_users_pets_fk foreign key (user_id) references users;
+    add constraint users_users_pets_fk foreign key (user_id) references users;
 
 alter table if exists users_social_networks
-    add constraint social_networks_to_users_social_networks_fk foreign key (property_id) references social_networks;
+    add constraint social_networks_users_social_networks_fk foreign key (property_id) references social_networks;
 
 alter table if exists users_social_networks
-    add constraint users_to_users_social_networks_fk foreign key (user_id) references users;
+    add constraint users_users_social_networks_fk foreign key (user_id) references users;

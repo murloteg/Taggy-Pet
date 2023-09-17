@@ -31,8 +31,8 @@ public class PetController {
             Model model
     ) {
         model.addAttribute("properties", featurePropertiesService.properties());
-        model.addAttribute("pet", petService.getPetInitializationDtoByChipId(chipId));
-        return "edit-pet"; // TODO: make another page for this feature
+        model.addAttribute("pet", petService.getPetEditDtoByChipId(chipId));
+        return "edit-pet";
     }
 
     @PutMapping("edit")

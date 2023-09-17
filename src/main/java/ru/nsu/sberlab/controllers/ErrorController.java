@@ -1,6 +1,5 @@
 package ru.nsu.sberlab.controllers;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +8,6 @@ import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
 
 @ControllerAdvice
-@RequiredArgsConstructor
 public class ErrorController { // TODO: add handling of IllegalAccessToPetException
     @ExceptionHandler(value = {FailedPetSearchException.class})
     @GetMapping
