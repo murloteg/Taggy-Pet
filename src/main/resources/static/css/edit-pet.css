@@ -96,7 +96,7 @@ form {
 
 .input {
     background-color: #eaeaeab3;
-    width: 100%;
+    width: 300px;
     padding: 10px 15px;
     border-style: solid;
     font-size: 15px;
@@ -110,6 +110,7 @@ form {
 }
 
 input[type="submit"] {
+    width: 300px;
     display: block;
     font-weight: bold;
     border-radius: 64px;
@@ -126,6 +127,51 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #FF742B;
     box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
+}
+
+.wrapper {
+    margin-bottom: 15px;
+    max-width: none;
+    width: 249px;
+    height: 166px;
+    border-radius: 20px;
+}
+
+.pet-card {
+    background-size: cover;
+    position: relative;
+}
+
+.file-container {
+    align-items: center;
+    display: inline-flex;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+#custom-button {
+    outline: none;
+    font-size: 25px;
+    font-weight: 600;
+    padding: 5px 16px;
+    color: white;
+    background-color: #ff742b;
+    border-style: none;
+    /*border: 1px solid #ff742b;*/
+    border-radius: 17px;
+    cursor: pointer;
+}
+
+#custom-button:hover {
+    background-color: #ff742b;
+    box-shadow: 1px 1px 15px 6px rgb(255, 116, 43);
+}
+
+#custom-text {
+    overflow: hidden;
+    font-weight: 600;
+    margin-left: 10px;
+    color: #848484;
 }
 
 .radios-container {
@@ -322,25 +368,25 @@ input[type="submit"]:hover {
 
 }
 
-@media screen and (max-width: 1199.5px){
+@media screen and (max-width: 1199.5px) {
     .delete-col {
         left: 67%;
     }
 }
 
-@media screen and (max-width: 991.5px){
+@media screen and (max-width: 991.5px) {
     .delete-col {
         left: 76%;
     }
 }
 
-@media screen and (max-width: 767.5px){
+@media screen and (max-width: 767.5px) {
     .delete-col {
         left: 84%;
     }
 }
 
-@media screen and (max-width: 575px){
+@media screen and (max-width: 575px) {
     body {
         background-color: white;
     }
@@ -394,6 +440,4 @@ input[type="submit"]:hover {
         margin-top: 15px;
         margin-left: 0px;
     }
-
-
 }
