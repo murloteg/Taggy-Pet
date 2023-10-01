@@ -4,8 +4,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.exceptions.FailedUserCreationException;
+import ru.nsu.sberlab.exceptions.ReCaptchaException;
 
 @ControllerAdvice
 public class ErrorController { // TODO: add handling of IllegalAccessToPetException
@@ -27,6 +29,16 @@ public class ErrorController { // TODO: add handling of IllegalAccessToPetExcept
     ) {
         model.addAttribute("exception", exception.getMessage());
         return "failed-registration";
+    }
+
+    @ExceptionHandler(value = {ReCaptchaException.class})
+    @GetMapping
+    public String handleReCaptchaException(
+            RedirectAttributes redirectAttributes,
+            ReCaptchaException exception
+    ) {
+        redirectAttributes.addFlashAttribute("reCaptchaErrors", exception.getErrors());
+        return "redirect:" + exception.getRedirectURI();
     }
 
     @ExceptionHandler(value = Exception.class)
