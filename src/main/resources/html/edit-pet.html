@@ -133,7 +133,7 @@
 
     realFileBtn.addEventListener("change", function () {
         if (realFileBtn.value) {
-            customTxt.innerHTML = realFileBtn.value.toString().split(/(\\|\/)/g).pop();
+            customTxt.innerHTML = realFileBtn.files[0].name;
         } else {
             customTxt.innerHTML = "Фото не выбрано";
         }
