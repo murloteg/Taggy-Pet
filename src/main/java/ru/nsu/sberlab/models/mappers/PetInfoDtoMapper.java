@@ -19,6 +19,7 @@ public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
     public PetInfoDto apply(Pet pet) {
         return new PetInfoDto(
                 pet.getChipId(),
+                pet.getStampId(),
                 pet.getName(),
                 pet.getType(),
                 pet.getBreed(),

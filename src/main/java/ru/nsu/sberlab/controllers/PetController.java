@@ -49,7 +49,7 @@ public class PetController {
             @PathVariable(value = "id") String chipId,
             Model model
     ) {
-        model.addAttribute("pet", petService.getPetInfoByChipId(chipId));
+        model.addAttribute("pet", petService.getPetInfoBySearchParameter(chipId));
         return "delete-pet";
     }
 
@@ -74,9 +74,9 @@ public class PetController {
     @GetMapping("find")
     public String findPetInfo(
             Model model,
-            @RequestParam(name = "chipId", required = false) String chipId
+            @RequestParam(name = "searchParameter", required = false) String searchParameter
     ) {
-        model.addAttribute("pet", petService.getPetInfoByChipId(chipId));
+        model.addAttribute("pet", petService.getPetInfoBySearchParameter(searchParameter));
         return "pet-info";
     }
 }

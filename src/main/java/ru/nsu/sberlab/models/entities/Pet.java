@@ -18,8 +18,11 @@ public class Pet {
     @Column(name = "pet_id")
     private Long petId;
 
-    @Column(name = "chip_id", unique = true) // TODO: add also stamp_id column and pet_club_id column
+    @Column(name = "chip_id", unique = true)
     private String chipId;
+
+    @Column(name = "stamp_id", unique = true)
+    private String stampId;
 
     @Column(name = "type")
     private String type;
@@ -53,8 +56,9 @@ public class Pet {
     @JoinColumn(name = "image_id")
     private PetImage petImage;
 
-    public Pet(String chipId, String type, String breed, Sex sex, String name, List<Feature> features, PetImage petImage) {
+    public Pet(String chipId, String stampId, String type, String breed, Sex sex, String name, List<Feature> features, PetImage petImage) {
         this.chipId = chipId;
+        this.stampId = stampId;
         this.type = type;
         this.breed = breed;
         this.sex = sex;

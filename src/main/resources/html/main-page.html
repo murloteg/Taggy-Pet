@@ -58,7 +58,8 @@
                         <div class="search">
                             <form th:method="get" th:action="@{/pet/find}">
                                 <div class="search-input">
-                                    <input type="text" th:name="chipId" required id="chipId" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)">
+                                    <!-- TODO: добавить поддержку поиска по stampId + валидацию (3 латинских буквы)-->
+                                    <input type="text" th:name="searchParameter" required id="searchParameter" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)">
                                     <br><br>
                                 </div>
                                 <div class="search-btn">

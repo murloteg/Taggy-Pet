@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PetInfoDto {
     private final String chipId;
+    private final String stampId;
     private final String name;
     private final String type;
     private final String breed;

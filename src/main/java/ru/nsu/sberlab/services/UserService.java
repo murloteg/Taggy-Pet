@@ -125,6 +125,7 @@ public class UserService implements UserDetailsService {
         user.getPets().add(
                 new Pet(
                         petCreationDto.getChipId(),
+                        petCreationDto.getStampId(),
                         petCreationDto.getType(),
                         petCreationDto.getBreed(),
                         petCreationDto.getSex(),

@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.exceptions.AddPetImageException;
+import ru.nsu.sberlab.exceptions.FailedPetSearchException;
 import ru.nsu.sberlab.exceptions.IllegalAccessToPetException;
 import ru.nsu.sberlab.exceptions.PetNotFoundException;
 import ru.nsu.sberlab.models.dto.PetEditDto;
@@ -28,6 +28,7 @@ import ru.nsu.sberlab.repositories.UserRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,10 +43,12 @@ public class PetService {
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
-    public PetInfoDto getPetInfoByChipId(String chipId) {
-        return petRepository.findByChipId(chipId)
+    public PetInfoDto getPetInfoBySearchParameter(String searchParameter) {
+        return isChipIdParameter(searchParameter) ? petRepository.findByChipId(searchParameter)
                 .map(petInfoDtoMapper)
-                .orElseThrow(() -> new FailedPetSearchException(chipId));
+                .orElseThrow(() -> new FailedPetSearchException(searchParameter)) : petRepository.findByStampId(searchParameter)
+                .map(petInfoDtoMapper)
+                .orElseThrow(() -> new FailedPetSearchException(searchParameter));
     }
 
     public PetEditDto getPetEditDtoByChipId(String chipId) {
@@ -147,6 +150,10 @@ public class PetService {
         if (!userHasAccess) {
             throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
         }
+    }
+
+    private boolean isChipIdParameter(String searchParameter) {
+        return Pattern.matches("\\d{15}", searchParameter);
     }
 
     private String message(String property) {

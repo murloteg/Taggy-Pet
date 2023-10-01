@@ -40,6 +40,7 @@ create table pets
 (
     pet_id   bigint not null,
     chip_id  varchar(255) unique,
+    stamp_id varchar(255) unique,
     pet_name varchar(255),
     type     varchar(255),
     breed    varchar(255),
@@ -86,8 +87,13 @@ create table users_social_networks
     short_name        varchar(255),
     primary key (social_network_id)
 );
-
--- TODO: create table pet_clubs; add columns pet_club_id and stamp_id into table pets
+create table pet_clubs
+(
+    club_id       bigserial not null,
+    club_name         varchar(255),
+    club_prefix       varchar(255),
+    primary key (club_id)
+);
 
 alter table if exists features
     add constraint feature_properties_features_fk foreign key (property_id) references feature_properties;

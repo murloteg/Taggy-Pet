@@ -15,7 +15,7 @@ public class ErrorController { // TODO: add handling of IllegalAccessToPetExcept
             Model model,
             FailedPetSearchException exception
     ) {
-        model.addAttribute("chipId", exception.getMessage());
+        model.addAttribute("searchParameter", exception.getMessage());
         return "pet-not-found";
     }
 

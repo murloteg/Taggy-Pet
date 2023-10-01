@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
     Optional<Pet> findByChipId(String chipId);
+    Optional<Pet> findByStampId(String stampId);
     void deleteByChipId(String chipId);
 }

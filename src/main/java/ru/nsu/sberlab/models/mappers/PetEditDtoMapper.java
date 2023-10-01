@@ -31,6 +31,7 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<FeatureProperty>, 
                 .forEach(index -> features.add(index, new Feature(properties.get(index))));
         return new PetEditDto(
                 pet.getChipId(),
+                pet.getStampId(),
                 pet.getName(),
                 pet.getType(),
                 pet.getBreed(),

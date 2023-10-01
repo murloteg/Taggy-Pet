@@ -26,6 +26,7 @@
                     <div class="form-container">
                         <form th:method="post" th:action="@{/user/create-pet}" enctype="multipart/form-data">
                             <input type="text" th:name="chipId" id="chipId" placeholder="Чип" required maxlength="15" pattern="[0-9]{15}" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)" class="input elem-in-window"><br><br>
+                            <!-- TODO: добавить поддержку stampId -->
                             <input type="text" th:name="type" required placeholder="Вид животного" oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
                             <input type="text" th:name="breed" required placeholder="Порода" oninvalid="this.setCustomValidity('Это поле является обязательным')" oninput="this.setCustomValidity('')" class="input elem-in-window"><br><br>
                             <div class="radios-container">
