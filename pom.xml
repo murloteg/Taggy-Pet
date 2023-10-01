@@ -11,7 +11,7 @@
 
 	<groupId>ru.nsu.sberlab</groupId>
 	<artifactId>Taggy-Pet</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>Taggy-Pet</name>
 	<description>Service to find lost pets</description>
 
