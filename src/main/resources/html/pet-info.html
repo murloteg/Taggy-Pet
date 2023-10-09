@@ -84,7 +84,8 @@
                 </div>
             </div>
             <div class="row contacts-cards">
-                <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto user-card" th:each="user : ${pet.users}">
+                <div class="col-auto col-sm-auto col-md-auto col-lg-auto col-xl-auto user-card"
+                     th:each="user : ${pet.users}">
                     <div class="user-data">
                         <table class="user">
                             <tr>
@@ -106,9 +107,12 @@
                         </table>
                         <div class="social-networks-container">
                             <!-- TODO: обработка всех соц. сетей пользователя -->
-                            <div th:each="socialNetwork : ${user.socialNetworks}" th:if="${socialNetwork.shortName != ''}" class="social-network">
-                                <a  th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}" class="social-network-link">
-                                    <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Link" class="social-network-logo">
+                            <div th:each="socialNetwork : ${user.socialNetworks}"
+                                 th:if="${socialNetwork.shortName != ''}" class="social-network">
+                                <a th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}"
+                                   class="social-network-link">
+                                    <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Link"
+                                         class="social-network-logo">
                                 </a>
                             </div>
                         </div>
@@ -122,6 +126,7 @@
 <script th:inline="javascript">
     let petCard = document.getElementById('pet-card');
     let petImage = /*[[${pet.petImageDto.imageUUIDName}]]*/ "Pet's image";
+    console.log(petImage);
     if ("default-pet-image.png".localeCompare(petImage) === 0) {
         petCard.style.background = "url(/img/" + petImage + ")";
     } else {
