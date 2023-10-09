@@ -73,7 +73,7 @@ public class PetController {
         return "pets-privileged-list";
     }
 
-    @GetMapping("find")
+    @PostMapping("find")
     public String findPetInfo(
             Model model,
             @RequestParam(name = "chipId", required = false) String chipId,

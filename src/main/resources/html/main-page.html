@@ -56,7 +56,7 @@
                     <div class="search-label">
                         <h2 class="search-text">Нашли питомца с чипом?</h2>
                         <div class="search">
-                            <form id="search-form" th:method="get" th:action="@{/pet/find}">
+                            <form id="search-form" th:method="post" th:action="@{/pet/find}">
                                 <div class="search-input">
                                     <input type="text" th:name="chipId" required id="chipId"
                                            placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15"
