@@ -19,7 +19,7 @@ import ru.nsu.sberlab.services.ReCaptchaService;
 public class PetController {
     private final PetService petService;
     private final FeaturePropertiesService featurePropertiesService;
-    private final ReCaptchaService reCaptchaSearchService;
+    private final ReCaptchaService reCaptchaService;
 
     @GetMapping("add-new-pet")
     public String petCreationPage(Model model) {
@@ -79,7 +79,7 @@ public class PetController {
             @RequestParam(name = "chipId", required = false) String chipId,
             @RequestParam(name = "g-recaptcha-response") String response
     ) {
-        reCaptchaSearchService.verify(response, "find", "/");
+        reCaptchaService.verify(response, "find", "/");
         model.addAttribute("pet", petService.getPetInfoByChipId(chipId));
         return "pet-info";
     }

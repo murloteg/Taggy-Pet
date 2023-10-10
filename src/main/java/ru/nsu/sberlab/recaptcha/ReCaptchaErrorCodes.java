@@ -3,7 +3,7 @@ package ru.nsu.sberlab.recaptcha;
 import java.util.Map;
 
 public class ReCaptchaErrorCodes {
-    public static final Map<String,String> RECAPTCHA_ERROR_CODES = Map.of(
+    public static final Map<String, String> RECAPTCHA_ERROR_CODES = Map.of(
         "missing-input-secret",     "The secret parameter is missing.",
         "invalid-input-secret",     "The secret parameter is invalid or malformed.",
         "missing-input-response",   "The response parameter is missing.",
