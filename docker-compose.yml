@@ -23,8 +23,8 @@ services:
         max_attempts: 3
     ports:
       - '8080:8080'
-    links:
-      - 'postgres:taggy-pet-database'
+    depends_on:
+      - postgres
 
 volumes:
   taggy-pet-postgres-volume:
