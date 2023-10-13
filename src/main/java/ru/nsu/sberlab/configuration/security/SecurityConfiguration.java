@@ -14,6 +14,7 @@ public class SecurityConfiguration {
             "/",
             "/user/registration",
             "/pet/find",
+            "/pet/images/**",
             "/css/**",
             "/img/**",
             "/js/**"

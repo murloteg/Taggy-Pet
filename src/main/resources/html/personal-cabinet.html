@@ -27,8 +27,7 @@
                                     <input type="submit" class="logout-btn" value="Выйти">
                                 </form>
                             </li>
-                            <!-- TODO: убрать переход на отдельную страницу для удаления; сделать всплывающее окно -->
-                            <li><a th:href="@{/user/delete-account}" class="menu-link">Удалить аккаунт</a></li>
+                            <li><a th:href="@{#}" class="open-pop-up menu-link" onclick="return false;"> Удалить аккаунт</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -39,8 +38,25 @@
                     </form>
                 </div>
                 <div class="col col-lg-2 display-none-md delete-col">
-                    <a th:href="@{/user/delete-account}" class="delete-link"><h6 class="delete-label">Удалить
-                        аккаунт</h6></a>
+                    <a th:href="@{#}" class="open-pop-up delete-link" onclick="return false;"><h6 class="delete-label">Удалить аккаунт</h6></a>
+                </div>
+                <div class="delete ">
+                    <div class="pop-up" id="pop-up">
+                        <div class="pop-up-container">
+                            <div class="pop-up-body" id="pop-up-body">
+                                <h2>Вы уверены?</h2>
+                                <p>Все ваши данные будут удалены вместе с информацией о питомцах.</p>
+                                <div class="buttons-container">
+                                    <form name="confirm" th:method="delete" th:action="@{/user/delete-account}">
+                                        <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                                        <input type="submit" value="Удалить" class="elem_in_window">
+                                    </form>
+                                    <button class="pop-up-close close-button">Отменить</button>
+                                </div>
+                                <div class="pop-up-close" id="pop-up-close">&#10006</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,5 +147,6 @@
         }
     }
 </script>
+<script src="/js/popup.js"></script>
 </body>
 </html>
