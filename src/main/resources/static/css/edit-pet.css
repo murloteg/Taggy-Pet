@@ -288,6 +288,7 @@ input[type="submit"]:hover {
 }
 
 .pop-up-body input[type="submit"] {
+    width: fit-content;
     border: 3px solid #f81d1d;
     font-weight: 600;
     border-radius: 10px;

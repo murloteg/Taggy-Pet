@@ -1,20 +1,31 @@
 version: '3'
+
 services:
   postgres:
     image: 'postgres:15.3-alpine3.18'
     restart: unless-stopped
-    container_name: 'java-postgres'
+    container_name: 'taggy-pet-postgres'
     environment:
       - POSTGRES_USER=developerTP
       - POSTGRES_PASSWORD=BX2VYtCMBU6J4aS7JkRBNM9yvfqsJu
       - POSTGRES_DB=taggy-pet-database
     ports:
-      - 15432:5432
+      - '15432:5432'
+    volumes:
+      - taggy-pet-postgres-volume:/var/lib/postgresql/data
 
   app:
     build: ./
     container_name: 'taggy-pet-application'
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     ports:
-      - 8080:8080
+      - '8080:8080'
     links:
       - 'postgres:taggy-pet-database'
+
+volumes:
+  taggy-pet-postgres-volume:
+    driver: local
