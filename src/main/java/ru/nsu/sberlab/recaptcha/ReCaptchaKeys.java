@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 @ConfigurationProperties(prefix = "google.recaptcha.key")
 public class ReCaptchaKeys {
+    private String verifyURI;
     private String site;
     private String secret;
     private float threshold;

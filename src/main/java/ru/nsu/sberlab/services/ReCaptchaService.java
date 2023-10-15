@@ -2,7 +2,6 @@ package ru.nsu.sberlab.services;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.nsu.sberlab.exceptions.ReCaptchaException;
@@ -17,18 +16,18 @@ import java.util.Objects;
 public class ReCaptchaService {
     private final ReCaptchaKeys reCaptchaKeys;
 
-    @Value("${google.recaptcha.verify.url}")
-    private String verifyURI;
-
     public void verify(String response, String request, @NonNull String redirectURI) {
         RestTemplate restTemplate = new RestTemplate();
-        URI verifyURI = URI.create(String.format(this.verifyURI, reCaptchaKeys.getSecret(), response));
-        ReCaptchaResponse reCaptchaResponse = restTemplate.getForObject(verifyURI, ReCaptchaResponse.class);
+        URI requestURI = URI.create(String.format(
+                reCaptchaKeys.getVerifyURI(),
+                reCaptchaKeys.getSecret(),
+                response));
+        ReCaptchaResponse reCaptchaResponse = restTemplate.getForObject(requestURI, ReCaptchaResponse.class);
 
         if (Objects.nonNull(reCaptchaResponse) && (!reCaptchaResponse.isSuccess() ||
                 reCaptchaResponse.getScore() < reCaptchaKeys.getThreshold() ||
                 !reCaptchaResponse.getAction().equals(request))) {
-            throw new ReCaptchaException(reCaptchaResponse.getErrors(), redirectURI);
+            throw new ReCaptchaException(redirectURI, reCaptchaResponse.getErrors());
         }
     }
 }

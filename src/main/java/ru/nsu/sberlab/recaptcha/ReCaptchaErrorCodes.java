@@ -1,8 +1,12 @@
 package ru.nsu.sberlab.recaptcha;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 
-public class ReCaptchaErrorCodes {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class ReCaptchaErrorCodes {
     public static final Map<String, String> RECAPTCHA_ERROR_CODES = Map.of(
         "missing-input-secret",     "The secret parameter is missing.",
         "invalid-input-secret",     "The secret parameter is invalid or malformed.",

@@ -1,17 +1,16 @@
 package ru.nsu.sberlab.exceptions;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
 @AllArgsConstructor
 public class ReCaptchaException extends RuntimeException {
-    private final List<String> errors;
     private final String redirectURI;
 
-    public List<String> getErrors() {
-        return errors;
-    }
+    @Getter
+    private final List<String> errors;
 
     public String getRedirectURI() {
         if (redirectURI.isEmpty() || redirectURI.charAt(0) != '/') {
