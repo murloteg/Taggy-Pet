@@ -1,4 +1,11 @@
+html {
+    height: 100%;
+}
+
 body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
     font-family: 'Montserrat', sans-serif;
     color: white;
     background-color: #462446;
@@ -97,7 +104,7 @@ input[type="text"] {
     outline: none;
 }
 
-input[type="submit"] {
+.submit {
     font-weight: bold;
     border-radius: 64px;
     padding: 15px 30px;
@@ -110,13 +117,44 @@ input[type="submit"] {
     transition: 0.2s;
 }
 
-input[type="submit"]:hover {
+.submit:hover {
     background-color: #FF742B;
     box-shadow: 1px 1px 30px 6px rgba(255, 116, 43, 100);
 }
 
+.submit:focus {
+    outline: none;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.recaptcha-errors {
+    position: initial;
+    margin-top: -15px;
+}
+
+.recaptcha-error {
+    width: fit-content;
+}
+
 .dog-picture {
     height: 460px;
+}
+
+footer {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+footer p {
+    color: #ffffff47;
+    text-align: center;
+}
+
+footer a {
+    color: #ffffff91;
 }
 
 @media screen and (min-width: 576px) {
@@ -163,13 +201,17 @@ input[type="submit"]:hover {
         outline: none;
     }
 
-    input[type="submit"] {
+    .submit {
         padding: 8px 30px;
         font-size: 15px;
     }
 
     .dog-picture {
         height: 340px;
+    }
+
+    .recaptcha-errors {
+        margin-top: 25px;
     }
 }
 
@@ -227,7 +269,7 @@ input[type="submit"]:hover {
         text-decoration: none;
     }
 
-    input[type="submit"] {
+    .submit {
         padding: 12px 30px;
         font-size: 15px;
     }

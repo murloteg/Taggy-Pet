@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import ru.nsu.sberlab.service.FeaturePropertiesService;
+import ru.nsu.sberlab.service.ReCaptchaService;
 
 @Controller
 @RequestMapping("/pet/")
@@ -18,6 +19,7 @@ import ru.nsu.sberlab.service.FeaturePropertiesService;
 public class PetController {
     private final PetService petService;
     private final FeaturePropertiesService featurePropertiesService;
+    private final ReCaptchaService reCaptchaService;
 
     @GetMapping("add-new-pet")
     public String petCreationPage(Model model) {
@@ -71,11 +73,13 @@ public class PetController {
         return "pets-privileged-list";
     }
 
-    @GetMapping("find")
+    @PostMapping("find")
     public String findPetInfo(
             Model model,
-            @RequestParam(name = "searchParameter", required = false) String searchParameter
+            @RequestParam(name = "searchParameter", required = false) String searchParameter,
+            @RequestParam(name = "g-recaptcha-response") String response
     ) {
+        reCaptchaService.verify(response, "find", "/");
         model.addAttribute("pet", petService.getPetInfoBySearchParameter(searchParameter));
         return "pet-info";
     }
