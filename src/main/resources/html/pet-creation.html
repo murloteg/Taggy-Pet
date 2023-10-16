@@ -25,6 +25,7 @@
                     </div>
                     <div class="form-container">
                         <form th:method="post" th:action="@{/user/create-pet}" enctype="multipart/form-data">
+                            <!-- TODO: добавить поддержку stampId -->
                             <input type="text" th:name="chipId" id="chipId" placeholder="Чип" required maxlength="15"
                                    pattern="[0-9]{15}" oninvalid="customValidationMessages(this)"
                                    oninput="customValidationMessages(this)" class="input elem-in-window"><br><br>
