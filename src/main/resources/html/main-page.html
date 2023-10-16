@@ -56,13 +56,20 @@
                     <div class="search-label">
                         <h2 class="search-text">Нашли питомца с чипом?</h2>
                         <div class="search">
-                            <form th:method="get" th:action="@{/pet/find}">
+                            <form id="search-form" th:method="post" th:action="@{/pet/find}">
                                 <div class="search-input">
-                                    <input type="text" th:name="chipId" required id="chipId" placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15" oninvalid="customValidationMessages(this)" oninput="customValidationMessages(this)">
+                                    <input type="text" th:name="chipId" required id="chipId"
+                                           placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15"
+                                           oninvalid="customValidationMessages(this)"
+                                           oninput="customValidationMessages(this)">
                                     <br><br>
                                 </div>
                                 <div class="search-btn">
-                                    <input type="submit" value="Найти"> <br><br>
+                                    <button class="submit g-recaptcha"
+                                            th:attr="data-siteKey=${@reCaptchaKeys.getSite()}"
+                                            data-callback='onSubmit'
+                                            data-action='find'>Найти
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -74,9 +81,27 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-xl-8 recaptcha-errors" th:if="${reCaptchaErrors}">
+                    <div class="alert alert-danger recaptcha-error" th:each="code : ${reCaptchaErrors}">
+                        ReCaptcha: <span th:text="${code}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </header>
+<footer>
+    <p>This site is protected by reCAPTCHA and the Google
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+        <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
+</footer>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+        document.getElementById("search-form").submit();
+    }
+</script>
 <script src="/js/chip-id-validation.js"></script>
 </body>
 </html>
