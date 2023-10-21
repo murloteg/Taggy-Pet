@@ -13,6 +13,8 @@ services:
       - '15432:5432'
     volumes:
       - taggy-pet-postgres-volume:/var/lib/postgresql/data
+    networks:
+      - tp-network
 
   app:
     build: ./
@@ -23,9 +25,15 @@ services:
         max_attempts: 3
     ports:
       - '8080:8080'
-    links:
-      - 'postgres:taggy-pet-database'
+    depends_on:
+      - postgres
+    networks:
+      - tp-network
 
 volumes:
   taggy-pet-postgres-volume:
     driver: local
+
+networks:
+  tp-network:
+    driver: bridge
