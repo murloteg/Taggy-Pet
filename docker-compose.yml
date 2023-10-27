@@ -30,6 +30,20 @@ services:
     networks:
       - tp-network
 
+  nginx:
+    image: nginx
+    container_name: 'taggy-pet-nginx'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /Users/mac/SberProject:/etc/nginx/ssl # TODO: change mounting directory
+    depends_on:
+      - app
+    networks:
+      - tp-network
+
 volumes:
   taggy-pet-postgres-volume:
     driver: local
