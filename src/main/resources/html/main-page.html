@@ -59,14 +59,15 @@
                             <form id="search-form" th:method="post" th:action="@{/pet/find}">
                                 <div class="search-input">
                                     <!-- TODO: добавить поддержку поиска по stampId + валидацию (3 латинских буквы)-->
-                                    <input type="text" th:name="searchParameter" required id="searchParameter"
-                                           placeholder="Введите номер чипа" pattern="\d{15}" maxlength="15"
-                                           oninvalid="customValidationMessages(this)"
-                                           oninput="customValidationMessages(this)">
+                                    <input type="text" th:name="searchParameter" id="chipId"
+                                           placeholder="Введите номер чипа" pattern="^\d{15}" maxlength="15"
+                                           required
+                                    />
                                     <br><br>
                                 </div>
                                 <div class="search-btn">
                                     <button class="submit g-recaptcha"
+                                            type="submit"
                                             th:attr="data-siteKey=${@reCaptchaKeys.getSite()}"
                                             data-callback='onSubmit'
                                             data-action='find'>Найти
@@ -99,8 +100,26 @@
 </footer>
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
+    let input = document.getElementById("chipId");
+    input.oninvalid = function (e) {
+        e.target.setCustomValidity("");
+        if (e.target.validity.patternMismatch) {
+            e.target.setCustomValidity("Чип должен состоять из 15 цифр");
+            e.target.reportValidity();
+        }
+    };
+    input.oninput = function (e) {
+        e.target.setCustomValidity("");
+    }
+
+</script>
+<script>
     function onSubmit(token) {
-        document.getElementById("search-form").submit();
+        let form = document.getElementById("search-form");
+
+        if (form.checkValidity()) {
+            form.submit();
+        }
     }
 </script>
 <script src="/js/chip-id-validation.js"></script>
