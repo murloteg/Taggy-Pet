@@ -11,6 +11,7 @@ import ru.nsu.sberlab.exception.AddPetImageException;
 import ru.nsu.sberlab.exception.FailedPetSearchException;
 import ru.nsu.sberlab.exception.IllegalAccessToPetException;
 import ru.nsu.sberlab.exception.PetNotFoundException;
+import ru.nsu.sberlab.model.dto.DeletedPetDto;
 import ru.nsu.sberlab.model.dto.PetEditDto;
 import ru.nsu.sberlab.model.dto.PetInfoDto;
 import ru.nsu.sberlab.model.entity.Feature;
@@ -51,10 +52,10 @@ public class PetService {
                 .orElseThrow(() -> new FailedPetSearchException(searchParameter));
     }
 
-    public PetEditDto getPetEditDtoByChipId(String chipId) {
+    public PetEditDto getPetEditDtoByChipId(String chipId) { // TODO: maybe remove
         return petRepository.findByChipId(chipId)
                 .map(pet -> petEditDtoMapper.apply(pet, featurePropertiesRepository.findAll()))
-                .orElseThrow(() -> new PetNotFoundException(message("api.server.error.pet-not-found")));
+                .orElseThrow(() -> new PetNotFoundException("api.server.error.pet-not-found"));
     }
 
     /**
@@ -67,44 +68,60 @@ public class PetService {
      * @author Kirill Bolotov
      */
     @Transactional
-    public void updatePetInfo(PetEditDto petEditDto, User principal) {
-        Pet pet = petRepository.findByChipId(petEditDto.getChipId()).orElseThrow(
-                () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
-        );
+    public PetInfoDto updatePet(PetEditDto petEditDto, MultipartFile imageFile, User principal) {
+        Optional<Pet> optionalPet;
+        if (Objects.nonNull(petEditDto.getChipId())) {
+            optionalPet = petRepository.findByChipId(petEditDto.getChipId());
+        } else {
+            optionalPet = petRepository.findByStampId(petEditDto.getStampId());
+        }
+        if (optionalPet.isEmpty()) {
+            throw new PetNotFoundException("api.server.error.pet-not-found");
+        }
         User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+                () -> new UsernameNotFoundException("api.server.error.user-not-found")
         );
+        Pet pet = optionalPet.get();
         checkIfUserHasAccessToPet(currentUser, pet);
 
-        pet.setType(petEditDto.getType());
-        pet.setBreed(petEditDto.getBreed());
-        pet.setSex(petEditDto.getSex());
-        pet.setName(petEditDto.getName());
-        Map<Long, Feature> featureMap = pet.getFeatures()
-                .stream()
-                .collect(Collectors.toMap(
-                        feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
-                );
-        List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(
-                        petEditDto.getFeatures(),
-                        currentUser
-                )
-                .stream()
-                .map(feature -> {
-                            Long key = feature.getProperty().getPropertyId();
-                            Feature value = featureMap.get(key);
-                            if (Objects.nonNull(value)) {
-                                value.setDescription(feature.getDescription());
-                                value.setDateTime(LocalDate.now());
-                                return value;
+        if (Objects.nonNull(petEditDto.getType())) {
+            pet.setType(petEditDto.getType());
+        }
+        if (Objects.nonNull(petEditDto.getBreed())) {
+            pet.setBreed(petEditDto.getBreed());
+        }
+        if (Objects.nonNull(petEditDto.getSex())) {
+            pet.setSex(petEditDto.getSex());
+        }
+        if (Objects.nonNull(petEditDto.getName())) {
+            pet.setName(petEditDto.getName());
+        }
+        if (Objects.nonNull(petEditDto.getFeatures())) {
+            Map<Long, Feature> featureMap = pet.getFeatures()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            feature -> feature.getProperty().getPropertyId(), feature -> feature, (a, b) -> b)
+                    );
+            List<Feature> mergedFeatures = featuresConverter.convertFeatureDtoListToFeatures(
+                            petEditDto.getFeatures(),
+                            currentUser
+                    )
+                    .stream()
+                    .map(feature -> {
+                                Long key = feature.getProperty().getPropertyId();
+                                Feature value = featureMap.get(key);
+                                if (Objects.nonNull(value)) {
+                                    value.setDescription(feature.getDescription());
+                                    value.setDateTime(LocalDate.now());
+                                    return value;
+                                }
+                                return feature;
                             }
-                            return feature;
-                        }
-                )
-                .collect(Collectors.toCollection(ArrayList<Feature>::new));
-        pet.setFeatures(mergedFeatures);
-        MultipartFile imageFile = petEditDto.getImageFile();
-        if (!imageFile.isEmpty()) {
+                    )
+                    .collect(Collectors.toCollection(ArrayList<Feature>::new));
+            pet.setFeatures(mergedFeatures);
+        }
+        if (Objects.nonNull(imageFile) && !imageFile.isEmpty()) { // FIXME: delete unused photos
             PetImage petImage = new PetImage();
             try {
                 petImage.setImageData(imageFile.getBytes());
@@ -116,23 +133,28 @@ public class PetService {
             }
             pet.setPetImage(petImage);
         }
-        petRepository.save(pet);
+        Pet savedPet = petRepository.save(pet);
+        return petInfoDtoMapper.apply(savedPet);
     }
 
     @Transactional
-    public void deletePet(String chipId, User principal) {
-        Pet pet = petRepository.findByChipId(chipId).orElseThrow(
-                () -> new PetNotFoundException(message("api.server.error.pet-not-found"))
-        );
+    public DeletedPetDto deletePet(String searchParameter, User principal) {
+        Optional<Pet> optionalPet = isChipIdParameter(searchParameter) ? petRepository.findByChipId(searchParameter) :
+                petRepository.findByStampId(searchParameter);
+        if (optionalPet.isEmpty()) {
+            throw new PetNotFoundException("api.server.error.pet-not-found");
+        }
         User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
-                () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
+                () -> new UsernameNotFoundException("api.server.error.user-not-found")
         );
+        Pet pet = optionalPet.get();
         checkIfUserHasAccessToPet(currentUser, pet);
 
         currentUser.getPets().remove(pet);
         petCleaner.detachUser(pet, currentUser);
         petCleaner.detachFeatures(pet);
         petCleaner.removePet(pet);
+        return new DeletedPetDto(pet.getChipId(), pet.getStampId());
     }
 
     public List<PetInfoDto> petsList(Pageable pageable) {
@@ -148,7 +170,7 @@ public class PetService {
                 .stream()
                 .anyMatch(i -> i.getChipId().equals(pet.getChipId()));
         if (!userHasAccess) {
-            throw new IllegalAccessToPetException(message("api.server.error.does-not-have-access-to-pet"));
+            throw new IllegalAccessToPetException("api.server.error.does-not-have-access-to-pet");
         }
     }
 
@@ -156,7 +178,7 @@ public class PetService {
         return Pattern.matches("\\d{15}", searchParameter);
     }
 
-    private String message(String property) {
+    private String message(String property) { // TODO: maybe move this method to ErrorController
         return propertyResolver.resolve(property, Locale.getDefault());
     }
 }

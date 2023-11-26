@@ -41,8 +41,7 @@ public class PetEditDtoMapper implements BiFunction<Pet, List<FeatureProperty>, 
                         .map(featureCreationDtoMapper)
                         .sorted(Comparator.naturalOrder())
                         .toList(),
-                new PetImageDto(pet.getPetImage().getImageUUIDName()),
-                null
+                new PetImageDto(pet.getPetImage().getImageUUIDName())
         );
     }
 }

@@ -1,86 +1,70 @@
 package ru.nsu.sberlab.controller;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.nsu.sberlab.model.dto.DeletedPetDto;
 import ru.nsu.sberlab.model.dto.PetEditDto;
+import ru.nsu.sberlab.model.dto.PetInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.PetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import ru.nsu.sberlab.service.FeaturePropertiesService;
 import ru.nsu.sberlab.service.ReCaptchaService;
 
-@Controller
-@RequestMapping("/pet/")
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/pet/", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
-    private final FeaturePropertiesService featurePropertiesService;
-    private final ReCaptchaService reCaptchaService;
+//    private final ReCaptchaService reCaptchaService; // FIXME
 
-    @GetMapping("add-new-pet")
-    public String petCreationPage(Model model) {
-        model.addAttribute("properties", featurePropertiesService.properties());
-        return "pet-creation";
-    }
-
-    @GetMapping("my-pets/{id}")
-    public String myPetInfo(
-            @PathVariable(value = "id") String chipId,
-            Model model
+    // TODO: add captcha to frontend
+    @GetMapping(value = "find/{searchParameter}")
+    public ResponseEntity<PetInfoDto> getPetInfo(
+//            @RequestParam(name = "g-recaptcha-response") String response,
+            @PathVariable(value = "searchParameter") @NotBlank String searchParameter
     ) {
-        model.addAttribute("properties", featurePropertiesService.properties());
-        model.addAttribute("pet", petService.getPetEditDtoByChipId(chipId));
-        return "edit-pet";
+//        reCaptchaService.verify(response, "find", "/");
+        PetInfoDto petInfo = petService.getPetInfoBySearchParameter(searchParameter);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(petInfo);
     }
 
-    @PutMapping("edit")
-    public String editPet(
-            PetEditDto petEditDto,
+    @PatchMapping
+    public ResponseEntity<PetInfoDto> editPet(
+            @RequestPart("pet") PetEditDto petEditDto,
+            @RequestPart("imageFile") MultipartFile imageFile,
             @AuthenticationPrincipal User principal
     ) {
-        petService.updatePetInfo(petEditDto, principal);
-        return "redirect:/user/personal-cabinet";
+        PetInfoDto updatedPet = petService.updatePet(petEditDto, imageFile, principal);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedPet);
     }
 
-    @GetMapping("delete/{id}")
-    public String deletePetPage(
-            @PathVariable(value = "id") String chipId,
-            Model model
-    ) {
-        model.addAttribute("pet", petService.getPetInfoBySearchParameter(chipId));
-        return "delete-pet";
-    }
-
-    @DeleteMapping("delete/{id}")
-    public String deletePet(
-            @PathVariable(value = "id") String chipId,
+    @DeleteMapping("{searchParameter}")
+    public ResponseEntity<DeletedPetDto> deletePet(
+            @PathVariable(value = "searchParameter") @NotBlank String searchParameter,
             @AuthenticationPrincipal User principal
     ) {
-        petService.deletePet(chipId, principal);
-        return "redirect:/user/personal-cabinet";
+        DeletedPetDto deletedPet = petService.deletePet(searchParameter, principal);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(deletedPet);
     }
 
     @GetMapping("privileged-list")
-    public String privilegedPetsList(
-            Model model,
+    public ResponseEntity<List<PetInfoDto>> privilegedPetsList(
             @PageableDefault Pageable pageable
     ) {
-        model.addAttribute("pets", petService.petsList(pageable));
-        return "pets-privileged-list";
-    }
-
-    @PostMapping("find")
-    public String findPetInfo(
-            Model model,
-            @RequestParam(name = "searchParameter", required = false) String searchParameter,
-            @RequestParam(name = "g-recaptcha-response") String response
-    ) {
-        reCaptchaService.verify(response, "find", "/");
-        model.addAttribute("pet", petService.getPetInfoBySearchParameter(searchParameter));
-        return "pet-info";
+        List<PetInfoDto> pets = petService.petsList(pageable);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(pets);
     }
 }
