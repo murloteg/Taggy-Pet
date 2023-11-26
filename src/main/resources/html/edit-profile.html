@@ -24,7 +24,7 @@
                         <h1>Редактировать профиль</h1>
                     </div>
                     <div class="form-container">
-                        <form id="edit-form" th:method="put" th:action="@{/user/edit-profile}" onsubmit="return onSubmit()">
+                        <form id="form" th:method="put" th:action="@{/user/edit-profile}" onsubmit="return passwordRetypeCheck()">
                             <label for="firstName">Имя</label>
                             <input type="text" th:name="firstName" id="firstName" th:value="${user.firstName}" class="elem-in-window input">
 
@@ -49,20 +49,6 @@
         </div>
     </div>
 </header>
-<script>
-    function onSubmit() {
-        let form = document.getElementById("edit-form");
-        let password = form.elements.password;
-        let retypePassword = form.elements.retypePassword;
-        if (password.value !== retypePassword.value) {
-            retypePassword.style.borderColor="#f81d1d";
-            retypePassword.style.backgroundColor="rgb(253 90 90 / 11%)";
-            retypePassword.value = "";
-            retypePassword.setAttribute("placeholder", "Пароль не совпадает")
-            return false;
-        }
-        return true;
-    }
-</script>
+<script src="/js/password-retype-check.js"></script>
 </body>
 </html>
