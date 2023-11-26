@@ -233,7 +233,7 @@ input[type="submit"]:hover {
 }
 
 .button a {
-    background-color: #f81d1d;
+    background-color: #F81D1DFF;
     padding: 20px 50px;
     border-radius: 10px;
     text-decoration: none;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.model.dto.PetCreationDto;
+import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.dto.UserInfoDto;
 import ru.nsu.sberlab.model.dto.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
@@ -92,7 +93,7 @@ public class UserController {
     }
 
     @PutMapping("edit-profile")
-    public String editProfile(UserInfoDto editedUser) {
+    public String editProfile(UserEditDto editedUser) {
         userService.updateUserInfo(editedUser);
         return "redirect:/user/personal-cabinet";
     }

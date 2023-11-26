@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exception.FailedUserCreationException;
 import ru.nsu.sberlab.exception.AddPetImageException;
-import ru.nsu.sberlab.model.dto.PetCreationDto;
-import ru.nsu.sberlab.model.dto.PetInfoDto;
-import ru.nsu.sberlab.model.dto.UserInfoDto;
-import ru.nsu.sberlab.model.dto.UserRegistrationDto;
+import ru.nsu.sberlab.model.dto.*;
 import ru.nsu.sberlab.model.entity.DeletedUser;
 import ru.nsu.sberlab.model.entity.Pet;
 import ru.nsu.sberlab.model.entity.PetImage;
@@ -29,6 +26,7 @@ import ru.nsu.sberlab.dao.UserRepository;
 
 import java.io.IOException;
 import java.util.*;
+import static java.util.function.Predicate.not;
 
 @Service
 @RequiredArgsConstructor
@@ -71,12 +69,15 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUserInfo(UserInfoDto userInfoDto) {
-        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+    public void updateUserInfo(UserEditDto userEditDto) {
+        User user = userRepository.findByEmail(userEditDto.getEmail()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
-        user.setPhoneNumber(userInfoDto.getPhoneNumber());
-        user.setFirstName(userInfoDto.getFirstName());
+        user.setFirstName(userEditDto.getFirstName());
+        user.setPhoneNumber(userEditDto.getPhoneNumber());
+        Optional.of(userEditDto.getPassword()).filter(not(String::isBlank)).ifPresent(
+                newPassword -> user.setPassword(passwordEncoder.encode(newPassword))
+        );
         userRepository.save(user);
     }
 
