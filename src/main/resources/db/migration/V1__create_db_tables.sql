@@ -32,7 +32,7 @@ create table pet_images
     image_id        bigint not null,
     image_size      bigint,
     image_type      varchar(255),
-    image_uuid_name varchar(255) unique,
+    image_uuid_name varchar(255),
     image_data      oid,
     primary key (image_id)
 );

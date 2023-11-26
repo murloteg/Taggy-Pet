@@ -37,4 +37,5 @@ build/
 *.DS_Store
 
 ### Other ###
-.env
+*.env
+keystore.p12
