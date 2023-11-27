@@ -79,7 +79,17 @@ public class UserService implements UserDetailsService {
         Optional.of(userEditDto.getPassword()).filter(not(String::isBlank)).ifPresent(
                 newPassword -> user.setPassword(passwordEncoder.encode(newPassword))
         );
-        userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+        updatedUser.getUserSocialNetworks().clear();
+        updatedUser.getUserSocialNetworks().addAll(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
+                userEditDto.getSocialNetworks()
+                        .stream()
+                        .map(socialNetworkEditDto -> new SocialNetworkRegistrationDto(
+                                socialNetworkEditDto.getPropertyId(),
+                                socialNetworkEditDto.getShortName()))
+                        .toList(),
+                updatedUser
+        ));
     }
 
     @Transactional

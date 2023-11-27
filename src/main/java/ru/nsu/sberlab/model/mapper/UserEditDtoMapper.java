@@ -2,6 +2,7 @@ package ru.nsu.sberlab.model.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.nsu.sberlab.model.dto.SocialNetworkEditDto;
 import ru.nsu.sberlab.model.dto.SocialNetworkRegistrationDto;
 import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.entity.User;
@@ -25,8 +26,9 @@ public class UserEditDtoMapper implements Function<User, UserEditDto> {
                 user.getPassword(),
                 socialNetworkPropertiesService.properties()
                         .stream()
-                        .map(socialNetwork -> new SocialNetworkRegistrationDto(
+                        .map(socialNetwork -> new SocialNetworkEditDto(
                                 socialNetwork.getPropertyId(),
+                                socialNetwork.getPropertyValue(),
                                 socialNetworkPropertiesService.getLoginByPropertyId(user, socialNetwork.getPropertyId())))
                         .toList()
         );

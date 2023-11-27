@@ -15,7 +15,7 @@ public class UserEditDto {
     private Boolean hasPermitToShowEmail;
     private Boolean hasPermitToShowPhoneNumber;
     private String password;
-    private List<SocialNetworkRegistrationDto> socialNetworks;
+    private List<SocialNetworkEditDto> socialNetworks;
 
     public boolean isPermitToShowPhoneNumber() {
         return Objects.nonNull(hasPermitToShowPhoneNumber);
