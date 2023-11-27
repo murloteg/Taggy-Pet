@@ -1,14 +1,19 @@
 package ru.nsu.sberlab.model.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.model.dto.SocialNetworkRegistrationDto;
 import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.entity.User;
+import ru.nsu.sberlab.service.SocialNetworkPropertiesService;
 
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class UserEditDtoMapper implements Function<User, UserEditDto> {
+    private final SocialNetworkPropertiesService socialNetworkPropertiesService;
+
     @Override
     public UserEditDto apply(User user) {
         return new UserEditDto(
@@ -18,14 +23,12 @@ public class UserEditDtoMapper implements Function<User, UserEditDto> {
                 user.isHasPermitToShowEmail() ? true : null,
                 user.isHasPermitToShowPhoneNumber() ? true : null,
                 user.getPassword(),
-                user.getUserSocialNetworks()
+                socialNetworkPropertiesService.properties()
                         .stream()
                         .map(socialNetwork -> new SocialNetworkRegistrationDto(
-                                socialNetwork.getSocialNetwork().getPropertyId(),
-                                socialNetwork.getShortName()
-                        ))
+                                socialNetwork.getPropertyId(),
+                                socialNetworkPropertiesService.getLoginByPropertyId(user, socialNetwork.getPropertyId())))
                         .toList()
-
         );
     }
 }
