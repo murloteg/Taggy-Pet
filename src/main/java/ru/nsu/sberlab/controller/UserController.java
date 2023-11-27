@@ -10,11 +10,8 @@ import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.dto.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.enums.Role;
-import ru.nsu.sberlab.model.mapper.UserEditDtoMapper;
 import ru.nsu.sberlab.service.SocialNetworkPropertiesService;
 import ru.nsu.sberlab.service.UserService;
-
-import java.util.Optional;
 
 @RequestMapping("/user/")
 @Controller
