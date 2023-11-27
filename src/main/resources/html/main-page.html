@@ -110,7 +110,15 @@
     input.oninput = function (e) {
         e.target.setCustomValidity("");
     }
+</script>
+<script>
+    function onSubmit(token) {
+        let form = document.getElementById("search-form");
 
+        if (form.checkValidity()) {
+            form.submit();
+        }
+    }
 </script>
 <script src="/js/chip-id-validation.js"></script>
 </body>

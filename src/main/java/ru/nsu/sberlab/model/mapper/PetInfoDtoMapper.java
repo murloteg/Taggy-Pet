@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class PetInfoDtoMapper implements Function<Pet, PetInfoDto> {
-    private final UserInfoMapper userInfoMapper;
+    private final UserInfoDtoMapper userInfoMapper;
     private final FeatureInfoDtoMapper featureInfoDtoMapper;
 
     @Override

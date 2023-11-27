@@ -24,18 +24,40 @@
                         <h1>Редактировать профиль</h1>
                     </div>
                     <div class="form-container">
-                        <form id="form" th:method="put" th:action="@{/user/edit-profile}" onsubmit="return passwordRetypeCheck()">
+                        <form id="form" th:method="put" th:action="@{/user/edit-profile}"
+                              onsubmit="return passwordRetypeCheck()">
                             <label for="firstName">Имя</label>
-                            <input type="text" th:name="firstName" id="firstName" th:value="${user.firstName}" class="elem-in-window input">
+                            <input type="text" th:name="firstName" id="firstName" th:value="${user.firstName}"
+                                   class="elem-in-window input">
 
-                            <label for="firstName">Email<img th:src="@{/img/lock.svg}" alt="Lock" class="lock-img"></label>
-                            <input type="email" th:name="email" th:value="${user.email}" readonly class="elem-in-window input">
+                            <label for="firstName">Email<img th:src="@{/img/lock.svg}" alt="Lock"
+                                                             class="lock-img"></label>
+                            <input type="email" th:name="email" th:value="${user.email}" readonly
+                                   class="elem-in-window input">
 
                             <label for="firstName">Телефон</label>
-                            <input type="tel" th:name="phoneNumber" th:value="${user.phoneNumber}" class="elem-in-window input">
+                            <input type="tel" th:name="phoneNumber" th:value="${user.phoneNumber}"
+                                   class="elem-in-window input">
+
+                            <h5>Разрешаю показывать контакты:</h5>
+                            <div class="checkboxes">
+                                <label>
+                                    <input type="checkbox" th:name="hasPermitToShowEmail"
+                                           th:checked="${user.hasPermitToShowEmail != null}" class="real-checkbox">
+                                    <span class="custom-checkbox"></span>
+                                    email
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="phone" th:name="hasPermitToShowPhoneNumber"
+                                           th:checked="${user.hasPermitToShowPhoneNumber != null}" class="real-checkbox">
+                                    <span class="custom-checkbox"></span>
+                                    телефон
+                                </label>
+                            </div>
 
                             <label for="firstName">Новый пароль</label>
-                            <input type="password" th:name="password" placeholder="Введите новый пароль" class="elem-in-window input">
+                            <input type="password" th:name="password" placeholder="Введите новый пароль"
+                                   class="elem-in-window input">
 
                             <label for="firstName">Введите новый пароль еще раз</label>
                             <input type="password" th:name="retypePassword" class="elem-in-window input"><br>

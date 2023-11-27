@@ -7,12 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.model.dto.PetCreationDto;
 import ru.nsu.sberlab.model.dto.UserEditDto;
-import ru.nsu.sberlab.model.dto.UserInfoDto;
 import ru.nsu.sberlab.model.dto.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.enums.Role;
+import ru.nsu.sberlab.model.mapper.UserEditDtoMapper;
 import ru.nsu.sberlab.service.SocialNetworkPropertiesService;
 import ru.nsu.sberlab.service.UserService;
+
+import java.util.Optional;
 
 @RequestMapping("/user/")
 @Controller
@@ -88,7 +90,7 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
+        model.addAttribute("user", userService.getUserEditDtoByEmail(principal.getEmail()));
         return "edit-profile";
     }
 

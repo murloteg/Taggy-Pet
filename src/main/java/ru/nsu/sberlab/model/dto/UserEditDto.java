@@ -4,13 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 public class UserEditDto {
-    private final String firstName;
-    private final String email;
-    private final String phoneNumber;
-    private final String password;
-    private final List<SocialNetworkInfoDto> socialNetworks;
+    private String firstName;
+    private String email;
+    private String phoneNumber;
+    private Boolean hasPermitToShowEmail;
+    private Boolean hasPermitToShowPhoneNumber;
+    private String password;
+    private List<SocialNetworkRegistrationDto> socialNetworks;
+
+    public boolean isPermitToShowPhoneNumber() {
+        return Objects.nonNull(hasPermitToShowPhoneNumber);
+    }
+
+    public boolean isPermitToShowEmail() {
+        return Objects.nonNull(hasPermitToShowEmail);
+    }
 }

@@ -18,6 +18,7 @@ import ru.nsu.sberlab.model.entity.PetImage;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.enums.Role;
 import ru.nsu.sberlab.model.mapper.PetInfoDtoMapper;
+import ru.nsu.sberlab.model.mapper.UserEditDtoMapper;
 import ru.nsu.sberlab.model.util.FeaturesConverter;
 import ru.nsu.sberlab.model.util.PetCleaner;
 import ru.nsu.sberlab.model.util.SocialNetworksConverter;
@@ -37,6 +38,7 @@ public class UserService implements UserDetailsService {
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
+    private final UserEditDtoMapper userEditDtoMapper;
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
@@ -75,6 +77,8 @@ public class UserService implements UserDetailsService {
         );
         user.setFirstName(userEditDto.getFirstName());
         user.setPhoneNumber(userEditDto.getPhoneNumber());
+        user.setHasPermitToShowEmail(userEditDto.isPermitToShowEmail());
+        user.setHasPermitToShowPhoneNumber(userEditDto.isPermitToShowPhoneNumber());
         Optional.of(userEditDto.getPassword()).filter(not(String::isBlank)).ifPresent(
                 newPassword -> user.setPassword(passwordEncoder.encode(newPassword))
         );
@@ -146,6 +150,12 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .map(petInfoDtoMapper)
                 .toList();
+    }
+
+    public UserEditDto getUserEditDtoByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(userEditDtoMapper)
+                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
     }
 
     @Override

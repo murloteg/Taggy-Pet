@@ -8,7 +8,7 @@ import ru.nsu.sberlab.model.entity.User;
 import java.util.function.Function;
 
 @Service
-public class UserInfoMapper implements Function<User, UserInfoDto> {
+public class UserInfoDtoMapper implements Function<User, UserInfoDto> {
     @Override
     public UserInfoDto apply(User user) {
         String handledEmail = user.isHasPermitToShowEmail() ? user.getEmail() : null;
