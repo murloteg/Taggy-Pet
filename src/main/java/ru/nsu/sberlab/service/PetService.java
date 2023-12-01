@@ -45,11 +45,15 @@ public class PetService {
     private final PropertyResolverUtils propertyResolver;
 
     public PetInfoDto getPetInfoBySearchParameter(String searchParameter) {
-        return isChipIdParameter(searchParameter) ? petRepository.findByChipId(searchParameter)
-                .map(petInfoDtoMapper)
-                .orElseThrow(() -> new FailedPetSearchException(searchParameter)) : petRepository.findByStampId(searchParameter)
-                .map(petInfoDtoMapper)
-                .orElseThrow(() -> new FailedPetSearchException(searchParameter));
+        if (isChipIdParameter(searchParameter)) {
+            return petRepository.findByChipId(searchParameter)
+                    .map(petInfoDtoMapper)
+                    .orElseThrow(() -> new FailedPetSearchException(searchParameter));
+        } else {
+            return petRepository.findByStampId(searchParameter)
+                    .map(petInfoDtoMapper)
+                    .orElseThrow(() -> new FailedPetSearchException(searchParameter));
+        }
     }
 
     public PetEditDto getPetEditDtoByChipId(String chipId) { // TODO: maybe remove
@@ -138,9 +142,8 @@ public class PetService {
     }
 
     @Transactional
-    public DeletedPetDto deletePet(String searchParameter, User principal) {
-        Optional<Pet> optionalPet = isChipIdParameter(searchParameter) ? petRepository.findByChipId(searchParameter) :
-                petRepository.findByStampId(searchParameter);
+    public DeletedPetDto deletePet(long petId, User principal) {
+        Optional<Pet> optionalPet = petRepository.findById(petId);
         if (optionalPet.isEmpty()) {
             throw new PetNotFoundException("api.server.error.pet-not-found");
         }

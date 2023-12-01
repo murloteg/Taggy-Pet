@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.controller;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -49,12 +50,12 @@ public class PetController {
                 .body(updatedPet);
     }
 
-    @DeleteMapping("{searchParameter}")
+    @DeleteMapping("{petId}")
     public ResponseEntity<DeletedPetDto> deletePet(
-            @PathVariable(value = "searchParameter") @NotBlank String searchParameter,
+            @PathVariable(value = "petId") @Positive long id,
             @AuthenticationPrincipal User principal
     ) {
-        DeletedPetDto deletedPet = petService.deletePet(searchParameter, principal);
+        DeletedPetDto deletedPet = petService.deletePet(id, principal);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(deletedPet);
     }
