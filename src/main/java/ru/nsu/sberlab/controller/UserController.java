@@ -1,99 +1,68 @@
 package ru.nsu.sberlab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.model.dto.PetCreationDto;
+import ru.nsu.sberlab.model.dto.PetInfoDto;
 import ru.nsu.sberlab.model.dto.UserInfoDto;
 import ru.nsu.sberlab.model.dto.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
-import ru.nsu.sberlab.model.enums.Role;
-import ru.nsu.sberlab.service.SocialNetworkPropertiesService;
 import ru.nsu.sberlab.service.UserService;
 
-@RequestMapping("/user/")
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/user/", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final SocialNetworkPropertiesService socialNetworkPropertiesService;
 
-    @GetMapping("login")
-    public String loginPage() {
-        return "login";
+    @PostMapping(value = "registration")
+    public ResponseEntity<UserInfoDto> createUser(@RequestBody UserRegistrationDto user) {
+        UserInfoDto createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(createdUser);
     }
 
-    @GetMapping("registration")
-    public String registrationPage(Model model) {
-        model.addAttribute("properties", socialNetworkPropertiesService.properties());
-        return "registration";
-    }
-
-    @PostMapping("registration")
-    public String createUser(UserRegistrationDto user) {
-        userService.createUser(user);
-        return "redirect:/user/login";
-    }
-
-    @GetMapping("personal-cabinet")
-    public String personalCabinetPage(
-            Model model,
+    @GetMapping(value = "pets")
+    public ResponseEntity<List<PetInfoDto>> listOfPets(
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
-        model.addAttribute(
-                "hasPrivilegedAccess",
-                principal
-                        .getAuthorities()
-                        .contains(Role.ROLE_PRIVILEGED_ACCESS)
-        );
-        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
-        return "personal-cabinet";
+        List<PetInfoDto> pets = userService.petsListByUserId(principal.getUserId());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(pets);
     }
 
-    @PostMapping("create-pet")
-    public String createPet(
-            PetCreationDto pet,
+    @PostMapping(value = "pets")
+    public ResponseEntity<PetInfoDto> createPet(
+            @RequestPart("pet") PetCreationDto pet,
+            @RequestPart("imageFile") MultipartFile imageFile,
             @AuthenticationPrincipal User principal
     ) {
-        userService.createPet(pet, principal);
-        return "redirect:/user/personal-cabinet";
+        PetInfoDto createdPet = userService.createPet(pet, imageFile, principal);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(createdPet);
     }
 
-    @GetMapping("pets-list")
-    public String petsListPage(
-            Model model,
-            @AuthenticationPrincipal User principal
-    ) {
-        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
-        return "pets-list";
-    }
-
-    @GetMapping("delete-account")
-    public String accountDeletionPage() {
-        return "delete-account";
-    }
-
-    @DeleteMapping("delete-account")
-    public String deleteAccount(@AuthenticationPrincipal User principal) {
+    @DeleteMapping
+    public ResponseEntity<String> deleteAccount(@AuthenticationPrincipal User principal) {
         userService.deleteUser(principal.getUserId());
-        return "redirect:/logout";
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(principal.getEmail());
     }
 
-    @GetMapping("edit-profile")
-    public String editProfilePage(
-            Model model,
+    @PatchMapping
+    public ResponseEntity<UserInfoDto> editProfile(
+            @RequestBody UserInfoDto editedUser,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
-        return "edit-profile";
-    }
-
-    @PutMapping("edit-profile")
-    public String editProfile(UserInfoDto editedUser) {
-        userService.updateUserInfo(editedUser);
-        return "redirect:/user/personal-cabinet";
+        UserInfoDto updatedUser = userService.updateUserInfo(editedUser, principal);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedUser);
     }
 }

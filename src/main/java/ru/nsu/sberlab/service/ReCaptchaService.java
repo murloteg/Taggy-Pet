@@ -26,7 +26,6 @@ public class ReCaptchaService {
                 )
         );
         ReCaptchaResponse reCaptchaResponse = restTemplate.getForObject(requestURI, ReCaptchaResponse.class);
-
         if (Objects.nonNull(reCaptchaResponse) && (!reCaptchaResponse.isSuccess() ||
                 reCaptchaResponse.getScore() < reCaptchaKeys.getThreshold() ||
                 !reCaptchaResponse.getAction().equals(request))) {
