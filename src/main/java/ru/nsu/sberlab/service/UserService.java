@@ -53,21 +53,18 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public UserInfoDto createUser(UserRegistrationDto userDto) {
+        Optional<User> currentUser = userRepository.findByEmail(userDto.getEmail());
+        if (currentUser.isPresent() && currentUser.get().isActive()) {
+            throw new FailedUserCreationException("api.server.error.user-not-created");
+        }
         User user = new User(
                 userDto.getEmail(),
                 userDto.getPhoneNumber(),
                 userDto.getFirstName(),
-                userDto.getPassword(),
+                passwordEncoder.encode(userDto.getPassword()),
                 userDto.isHasPermitToShowPhoneNumber(),
                 userDto.isHasPermitToShowEmail()
         );
-        Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
-        if (currentUser.isPresent() && currentUser.get().isActive()) {
-            throw new FailedUserCreationException("api.server.error.user-not-created");
-        }
-        user.setActive(true);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.ROLE_USER);
         User savedUser = userRepository.save(user);
         savedUser.setUserSocialNetworks(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
                         userDto.getSocialNetworks(),

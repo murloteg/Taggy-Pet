@@ -75,7 +75,9 @@ public class User implements UserDetails {
 
     @PrePersist
     private void initialization() {
-        dateOfCreated = LocalDateTime.now();
+        this.role = Role.ROLE_USER;
+        this.active = true;
+        this.dateOfCreated = LocalDateTime.now();
     }
 
     public User(

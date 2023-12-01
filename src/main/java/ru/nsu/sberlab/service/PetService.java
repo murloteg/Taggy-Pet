@@ -72,20 +72,13 @@ public class PetService {
      * @author Kirill Bolotov
      */
     @Transactional
-    public PetInfoDto updatePet(PetEditDto petEditDto, MultipartFile imageFile, User principal) {
-        Optional<Pet> optionalPet;
-        if (Objects.nonNull(petEditDto.getChipId())) {
-            optionalPet = petRepository.findByChipId(petEditDto.getChipId());
-        } else {
-            optionalPet = petRepository.findByStampId(petEditDto.getStampId());
-        }
-        if (optionalPet.isEmpty()) {
-            throw new PetNotFoundException("api.server.error.pet-not-found");
-        }
+    public PetInfoDto updatePet(long petId, PetEditDto petEditDto, MultipartFile imageFile, User principal) {
+        Pet pet = petRepository.findById(petId).orElseThrow(
+                () -> new PetNotFoundException("api.server.error.pet-not-found")
+        );
         User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
                 () -> new UsernameNotFoundException("api.server.error.user-not-found")
         );
-        Pet pet = optionalPet.get();
         checkIfUserHasAccessToPet(currentUser, pet);
 
         if (Objects.nonNull(petEditDto.getType())) {
@@ -143,14 +136,12 @@ public class PetService {
 
     @Transactional
     public DeletedPetDto deletePet(long petId, User principal) {
-        Optional<Pet> optionalPet = petRepository.findById(petId);
-        if (optionalPet.isEmpty()) {
-            throw new PetNotFoundException("api.server.error.pet-not-found");
-        }
+        Pet pet = petRepository.findById(petId).orElseThrow(
+                () -> new PetNotFoundException("api.server.error.pet-not-found")
+        );
         User currentUser = userRepository.findByEmail(principal.getEmail()).orElseThrow(
                 () -> new UsernameNotFoundException("api.server.error.user-not-found")
         );
-        Pet pet = optionalPet.get();
         checkIfUserHasAccessToPet(currentUser, pet);
 
         currentUser.getPets().remove(pet);

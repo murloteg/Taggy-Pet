@@ -1,7 +1,7 @@
 package ru.nsu.sberlab.controller;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -39,20 +39,21 @@ public class PetController {
                 .body(petInfo);
     }
 
-    @PatchMapping
+    @PatchMapping(value = "{petId}")
     public ResponseEntity<PetInfoDto> editPet(
+            @PathVariable("petId") @Min(value = 0, message = "Pet id should be positive value") long petId,
             @RequestPart("pet") PetEditDto petEditDto,
             @RequestPart("imageFile") MultipartFile imageFile,
             @AuthenticationPrincipal User principal
     ) {
-        PetInfoDto updatedPet = petService.updatePet(petEditDto, imageFile, principal);
+        PetInfoDto updatedPet = petService.updatePet(petId, petEditDto, imageFile, principal);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(updatedPet);
     }
 
-    @DeleteMapping("{petId}")
+    @DeleteMapping(value = "{petId}")
     public ResponseEntity<DeletedPetDto> deletePet(
-            @PathVariable(value = "petId") @Positive long id,
+            @PathVariable(value = "petId") @Min(value = 0, message = "Pet id should be positive value") long id,
             @AuthenticationPrincipal User principal
     ) {
         DeletedPetDto deletedPet = petService.deletePet(id, principal);
@@ -60,7 +61,7 @@ public class PetController {
                 .body(deletedPet);
     }
 
-    @GetMapping("privileged-list")
+    @GetMapping(value = "privileged-list")
     public ResponseEntity<List<PetInfoDto>> privilegedPetsList(
             @PageableDefault Pageable pageable
     ) {

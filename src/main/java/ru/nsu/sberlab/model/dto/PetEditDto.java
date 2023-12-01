@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetEditDto {
-    private String chipId;
-    private String stampId;
     private String name;
     private String type;
     private String breed;
