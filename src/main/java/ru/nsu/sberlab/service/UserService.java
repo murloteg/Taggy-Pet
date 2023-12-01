@@ -76,9 +76,9 @@ public class UserService implements UserDetailsService {
         user.setPhoneNumber(userEditDto.getPhoneNumber());
         user.setHasPermitToShowEmail(userEditDto.isPermitToShowEmail());
         user.setHasPermitToShowPhoneNumber(userEditDto.isPermitToShowPhoneNumber());
-        Optional.of(userEditDto.getPassword()).filter(not(String::isBlank)).ifPresent(
-                newPassword -> user.setPassword(passwordEncoder.encode(newPassword))
-        );
+        if (!userEditDto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
+        }
         User updatedUser = userRepository.save(user);
         updatedUser.getUserSocialNetworks().clear();
         updatedUser.getUserSocialNetworks().addAll(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
