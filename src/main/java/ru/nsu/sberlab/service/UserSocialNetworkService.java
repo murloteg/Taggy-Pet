@@ -3,7 +3,7 @@ package ru.nsu.sberlab.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.dao.SocialNetworkPropertiesRepository;
-import ru.nsu.sberlab.model.dto.SocialNetworkEditDto;
+import ru.nsu.sberlab.model.dto.SocialNetworkInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.entity.UserSocialNetwork;
 
@@ -14,10 +14,10 @@ import java.util.List;
 public class UserSocialNetworkService {
     private final SocialNetworkPropertiesRepository socialNetworkPropertiesRepository;
 
-    public List<SocialNetworkEditDto> getAllSocialNetworksEditDtoByUser(User user) {
+    public List<SocialNetworkInfoDto> getAllSocialNetworksEditDtoByUser(User user) {
         return socialNetworkPropertiesRepository.findAll()
                 .stream()
-                .map(socialNetwork -> new SocialNetworkEditDto(
+                .map(socialNetwork -> new SocialNetworkInfoDto(
                         socialNetwork.getPropertyId(),
                         socialNetwork.getPropertyValue(),
                         getLoginByPropertyId(user, socialNetwork.getPropertyId())))

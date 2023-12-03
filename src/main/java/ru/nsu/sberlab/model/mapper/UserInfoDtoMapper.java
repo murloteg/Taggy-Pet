@@ -1,31 +1,28 @@
 package ru.nsu.sberlab.model.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.SocialNetworkInfoDto;
+import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.dto.UserInfoDto;
 import ru.nsu.sberlab.model.entity.User;
+import ru.nsu.sberlab.service.UserSocialNetworkService;
 
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class UserInfoDtoMapper implements Function<User, UserInfoDto> {
+    private final UserSocialNetworkService userSocialNetworkService;
+
     @Override
     public UserInfoDto apply(User user) {
-        String handledEmail = user.isHasPermitToShowEmail() ? user.getEmail() : null;
-        String handledPhoneNumber = user.isHasPermitToShowPhoneNumber() ? user.getPhoneNumber() : null;
         return new UserInfoDto(
-                handledEmail,
-                handledPhoneNumber,
                 user.getFirstName(),
-                user.getUserSocialNetworks()
-                        .stream()
-                        .map(socialNetwork -> new SocialNetworkInfoDto(
-                                        socialNetwork.getSocialNetwork().getPropertyValue(),
-                                        socialNetwork.getSocialNetwork().getBaseUrl(),
-                                        socialNetwork.getShortName()
-                                )
-                        )
-                        .toList()
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.isHasPermitToShowEmail(),
+                user.isHasPermitToShowPhoneNumber(),
+                userSocialNetworkService.getAllSocialNetworksEditDtoByUser(user)
         );
     }
 }

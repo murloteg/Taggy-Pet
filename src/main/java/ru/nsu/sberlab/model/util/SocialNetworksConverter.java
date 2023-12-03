@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.exception.PropertyNotFoundException;
-import ru.nsu.sberlab.model.dto.SocialNetworkRegistrationDto;
+import ru.nsu.sberlab.model.dto.SocialNetworkPostDto;
 import ru.nsu.sberlab.model.entity.UserSocialNetwork;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.dao.SocialNetworkPropertiesRepository;
@@ -19,7 +19,7 @@ public class SocialNetworksConverter {
     private final PropertyResolverUtils propertyResolver;
 
     public List<UserSocialNetwork> convertSocialNetworksDtoToSocialNetworks(
-            List<SocialNetworkRegistrationDto> socialNetworkRegistrationDtoList,
+            List<SocialNetworkPostDto> socialNetworkRegistrationDtoList,
             User user
     ) {
         return socialNetworkRegistrationDtoList

@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SocialNetworkEditDto {
+public class SocialNetworkPostDto {
     private Long propertyId;
-    private String propertyValue;
     private String shortName;
 }

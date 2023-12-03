@@ -42,14 +42,13 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
+        model.addAttribute("user", userService.getPersonalCabinetDtoByEmail(principal.getEmail()));
         model.addAttribute(
                 "hasPrivilegedAccess",
                 principal
                         .getAuthorities()
                         .contains(Role.ROLE_PRIVILEGED_ACCESS)
         );
-        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
         return "personal-cabinet";
     }
 
@@ -87,7 +86,7 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.getUserEditDtoByEmail(principal.getEmail()));
+        model.addAttribute("user", userService.getUserInfoDtoByEmail(principal.getEmail()));
         return "edit-profile";
     }
 

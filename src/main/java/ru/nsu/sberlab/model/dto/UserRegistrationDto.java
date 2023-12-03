@@ -16,5 +16,5 @@ public class UserRegistrationDto {
     private String password;
     private boolean hasPermitToShowPhoneNumber;
     private boolean hasPermitToShowEmail;
-    private List<SocialNetworkRegistrationDto> socialNetworks;
+    private List<SocialNetworkPostDto> socialNetworks;
 }

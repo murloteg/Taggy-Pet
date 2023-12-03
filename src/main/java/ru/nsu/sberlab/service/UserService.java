@@ -14,8 +14,9 @@ import ru.nsu.sberlab.exception.AddPetImageException;
 import ru.nsu.sberlab.model.dto.*;
 import ru.nsu.sberlab.model.entity.*;
 import ru.nsu.sberlab.model.enums.Role;
+import ru.nsu.sberlab.model.mapper.PersonalCabinetDtoMapper;
 import ru.nsu.sberlab.model.mapper.PetInfoDtoMapper;
-import ru.nsu.sberlab.model.mapper.UserEditDtoMapper;
+import ru.nsu.sberlab.model.mapper.UserInfoDtoMapper;
 import ru.nsu.sberlab.model.util.FeaturesConverter;
 import ru.nsu.sberlab.model.util.PetCleaner;
 import ru.nsu.sberlab.model.util.SocialNetworksConverter;
@@ -24,7 +25,6 @@ import ru.nsu.sberlab.dao.UserRepository;
 
 import java.io.IOException;
 import java.util.*;
-import static java.util.function.Predicate.not;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +35,8 @@ public class UserService implements UserDetailsService {
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
-    private final UserEditDtoMapper userEditDtoMapper;
+    private final UserInfoDtoMapper userEditDtoMapper;
+    private final PersonalCabinetDtoMapper personalCabinetDtoMapper;
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
@@ -82,12 +83,7 @@ public class UserService implements UserDetailsService {
         User updatedUser = userRepository.save(user);
         updatedUser.getUserSocialNetworks().clear();
         updatedUser.getUserSocialNetworks().addAll(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
-                userEditDto.getSocialNetworks()
-                        .stream()
-                        .map(socialNetworkEditDto -> new SocialNetworkRegistrationDto(
-                                socialNetworkEditDto.getPropertyId(),
-                                socialNetworkEditDto.getShortName()))
-                        .toList(),
+                userEditDto.getSocialNetworks(),
                 updatedUser
         ));
     }
@@ -159,9 +155,15 @@ public class UserService implements UserDetailsService {
                 .toList();
     }
 
-    public UserEditDto getUserEditDtoByEmail(String email) {
+    public UserInfoDto getUserInfoDtoByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(userEditDtoMapper)
+                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+    }
+
+    public PersonalCabinetDto getPersonalCabinetDtoByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(personalCabinetDtoMapper)
                 .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
     }
 
