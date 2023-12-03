@@ -24,7 +24,7 @@
                         <h1>Редактировать профиль</h1>
                     </div>
                     <div class="form-container">
-                        <form id="form" th:method="put" th:action="@{/user/edit-profile}" th:object="${user}" onsubmit="return passwordRetypeCheck()">
+                        <form id="form" th:method="put" th:action="@{/user/edit-profile}" th:object="${user}" onsubmit="return submitEditProfileForm()">
                             <label for="firstName">Имя</label>
                             <input type="text" th:name="firstName" id="firstName" th:value="*{firstName}"
                                    class="elem-in-window input">
@@ -42,13 +42,13 @@
                             <div class="checkboxes">
                                 <label>
                                     <input type="checkbox" th:name="hasPermitToShowEmail"
-                                           th:checked="*{hasPermitToShowEmail != null}" class="real-checkbox">
+                                           th:checked="*{hasPermitToShowEmail}" class="real-checkbox">
                                     <span class="custom-checkbox"></span>
                                     email
                                 </label>
                                 <label>
                                     <input type="checkbox" id="phone" th:name="hasPermitToShowPhoneNumber"
-                                           th:checked="*{hasPermitToShowPhoneNumber != null}" class="real-checkbox">
+                                           th:checked="*{hasPermitToShowPhoneNumber}" class="real-checkbox">
                                     <span class="custom-checkbox"></span>
                                     телефон
                                 </label>
@@ -79,5 +79,6 @@
     </div>
 </header>
 <script src="/js/password-retype-check.js"></script>
+<script src="/js/submitEditProfileForm.js"></script>
 </body>
 </html>

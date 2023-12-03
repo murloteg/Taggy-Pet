@@ -21,8 +21,8 @@ public class UserEditDtoMapper implements Function<User, UserEditDto> {
                 user.getFirstName(),
                 user.getEmail(),
                 user.getPhoneNumber(),
-                user.isHasPermitToShowEmail() ? true : null,
-                user.isHasPermitToShowPhoneNumber() ? true : null,
+                user.isHasPermitToShowEmail(),
+                user.isHasPermitToShowPhoneNumber(),
                 user.getPassword(),
                 socialNetworkPropertiesService.properties()
                         .stream()

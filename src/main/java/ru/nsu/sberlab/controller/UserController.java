@@ -1,9 +1,11 @@
 package ru.nsu.sberlab.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.model.dto.PetCreationDto;
 import ru.nsu.sberlab.model.dto.UserEditDto;
@@ -89,6 +91,11 @@ public class UserController {
     ) {
         model.addAttribute("user", userService.getUserEditDtoByEmail(principal.getEmail()));
         return "edit-profile";
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.registerCustomEditor(boolean.class, new CustomBooleanEditor(false));
     }
 
     @PutMapping("edit-profile")

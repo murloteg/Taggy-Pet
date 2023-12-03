@@ -74,8 +74,8 @@ public class UserService implements UserDetailsService {
         );
         user.setFirstName(userEditDto.getFirstName());
         user.setPhoneNumber(userEditDto.getPhoneNumber());
-        user.setHasPermitToShowEmail(userEditDto.isPermitToShowEmail());
-        user.setHasPermitToShowPhoneNumber(userEditDto.isPermitToShowPhoneNumber());
+        user.setHasPermitToShowEmail(userEditDto.isHasPermitToShowEmail());
+        user.setHasPermitToShowPhoneNumber(userEditDto.isHasPermitToShowPhoneNumber());
         if (!userEditDto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
         }
