@@ -7,13 +7,14 @@ import ru.nsu.sberlab.model.dto.SocialNetworkRegistrationDto;
 import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.SocialNetworkPropertiesService;
+import ru.nsu.sberlab.service.UserSocialNetworkService;
 
 import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
 public class UserEditDtoMapper implements Function<User, UserEditDto> {
-    private final SocialNetworkPropertiesService socialNetworkPropertiesService;
+    private final UserSocialNetworkService userSocialNetworkService;
 
     @Override
     public UserEditDto apply(User user) {
@@ -24,13 +25,7 @@ public class UserEditDtoMapper implements Function<User, UserEditDto> {
                 user.isHasPermitToShowEmail(),
                 user.isHasPermitToShowPhoneNumber(),
                 user.getPassword(),
-                socialNetworkPropertiesService.properties()
-                        .stream()
-                        .map(socialNetwork -> new SocialNetworkEditDto(
-                                socialNetwork.getPropertyId(),
-                                socialNetwork.getPropertyValue(),
-                                socialNetworkPropertiesService.getLoginByPropertyId(user, socialNetwork.getPropertyId())))
-                        .toList()
+                userSocialNetworkService.getAllSocialNetworksEditDtoByUser(user)
         );
     }
 }
