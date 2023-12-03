@@ -26,6 +26,7 @@ h1 {
 
 .offer {
     margin-top: 20px;
+    margin-bottom: 40px;
     justify-content: center;
     display: flex;
     width: 100%;
@@ -136,6 +137,22 @@ h5 {
     transform: translate(-50%, -50%) scale(1);
 }
 
+.social-networks {
+    margin-top: 20px;
+}
+
+.social-network-container {
+    margin-top: 20px;
+}
+
+.social-network-logo {
+    margin-right: 10px;
+}
+
+.social-network-container input[type="text"] {
+    width: 79%;
+}
+
 .input {
     background-color: #eaeaeab3;
     width: 100%;
@@ -152,6 +169,7 @@ h5 {
 }
 
 input[type="submit"] {
+    width: 100%;
     margin-top: 15px;
     display: block;
     font-weight: bold;
@@ -191,6 +209,10 @@ input[type="submit"]:hover {
 
     .input {
         width: 260px;
+    }
+
+    .social-network-container input[type="text"] {
+        width: 64%;
     }
 
     input[type="submit"] {

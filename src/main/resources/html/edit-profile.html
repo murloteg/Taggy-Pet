@@ -24,32 +24,31 @@
                         <h1>Редактировать профиль</h1>
                     </div>
                     <div class="form-container">
-                        <form id="form" th:method="put" th:action="@{/user/edit-profile}"
-                              onsubmit="return passwordRetypeCheck()">
+                        <form id="form" th:method="put" th:action="@{/user/edit-profile}" th:object="${user}" onsubmit="return passwordRetypeCheck()">
                             <label for="firstName">Имя</label>
-                            <input type="text" th:name="firstName" id="firstName" th:value="${user.firstName}"
+                            <input type="text" th:name="firstName" id="firstName" th:value="*{firstName}"
                                    class="elem-in-window input">
 
                             <label for="firstName">Email<img th:src="@{/img/lock.svg}" alt="Lock"
                                                              class="lock-img"></label>
-                            <input type="email" th:name="email" th:value="${user.email}" readonly
+                            <input type="email" th:name="email" th:value="*{email}" readonly
                                    class="elem-in-window input">
 
                             <label for="firstName">Телефон</label>
-                            <input type="tel" th:name="phoneNumber" th:value="${user.phoneNumber}"
+                            <input type="tel" th:name="phoneNumber" th:value="*{phoneNumber}"
                                    class="elem-in-window input">
 
                             <h5>Разрешаю показывать контакты:</h5>
                             <div class="checkboxes">
                                 <label>
                                     <input type="checkbox" th:name="hasPermitToShowEmail"
-                                           th:checked="${user.hasPermitToShowEmail != null}" class="real-checkbox">
+                                           th:checked="*{hasPermitToShowEmail != null}" class="real-checkbox">
                                     <span class="custom-checkbox"></span>
                                     email
                                 </label>
                                 <label>
                                     <input type="checkbox" id="phone" th:name="hasPermitToShowPhoneNumber"
-                                           th:checked="${user.hasPermitToShowPhoneNumber != null}" class="real-checkbox">
+                                           th:checked="*{hasPermitToShowPhoneNumber != null}" class="real-checkbox">
                                     <span class="custom-checkbox"></span>
                                     телефон
                                 </label>
@@ -62,11 +61,12 @@
                             <label for="firstName">Введите новый пароль еще раз</label>
                             <input type="password" th:name="retypePassword" class="elem-in-window input"><br>
 
-                            <div th:each="socialNetwork : ${user.socialNetworks}">
-                                <tr>
-                                    <td class="title social-network" th:text="${socialNetwork.propertyId}"></td>
-                                    <td class="data" th:text="${socialNetwork.shortName}"></td>
-                                </tr>
+                            <div class="social-networks">
+                                <div th:each="socialNetwork, iterator : *{socialNetworks}" class="social-network-container">
+                                    <img th:src="@{${'/img/icons/' + socialNetwork.propertyValue + '.svg'}}" alt="Logo" class="social-network-logo">
+                                    <input type="hidden" th:name="|socialNetworks[${iterator.index}].propertyId|" th:value="${iterator.index}">
+                                    <input type="text" th:name="|socialNetworks[${iterator.index}].shortName|" placeholder="Логин" th:value="${socialNetwork.shortName}" class="elem-in-window input"/>
+                                </div>
                             </div>
 
                             <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
