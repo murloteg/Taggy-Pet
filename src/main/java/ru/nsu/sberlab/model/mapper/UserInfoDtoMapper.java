@@ -2,7 +2,6 @@ package ru.nsu.sberlab.model.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.dto.UserInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.UserSocialNetworkService;
@@ -22,7 +21,7 @@ public class UserInfoDtoMapper implements Function<User, UserInfoDto> {
                 user.getPhoneNumber(),
                 user.isHasPermitToShowEmail(),
                 user.isHasPermitToShowPhoneNumber(),
-                userSocialNetworkService.getAllSocialNetworksEditDtoByUser(user)
+                userSocialNetworkService.getAllSocialNetworksInfoDtoByUser(user)
         );
     }
 }

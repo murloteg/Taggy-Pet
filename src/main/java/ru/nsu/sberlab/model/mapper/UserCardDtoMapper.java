@@ -14,9 +14,9 @@ public class UserCardDtoMapper implements Function<User, UserCardDto> {
         String handledEmail = user.isHasPermitToShowEmail() ? user.getEmail() : null;
         String handledPhoneNumber = user.isHasPermitToShowPhoneNumber() ? user.getPhoneNumber() : null;
         return new UserCardDto(
+                user.getFirstName(),
                 handledEmail,
                 handledPhoneNumber,
-                user.getFirstName(),
                 user.getUserSocialNetworks()
                         .stream()
                         .map(socialNetwork -> new SocialNetworkLinkDto(

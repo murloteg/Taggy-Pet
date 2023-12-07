@@ -1,6 +1,7 @@
 package ru.nsu.sberlab.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.dao.SocialNetworkPropertiesRepository;
 import ru.nsu.sberlab.model.dto.SocialNetworkInfoDto;
@@ -14,7 +15,10 @@ import java.util.List;
 public class UserSocialNetworkService {
     private final SocialNetworkPropertiesRepository socialNetworkPropertiesRepository;
 
-    public List<SocialNetworkInfoDto> getAllSocialNetworksEditDtoByUser(User user) {
+    @Value("${social.network.empty.login}")
+    private String emptyLogin;
+
+    public List<SocialNetworkInfoDto> getAllSocialNetworksInfoDtoByUser(User user) {
         return socialNetworkPropertiesRepository.findAll()
                 .stream()
                 .map(socialNetwork -> new SocialNetworkInfoDto(
@@ -24,13 +28,12 @@ public class UserSocialNetworkService {
                 .toList();
     }
 
-
     private String getLoginByPropertyId(User user, Long propertyId) {
         for (UserSocialNetwork socialNetwork : user.getUserSocialNetworks()) {
             if (socialNetwork.getSocialNetwork().getPropertyId().equals(propertyId)) {
                 return socialNetwork.getShortName();
             }
         }
-        return "";
+        return emptyLogin;
     }
 }

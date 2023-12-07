@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
-    private final UserInfoDtoMapper userEditDtoMapper;
+    private final UserInfoDtoMapper userInfoDtoMapper;
     private final PersonalCabinetDtoMapper personalCabinetDtoMapper;
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
@@ -157,7 +157,7 @@ public class UserService implements UserDetailsService {
 
     public UserInfoDto getUserInfoDtoByEmail(String email) {
         return userRepository.findByEmail(email)
-                .map(userEditDtoMapper)
+                .map(userInfoDtoMapper)
                 .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
     }
 
