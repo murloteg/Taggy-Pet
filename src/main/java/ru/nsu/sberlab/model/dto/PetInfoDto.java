@@ -15,7 +15,7 @@ public class PetInfoDto {
     private final String type;
     private final String breed;
     private final Sex sex;
-    private final List<UserInfoDto> users;
+    private final List<UserCardDto> users;
     private final List<FeatureInfoDto> features;
     private final PetImageDto petImageDto;
 }

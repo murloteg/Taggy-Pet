@@ -107,7 +107,6 @@
                             </tr>
                         </table>
                         <div class="social-networks-container">
-                            <!-- TODO: обработка всех соц. сетей пользователя -->
                             <div th:each="socialNetwork : ${user.socialNetworks}"
                                  th:if="${socialNetwork.shortName != ''}" class="social-network">
                                 <a th:href="@{${socialNetwork.baseUrl + socialNetwork.shortName}}"

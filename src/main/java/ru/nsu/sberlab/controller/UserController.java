@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nsu.sberlab.model.dto.PetCreationDto;
-import ru.nsu.sberlab.model.dto.UserInfoDto;
+import ru.nsu.sberlab.model.dto.UserEditDto;
 import ru.nsu.sberlab.model.dto.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.enums.Role;
@@ -42,14 +42,13 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
+        model.addAttribute("user", userService.getPersonalCabinetDtoByEmail(principal.getEmail()));
         model.addAttribute(
                 "hasPrivilegedAccess",
                 principal
                         .getAuthorities()
                         .contains(Role.ROLE_PRIVILEGED_ACCESS)
         );
-        model.addAttribute("pets", userService.petsListByUserId(principal.getUserId()));
         return "personal-cabinet";
     }
 
@@ -87,12 +86,12 @@ public class UserController {
             Model model,
             @AuthenticationPrincipal User principal
     ) {
-        model.addAttribute("user", userService.loadUserByUsername(principal.getEmail()));
+        model.addAttribute("user", userService.getUserInfoDtoByEmail(principal.getEmail()));
         return "edit-profile";
     }
 
     @PutMapping("edit-profile")
-    public String editProfile(UserInfoDto editedUser) {
+    public String editProfile(UserEditDto editedUser) {
         userService.updateUserInfo(editedUser);
         return "redirect:/user/personal-cabinet";
     }

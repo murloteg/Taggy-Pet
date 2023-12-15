@@ -11,16 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.exception.FailedUserCreationException;
 import ru.nsu.sberlab.exception.AddPetImageException;
-import ru.nsu.sberlab.model.dto.PetCreationDto;
-import ru.nsu.sberlab.model.dto.PetInfoDto;
-import ru.nsu.sberlab.model.dto.UserInfoDto;
-import ru.nsu.sberlab.model.dto.UserRegistrationDto;
-import ru.nsu.sberlab.model.entity.DeletedUser;
-import ru.nsu.sberlab.model.entity.Pet;
-import ru.nsu.sberlab.model.entity.PetImage;
-import ru.nsu.sberlab.model.entity.User;
+import ru.nsu.sberlab.model.dto.*;
+import ru.nsu.sberlab.model.entity.*;
 import ru.nsu.sberlab.model.enums.Role;
+import ru.nsu.sberlab.model.mapper.PersonalCabinetDtoMapper;
 import ru.nsu.sberlab.model.mapper.PetInfoDtoMapper;
+import ru.nsu.sberlab.model.mapper.UserInfoDtoMapper;
 import ru.nsu.sberlab.model.util.FeaturesConverter;
 import ru.nsu.sberlab.model.util.PetCleaner;
 import ru.nsu.sberlab.model.util.SocialNetworksConverter;
@@ -39,6 +35,8 @@ public class UserService implements UserDetailsService {
     private final SocialNetworksConverter socialNetworksConverter;
     private final FeaturesConverter featuresConverter;
     private final PetInfoDtoMapper petInfoDtoMapper;
+    private final UserInfoDtoMapper userInfoDtoMapper;
+    private final PersonalCabinetDtoMapper personalCabinetDtoMapper;
     private final PetCleaner petCleaner;
     private final PropertyResolverUtils propertyResolver;
 
@@ -71,13 +69,23 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUserInfo(UserInfoDto userInfoDto) {
-        User user = userRepository.findByEmail(userInfoDto.getEmail()).orElseThrow(
+    public void updateUserInfo(UserEditDto userEditDto) {
+        User user = userRepository.findByEmail(userEditDto.getEmail()).orElseThrow(
                 () -> new UsernameNotFoundException(message("api.server.error.user-not-found"))
         );
-        user.setPhoneNumber(userInfoDto.getPhoneNumber());
-        user.setFirstName(userInfoDto.getFirstName());
-        userRepository.save(user);
+        user.setFirstName(userEditDto.getFirstName());
+        user.setPhoneNumber(userEditDto.getPhoneNumber());
+        user.setHasPermitToShowEmail(userEditDto.isHasPermitToShowEmail());
+        user.setHasPermitToShowPhoneNumber(userEditDto.isHasPermitToShowPhoneNumber());
+        if (!userEditDto.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(userEditDto.getPassword()));
+        }
+        User updatedUser = userRepository.save(user);
+        updatedUser.getUserSocialNetworks().clear();
+        updatedUser.getUserSocialNetworks().addAll(socialNetworksConverter.convertSocialNetworksDtoToSocialNetworks(
+                userEditDto.getSocialNetworks(),
+                updatedUser
+        ));
     }
 
     @Transactional
@@ -145,6 +153,18 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .map(petInfoDtoMapper)
                 .toList();
+    }
+
+    public UserInfoDto getUserInfoDtoByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(userInfoDtoMapper)
+                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
+    }
+
+    public PersonalCabinetDto getPersonalCabinetDtoByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(personalCabinetDtoMapper)
+                .orElseThrow(() -> new UsernameNotFoundException(message("api.server.error.user-not-found")));
     }
 
     @Override

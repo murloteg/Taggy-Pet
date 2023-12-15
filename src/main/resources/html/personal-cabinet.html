@@ -86,13 +86,12 @@
                                 <td class="title">Email</td>
                                 <td class="data" th:text="${user.email}">user.email</td>
                             </tr>
-                            <!-- TODO: обработка всех соц. сетей пользователя -->
-                            <div th:each="socialNetwork : ${user.userSocialNetworks}" th:if="${socialNetwork.shortName != ''}">
+                            <div th:each="socialNetwork : ${user.socialNetworks}" th:if="${socialNetwork.login != ''}">
                                 <tr>
                                     <td class="title social-network">
-                                        <img th:src="@{${'/img/icons/' + socialNetwork.socialNetwork.propertyValue + '.svg'}}" alt="Social network logo" class="social-network-logo">
+                                        <img th:src="@{${'/img/icons/' + socialNetwork.name + '.svg'}}" alt="Social network logo" class="social-network-logo">
                                     </td>
-                                    <td class="data" th:text="${socialNetwork.shortName}"></td>
+                                    <td class="data" th:text="${socialNetwork.login}"></td>
                                 </tr>
                             </div>
                         </table>
@@ -120,7 +119,7 @@
     <div class="pets-list">
         <div class="container">
             <div class="row">
-                <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet, iterator : ${pets}">
+                <div class="col-11 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="pet, iterator : ${user.pets}">
                     <a th:href="@{/pet/my-pets/{id}(id = ${pet.chipId})}" class="pet-info-link">
                         <div class="wrapper pet-card" th:id="${iterator.index}">
                             <div class="pet-name">
@@ -134,12 +133,13 @@
     </div>
 </header>
 <script th:inline="javascript">
-    let pets = /*[[${pets}]]*/ [];
+    let pets = /*[[${user.pets}]]*/ [];
     let petCard;
     let petImage;
     for (let i = 0; i < pets.length; ++i) {
         petCard = document.getElementById(i.toString());
         petImage = pets[i].petImageDto.imageUUIDName;
+        console.log(pets[i].petImageDto);
         if ("default-pet-image.png".localeCompare(petImage) === 0) {
             petCard.style.background = "url(/img/" + petImage + ")";
         } else {

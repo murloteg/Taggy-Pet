@@ -25,10 +25,10 @@
                         <h1>Регистрация</h1>
                     </div>
                     <div class="form-container">
-                        <form th:method="post" th:action="@{/user/registration}">
-                            <input type="text" th:name="firstName" placeholder="Имя" class="elem-in-window input"><br><br>
-                            <input type="email" id="email" th:name="email" placeholder="Email" class="elem-in-window input"> <br><br>
-                            <input type="tel" data-tel-input th:name="phoneNumber" placeholder="Телефон" class="elem-in-window input"> <br><br>
+                        <form id="form" th:method="post" th:action="@{/user/registration}" onsubmit="return passwordRetypeCheck()">
+                            <input type="text" th:name="firstName" placeholder="Имя" class="elem-in-window input" required><br><br>
+                            <input type="email" id="email" th:name="email" placeholder="Email" class="elem-in-window input" required> <br><br>
+                            <input type="tel" data-tel-input th:name="phoneNumber" placeholder="Телефон" class="elem-in-window input" required> <br><br>
                             <h5>Разрешаю показывать контакты:</h5>
                             <div class="checkboxes">
                                 <label>
@@ -42,7 +42,8 @@
                                     телефон
                                 </label>
                             </div>
-                            <input type="password" th:name="password" placeholder="Пароль" class="elem-in-window input"><br><br>
+                            <input type="password" th:name="password" placeholder="Пароль" class="elem-in-window input" required><br><br>
+                            <input type="password" th:name="retypePassword" placeholder="Повторите пароль" class="elem-in-window input" required><br><br>
                             <div class="checked">
                                 <label>
                                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -69,5 +70,6 @@
 </div>
 <script src="/js/phone-input.js"></script>
 <script src="/js/hidden-fields-toggle.js"></script>
+<script src="/js/password-retype-check.js"></script>
 </body>
 </html>
